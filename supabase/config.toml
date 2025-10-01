@@ -1,0 +1,4 @@
+project_id = "ycattlisqwyahxiaxnbc"
+
+[functions.generate-campaign]
+verify_jwt = false
