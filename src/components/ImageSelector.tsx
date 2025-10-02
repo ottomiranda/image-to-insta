@@ -3,14 +3,27 @@ import { Upload, ImageIcon } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import ProductRepositoryDialog from "./ProductRepositoryDialog";
+
+interface ProductImage {
+  src: string;
+  name: string;
+  alt: string;
+  category: string;
+}
 
 interface ImageSelectorProps {
   label: string;
   value: File | string | null;
   onChange: (file: File | string) => void;
   required?: boolean;
-  repository: { src: string; name: string; alt: string }[];
+  productCategories?: {
+    dresses: ProductImage[];
+    accessories: ProductImage[];
+  };
+  modelRepository?: { src: string; name: string; alt: string }[];
   repositoryTitle: string;
+  showCategories?: boolean;
 }
 
 const ImageSelector = ({
@@ -18,8 +31,10 @@ const ImageSelector = ({
   value,
   onChange,
   required = false,
-  repository,
+  productCategories,
+  modelRepository,
   repositoryTitle,
+  showCategories = false,
 }: ImageSelectorProps) => {
   const [showRepository, setShowRepository] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -40,8 +55,18 @@ const ImageSelector = ({
   const getDisplayName = () => {
     if (selectedFile) return selectedFile.name;
     if (typeof value === "string") {
-      const selected = repository.find((img) => img.src === value);
-      return selected?.name || "Selected from repository";
+      // Check in product categories if available
+      if (productCategories) {
+        const allProducts = [...productCategories.dresses, ...productCategories.accessories];
+        const selected = allProducts.find((img) => img.src === value);
+        if (selected) return selected.name;
+      }
+      // Check in model repository if available
+      if (modelRepository) {
+        const selected = modelRepository.find((img) => img.src === value);
+        if (selected) return selected.name;
+      }
+      return "Selected from repository";
     }
     if (value instanceof File) return value.name;
     return "Click to upload";
@@ -102,38 +127,48 @@ const ImageSelector = ({
         </div>
       )}
 
-      {/* Repository Dialog */}
-      <Dialog open={showRepository} onOpenChange={setShowRepository}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-card border-white/10">
-          <DialogHeader>
-            <DialogTitle className="text-white">{repositoryTitle}</DialogTitle>
-          </DialogHeader>
+      {/* Repository Dialog - Conditional rendering based on type */}
+      {showCategories && productCategories ? (
+        <ProductRepositoryDialog
+          open={showRepository}
+          onOpenChange={setShowRepository}
+          onSelect={handleRepositorySelect}
+          dresses={productCategories.dresses}
+          accessories={productCategories.accessories}
+        />
+      ) : (
+        <Dialog open={showRepository} onOpenChange={setShowRepository}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-card border-white/10">
+            <DialogHeader>
+              <DialogTitle className="text-foreground">{repositoryTitle}</DialogTitle>
+            </DialogHeader>
 
-          <div className="grid grid-cols-3 gap-4 mt-4">
-            {repository.map((image, index) => (
-              <div
-                key={index}
-                onClick={() => handleRepositorySelect(image.src)}
-                className="cursor-pointer group relative overflow-hidden rounded-lg border-2 border-white/10 hover:border-primary/60 transition-all hover:shadow-[0_0_20px_rgba(139,92,246,0.3)]"
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform"
-                />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <Button variant="secondary" size="sm">
-                    Select
-                  </Button>
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              {modelRepository?.map((image, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleRepositorySelect(image.src)}
+                  className="cursor-pointer group relative overflow-hidden rounded-lg border-2 border-white/10 hover:border-primary/60 transition-all hover:shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Button variant="secondary" size="sm">
+                      Select
+                    </Button>
+                  </div>
+                  <div className="p-2 bg-card/90 backdrop-blur-sm">
+                    <p className="text-xs text-foreground truncate">{image.name}</p>
+                  </div>
                 </div>
-                <div className="p-2 bg-black/60 backdrop-blur-sm">
-                  <p className="text-xs text-gray-300 truncate">{image.name}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
+              ))}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

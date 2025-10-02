@@ -9,13 +9,21 @@ import { supabase } from "@/integrations/supabase/client";
 import type { GeneratedContent } from "@/pages/Index";
 import ImageSelector from "./ImageSelector";
 
-// Import product repository images
-import redBohoDress from "@/assets/repository/products/red-boho-dress.jpg";
-import goldNecklace from "@/assets/repository/products/gold-necklace.jpg";
-import denimJacket from "@/assets/repository/products/denim-jacket.jpg";
-import blackHandbag from "@/assets/repository/products/black-handbag.jpg";
-import whiteSneakers from "@/assets/repository/products/white-sneakers.jpg";
-import sunglasses from "@/assets/repository/products/sunglasses.jpg";
+// Import product repository images - Dresses
+import redBohoDress from "@/assets/repository/products/dresses/red-boho-dress.jpg";
+import blackCocktailDress from "@/assets/repository/products/dresses/black-cocktail-dress.jpg";
+import navySummerDress from "@/assets/repository/products/dresses/navy-summer-dress.jpg";
+import floralMidiDress from "@/assets/repository/products/dresses/floral-midi-dress.jpg";
+import whiteLinenDress from "@/assets/repository/products/dresses/white-linen-dress.jpg";
+import emeraldEveningGown from "@/assets/repository/products/dresses/emerald-evening-gown.jpg";
+
+// Import product repository images - Accessories
+import goldNecklace from "@/assets/repository/products/accessories/gold-necklace.jpg";
+import blackHandbag from "@/assets/repository/products/accessories/black-handbag.jpg";
+import whiteSneakers from "@/assets/repository/products/accessories/white-sneakers.jpg";
+import sunglasses from "@/assets/repository/products/accessories/sunglasses.jpg";
+import silverWatch from "@/assets/repository/products/accessories/silver-watch.jpg";
+import beigeBelt from "@/assets/repository/products/accessories/beige-belt.jpg";
 
 // Import model repository images
 import model1 from "@/assets/repository/models/model-1.jpg";
@@ -23,14 +31,24 @@ import model2 from "@/assets/repository/models/model-2.jpg";
 import model3 from "@/assets/repository/models/model-3.jpg";
 import model4 from "@/assets/repository/models/model-4.jpg";
 
-const PRODUCT_REPOSITORY = [
-  { src: redBohoDress, name: "Red Boho Dress", alt: "Elegant red boho maxi dress" },
-  { src: goldNecklace, name: "Gold Necklace", alt: "Luxurious gold statement necklace" },
-  { src: denimJacket, name: "Denim Jacket", alt: "Classic denim jacket" },
-  { src: blackHandbag, name: "Black Handbag", alt: "Elegant black leather handbag" },
-  { src: whiteSneakers, name: "White Sneakers", alt: "White sneakers" },
-  { src: sunglasses, name: "Sunglasses", alt: "Oversized sunglasses" },
-];
+const PRODUCT_CATEGORIES = {
+  dresses: [
+    { src: redBohoDress, name: "Red Boho Maxi Dress", alt: "Elegant red boho maxi dress on white background", category: "dresses" },
+    { src: blackCocktailDress, name: "Black Cocktail Dress", alt: "Elegant black cocktail dress on white background", category: "dresses" },
+    { src: navySummerDress, name: "Navy Summer Dress", alt: "Navy blue summer dress on white background", category: "dresses" },
+    { src: floralMidiDress, name: "Floral Midi Dress", alt: "Floral print midi dress on white background", category: "dresses" },
+    { src: whiteLinenDress, name: "White Linen Dress", alt: "White linen dress on white background", category: "dresses" },
+    { src: emeraldEveningGown, name: "Emerald Evening Gown", alt: "Emerald green evening gown on white background", category: "dresses" },
+  ],
+  accessories: [
+    { src: goldNecklace, name: "Gold Statement Necklace", alt: "Gold statement necklace on white background", category: "accessories" },
+    { src: blackHandbag, name: "Black Leather Handbag", alt: "Black leather handbag on white background", category: "accessories" },
+    { src: whiteSneakers, name: "White Sneakers", alt: "White sneakers on white background", category: "accessories" },
+    { src: sunglasses, name: "Oversized Sunglasses", alt: "Oversized sunglasses on white background", category: "accessories" },
+    { src: silverWatch, name: "Silver Watch", alt: "Silver wrist watch on white background", category: "accessories" },
+    { src: beigeBelt, name: "Beige Leather Belt", alt: "Beige leather belt on white background", category: "accessories" },
+  ]
+};
 
 const MODEL_REPOSITORY = [
   { src: model1, name: "Model Sarah", alt: "Professional fashion model portrait" },
@@ -148,17 +166,19 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
           value={productImage}
           onChange={setProductImage}
           required
-          repository={PRODUCT_REPOSITORY}
+          productCategories={PRODUCT_CATEGORIES}
           repositoryTitle="Select Product from Campaign Repository"
+          showCategories={true}
         />
 
         {/* Model Image Selector */}
         <ImageSelector
-          label="Model Image"
+          label="Model Image (Optional)"
           value={modelImage}
           onChange={setModelImage}
-          repository={MODEL_REPOSITORY}
+          modelRepository={MODEL_REPOSITORY}
           repositoryTitle="Select Model from Campaign Repository"
+          showCategories={false}
         />
 
         {/* Generate Button */}
