@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Sparkles, Settings, ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 import InputForm from "@/components/InputForm";
 import ResultsDisplay from "@/components/ResultsDisplay";
 import ResultsDisplaySkeleton from "@/components/ResultsDisplaySkeleton";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { UserNav } from "@/components/UserNav";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCampaigns } from "@/hooks/useCampaigns";
@@ -175,11 +176,9 @@ const Create = () => {
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.3)]">
-                <Sparkles className="h-6 w-6 text-white" />
-              </div>
+              <Logo size="medium" onClick={() => navigate('/campaigns')} />
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-purple-400 to-accent bg-clip-text text-transparent">
+                <h1 className="text-xl font-bold">
                   {isEditMode ? t('campaigns.edit') : campaignId ? t('campaigns.duplicate') : t('create.title')}
                 </h1>
                 <p className="text-xs text-gray-400">AI-powered fashion marketing pipeline</p>

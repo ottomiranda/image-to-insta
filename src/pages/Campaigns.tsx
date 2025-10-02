@@ -10,6 +10,7 @@ import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { UserNav } from "@/components/UserNav";
 import { Campaign } from "@/types/campaign";
 import { useTranslation } from "react-i18next";
+import { Logo } from "@/components/Logo";
 
 export default function Campaigns() {
   const navigate = useNavigate();
@@ -51,7 +52,10 @@ export default function Campaigns() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{t('campaigns.title')}</h1>
+            <div className="flex items-center gap-4 mb-2">
+              <Logo size="large" onClick={() => navigate('/campaigns')} />
+              <h1 className="text-2xl font-bold">{t('campaigns.title')}</h1>
+            </div>
             <p className="text-sm text-muted-foreground">{t('campaigns.description')}</p>
           </div>
           <div className="flex gap-2">
