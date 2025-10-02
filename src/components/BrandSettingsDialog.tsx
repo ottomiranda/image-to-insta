@@ -53,7 +53,7 @@ const createBrandSettingsSchema = (t: any) => z.object({
   secondary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor secundária inválida"),
   preferred_keywords: z.string().optional(),
   words_to_avoid: z.string().optional(),
-  logo_url: z.string().optional(),
+  logo_url: z.string().optional().nullable(),
 });
 
 type BrandSettingsFormValues = z.infer<ReturnType<typeof createBrandSettingsSchema>>;
