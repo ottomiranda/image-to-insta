@@ -83,6 +83,13 @@
     "selectModel": "Selecionar Modelo do Repositório de Campanhas",
     "cameraAngle": "Ângulo de Câmera",
     "selectAngle": "Selecionar ângulo de câmera",
+    "aspectRatio": "Proporção de Aspecto",
+    "selectAspectRatio": "Selecionar proporção de aspecto",
+    "portrait": "Retrato",
+    "landscape": "Paisagem",
+    "square": "Quadrado",
+    "width": "Largura",
+    "height": "Altura",
     "generatingContent": "Gerando conteúdo da campanha...",
     "cameraAngles": {
       "closeUp": "Close-up (Plano Detalhe)",

@@ -83,6 +83,13 @@
     "selectModel": "Select Model from Campaign Repository",
     "cameraAngle": "Camera Angle",
     "selectAngle": "Select camera angle",
+    "aspectRatio": "Aspect Ratio",
+    "selectAspectRatio": "Select aspect ratio",
+    "portrait": "Portrait",
+    "landscape": "Landscape",
+    "square": "Square",
+    "width": "Width",
+    "height": "Height",
     "generatingContent": "Generating campaign content...",
     "cameraAngles": {
       "closeUp": "Close-up (Detail Shot)",

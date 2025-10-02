@@ -10,6 +10,7 @@ import type { GeneratedContent } from "@/pages/Create";
 import ImageSelector from "./ImageSelector";
 import { useTranslation } from "react-i18next";
 import { CameraAngleSelector } from "./CameraAngleSelector";
+import { AspectRatioSelector } from "./AspectRatioSelector";
 import { LogoPositionSelector, LogoPosition } from "./LogoPositionSelector";
 import { useBrandSettings } from "@/hooks/useBrandSettings";
 
@@ -78,6 +79,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
   });
   const [modelImage, setModelImage] = useState<File | string | null>(null);
   const [selectedAngle, setSelectedAngle] = useState<string | null>(null);
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>(null);
   const [includeLogo, setIncludeLogo] = useState(false);
   const [logoPosition, setLogoPosition] = useState<LogoPosition>("bottom-right");
   const { toast } = useToast();
@@ -151,6 +153,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           accessories: accessoriesBase64,
           modelImage: modelImageBase64,
           logoConfig,
+          aspectRatio: selectedAspectRatio,
         }
       });
 
@@ -191,6 +194,10 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
             <CameraAngleSelector
               onSelectAngle={setSelectedAngle}
               selectedAngle={selectedAngle}
+            />
+            <AspectRatioSelector
+              onSelectRatio={setSelectedAspectRatio}
+              selectedRatio={selectedAspectRatio}
             />
             <div className="flex-1 relative">
               {selectedAngle && (

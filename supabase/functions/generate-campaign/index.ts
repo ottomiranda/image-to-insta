@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, centerpiece, accessories = [], modelImage, logoConfig } = await req.json();
+    const { prompt, centerpiece, accessories = [], modelImage, logoConfig, aspectRatio } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     if (!LOVABLE_API_KEY) {
@@ -25,6 +25,7 @@ serve(async (req) => {
 
     console.log('Starting campaign generation...');
     console.log('Images received - Centerpiece:', !!centerpiece, 'Accessories:', accessories.length, 'Model:', !!modelImage);
+    console.log('Aspect ratio requested:', aspectRatio || 'default (1:1)');
 
     // Get user from authorization header and fetch brand settings
     const authHeader = req.headers.get('Authorization');
@@ -80,6 +81,27 @@ ${brandSettings.words_to_avoid ? `- Avoid Words: ${brandSettings.words_to_avoid}
 Please ensure all generated content reflects this brand's identity, tone, and values.
 ` : '';
 
+    // Calculate dimensions based on aspect ratio
+    const calculateDimensions = (ratio: string): { width: number; height: number } => {
+      const ratioMap: Record<string, { width: number; height: number }> = {
+        "16:9": { width: 1920, height: 1080 },
+        "9:16": { width: 1080, height: 1920 },
+        "16:10": { width: 1920, height: 1200 },
+        "10:16": { width: 1200, height: 1920 },
+        "4:3": { width: 1600, height: 1200 },
+        "3:4": { width: 1200, height: 1600 },
+        "3:2": { width: 1620, height: 1080 },
+        "2:3": { width: 1080, height: 1620 },
+        "5:4": { width: 1280, height: 1024 },
+        "4:5": { width: 1024, height: 1280 },
+        "1:1": { width: 1024, height: 1024 },
+      };
+      return ratioMap[ratio] || { width: 1024, height: 1024 };
+    };
+
+    const dimensions = calculateDimensions(aspectRatio || "1:1");
+    console.log(`Generating image with dimensions: ${dimensions.width}x${dimensions.height}`);
+
     // Step 1: Generate look visual using Gemini 2.5 Flash Image Preview with image composition
     console.log('Generating look visual with image composition...');
     
@@ -89,12 +111,14 @@ Compose a professional fashion look photograph by digitally dressing the model w
          1. CENTERPIECE: The dress from the first product image
          2. ACCESSORIES: ${accessories.length} complementary accessories from the following images
          Context: ${prompt}
+         Image dimensions: ${dimensions.width}x${dimensions.height} pixels
          Create a cohesive, high-fashion editorial look with professional lighting and styling that aligns with the brand's aesthetic.`
       : `${brandContext}
 Create a complete professional fashion look with:
          1. CENTERPIECE: The dress from the first product image
          2. ACCESSORIES: ${accessories.length} complementary items from the following images
          Context: ${prompt}
+         Image dimensions: ${dimensions.width}x${dimensions.height} pixels
          Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting that matches the brand's preferred style.`;
 
     // Build multimodal content array
