@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { RectangleHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   Dialog,
@@ -37,13 +36,58 @@ const ASPECT_RATIOS = {
   ],
 };
 
+// Dynamic icon that reflects the selected aspect ratio
+const DynamicAspectRatioIcon = ({ ratio }: { ratio: string | null }) => {
+  if (!ratio) {
+    return (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="5" y="7" width="10" height="6" stroke="currentColor" strokeWidth="1.5" rx="1" />
+      </svg>
+    );
+  }
+  
+  const [w, h] = ratio.split(":").map(Number);
+  const aspectRatio = w / h;
+  
+  // Calculate icon dimensions (fixed area approach)
+  const iconSize = 16;
+  let width, height;
+  
+  if (aspectRatio > 1) {
+    // Landscape
+    width = iconSize;
+    height = iconSize / aspectRatio;
+  } else if (aspectRatio < 1) {
+    // Portrait
+    height = iconSize;
+    width = iconSize * aspectRatio;
+  } else {
+    // Square
+    width = height = iconSize;
+  }
+  
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <rect
+        x={(20 - width) / 2}
+        y={(20 - height) / 2}
+        width={width}
+        height={height}
+        stroke="currentColor"
+        strokeWidth="1.5"
+        rx="1"
+      />
+    </svg>
+  );
+};
+
 export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRatioSelectorProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleSelect = (ratio: string) => {
     onSelectRatio(ratio);
-    setOpen(false);
+    // Panel remains open - closes only when user clicks outside
   };
 
   // Calculate preview dimensions based on selected ratio
@@ -91,7 +135,7 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
           className="shrink-0"
           title={t('create.aspectRatio')}
         >
-          <RectangleHorizontal className="h-4 w-4" />
+          <DynamicAspectRatioIcon ratio={selectedRatio} />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl bg-gray-900 border-white/10">

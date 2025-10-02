@@ -191,14 +191,16 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
         <div className="space-y-2">
           <Label htmlFor="prompt" className="text-gray-300">{t('create.lookDescription')} *</Label>
           <div className="flex gap-2 items-start">
-            <CameraAngleSelector
-              onSelectAngle={setSelectedAngle}
-              selectedAngle={selectedAngle}
-            />
-            <AspectRatioSelector
-              onSelectRatio={setSelectedAspectRatio}
-              selectedRatio={selectedAspectRatio}
-            />
+            <div className="flex flex-col gap-2">
+              <CameraAngleSelector
+                onSelectAngle={setSelectedAngle}
+                selectedAngle={selectedAngle}
+              />
+              <AspectRatioSelector
+                onSelectRatio={setSelectedAspectRatio}
+                selectedRatio={selectedAspectRatio}
+              />
+            </div>
             <div className="flex-1 relative">
               {selectedAngle && (
                 <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full px-3 py-1">

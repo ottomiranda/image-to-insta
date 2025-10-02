@@ -100,26 +100,32 @@ Please ensure all generated content reflects this brand's identity, tone, and va
     };
 
     const dimensions = calculateDimensions(aspectRatio || "1:1");
-    console.log(`Generating image with dimensions: ${dimensions.width}x${dimensions.height}`);
+    console.log(`Generating image with EXACT dimensions: ${dimensions.width}x${dimensions.height} (aspect ratio: ${aspectRatio || "1:1"})`);
 
     // Step 1: Generate look visual using Gemini 2.5 Flash Image Preview with image composition
     console.log('Generating look visual with image composition...');
     
     const imagePrompt = modelImage
-      ? `${brandContext}
+      ? `CRITICAL: Generate image with EXACT dimensions ${dimensions.width}x${dimensions.height} pixels in ${aspectRatio || "1:1"} aspect ratio.
+
+${brandContext}
 Compose a professional fashion look photograph by digitally dressing the model with:
          1. CENTERPIECE: The dress from the first product image
          2. ACCESSORIES: ${accessories.length} complementary accessories from the following images
          Context: ${prompt}
-         Image dimensions: ${dimensions.width}x${dimensions.height} pixels
-         Create a cohesive, high-fashion editorial look with professional lighting and styling that aligns with the brand's aesthetic.`
-      : `${brandContext}
+         Create a cohesive, high-fashion editorial look with professional lighting and styling that aligns with the brand's aesthetic.
+
+REMINDER: Output image MUST be exactly ${dimensions.width}x${dimensions.height} pixels (${aspectRatio || "1:1"} aspect ratio).`
+      : `CRITICAL: Generate image with EXACT dimensions ${dimensions.width}x${dimensions.height} pixels in ${aspectRatio || "1:1"} aspect ratio.
+
+${brandContext}
 Create a complete professional fashion look with:
          1. CENTERPIECE: The dress from the first product image
          2. ACCESSORIES: ${accessories.length} complementary items from the following images
          Context: ${prompt}
-         Image dimensions: ${dimensions.width}x${dimensions.height} pixels
-         Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting that matches the brand's preferred style.`;
+         Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting that matches the brand's preferred style.
+
+REMINDER: Output image MUST be exactly ${dimensions.width}x${dimensions.height} pixels (${aspectRatio || "1:1"} aspect ratio).`;
 
     // Build multimodal content array
     const contentArray: any[] = [
