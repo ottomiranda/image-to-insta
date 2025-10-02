@@ -138,7 +138,7 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
           <DynamicAspectRatioIcon ratio={selectedRatio} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl bg-gray-900 border-white/10">
+      <DialogContent className="max-w-3xl bg-card/95 backdrop-blur-xl border-white/10">
         <DialogHeader>
           <DialogTitle className="text-white">{t('create.selectAspectRatio')}</DialogTitle>
         </DialogHeader>
@@ -146,7 +146,7 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
         <div className="grid grid-cols-[200px,1fr] gap-6 py-4">
           {/* Preview Section */}
           <div className="space-y-4">
-            <div className="flex items-center justify-center h-[200px] bg-gray-950 border border-white/20 rounded-lg">
+            <div className="flex items-center justify-center h-[200px] bg-background/50 border border-white/10 rounded-lg">
               <div
                 className="bg-gradient-to-br from-primary/40 to-accent/40 border-2 border-primary/50 rounded"
                 style={{
@@ -176,10 +176,10 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
                     key={ratio.value}
                     onClick={() => handleSelect(ratio.value)}
                     className={cn(
-                      "w-full px-4 py-2.5 rounded-lg border transition-all text-left font-medium",
+                      "w-full px-4 py-2.5 rounded-lg border-2 transition-all text-left font-medium hover:scale-105",
                       selectedRatio === ratio.value
-                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
-                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+                        ? "border-primary shadow-[0_0_20px_rgba(139,92,246,0.5)] bg-primary/10 text-white"
+                        : "border-white/10 hover:border-white/30 bg-background/30 text-foreground"
                     )}
                   >
                     {ratio.label}
@@ -199,10 +199,10 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
                     key={ratio.value}
                     onClick={() => handleSelect(ratio.value)}
                     className={cn(
-                      "w-full px-4 py-2.5 rounded-lg border transition-all text-left font-medium",
+                      "w-full px-4 py-2.5 rounded-lg border-2 transition-all text-left font-medium hover:scale-105",
                       selectedRatio === ratio.value
-                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
-                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+                        ? "border-primary shadow-[0_0_20px_rgba(139,92,246,0.5)] bg-primary/10 text-white"
+                        : "border-white/10 hover:border-white/30 bg-background/30 text-foreground"
                     )}
                   >
                     {ratio.label}
@@ -222,10 +222,10 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
                     key={ratio.value}
                     onClick={() => handleSelect(ratio.value)}
                     className={cn(
-                      "w-full px-4 py-2.5 rounded-lg border transition-all text-left font-medium",
+                      "w-full px-4 py-2.5 rounded-lg border-2 transition-all text-left font-medium hover:scale-105",
                       selectedRatio === ratio.value
-                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
-                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+                        ? "border-primary shadow-[0_0_20px_rgba(139,92,246,0.5)] bg-primary/10 text-white"
+                        : "border-white/10 hover:border-white/30 bg-background/30 text-foreground"
                     )}
                   >
                     {ratio.label}
