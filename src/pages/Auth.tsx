@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +18,7 @@ const Auth = () => {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Check if user is already logged in
@@ -55,12 +58,12 @@ const Auth = () => {
       if (error) throw error;
 
       toast({
-        title: "Account created!",
-        description: "You have been successfully registered.",
+        title: t('auth.accountCreated'),
+        description: t('auth.accountCreatedDesc'),
       });
     } catch (error: any) {
       toast({
-        title: "Error creating account",
+        title: t('auth.errorCreating'),
         description: error.message,
         variant: "destructive",
       });
@@ -82,12 +85,12 @@ const Auth = () => {
       if (error) throw error;
 
       toast({
-        title: "Login successful!",
-        description: "Welcome back.",
+        title: t('auth.loginSuccessful'),
+        description: t('auth.loginSuccessfulDesc'),
       });
     } catch (error: any) {
       toast({
-        title: "Error logging in",
+        title: t('auth.errorLoggingIn'),
         description: error.message,
         variant: "destructive",
       });
@@ -106,24 +109,27 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4">
+      <div className="absolute top-4 right-4">
+        <LanguageSelector />
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Fashion Campaign AI</CardTitle>
+          <CardTitle className="text-2xl">{t('auth.title')}</CardTitle>
           <CardDescription>
-            Sign in or create your account to start creating campaigns
+            {t('auth.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Create Account</TabsTrigger>
+              <TabsTrigger value="signin">{t('auth.signIn')}</TabsTrigger>
+              <TabsTrigger value="signup">{t('auth.signUp')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
+                  <Label htmlFor="signin-email">{t('auth.email')}</Label>
                   <Input
                     id="signin-email"
                     type="email"
@@ -135,7 +141,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
+                  <Label htmlFor="signin-password">{t('auth.password')}</Label>
                   <Input
                     id="signin-password"
                     type="password"
@@ -150,10 +156,10 @@ const Auth = () => {
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Signing in...
+                      {t('auth.signingIn')}
                     </>
                   ) : (
-                    "Sign In"
+                    t('auth.signIn')
                   )}
                 </Button>
               </form>
@@ -162,7 +168,7 @@ const Auth = () => {
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
+                  <Label htmlFor="signup-email">{t('auth.email')}</Label>
                   <Input
                     id="signup-email"
                     type="email"
@@ -174,7 +180,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
+                  <Label htmlFor="signup-password">{t('auth.password')}</Label>
                   <Input
                     id="signup-password"
                     type="password"
@@ -186,17 +192,17 @@ const Auth = () => {
                     disabled={loading}
                   />
                   <p className="text-xs text-muted-foreground">
-                    Minimum 6 characters
+                    {t('auth.passwordHint')}
                   </p>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating account...
+                      {t('auth.creatingAccount')}
                     </>
                   ) : (
-                    "Create Account"
+                    t('auth.signUp')
                   )}
                 </Button>
               </form>

@@ -9,6 +9,7 @@ import Campaigns from "./pages/Campaigns";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import "./i18n/config";
 
 const queryClient = new QueryClient();
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, Settings, LogOut, Globe } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +22,7 @@ interface UserNavProps {
 export function UserNav({ onSettingsClick }: UserNavProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t, i18n } = useTranslation();
   const [userEmail, setUserEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -52,7 +54,7 @@ export function UserNav({ onSettingsClick }: UserNavProps) {
       
       if (error) {
         toast({
-          title: "Error signing out",
+          title: t('userNav.errorSigningOut'),
           description: error.message,
           variant: "destructive",
         });
@@ -62,8 +64,8 @@ export function UserNav({ onSettingsClick }: UserNavProps) {
       navigate("/auth");
     } catch (error) {
       toast({
-        title: "Error signing out",
-        description: "An unexpected error occurred",
+        title: t('userNav.errorSigningOut'),
+        description: t('userNav.unexpectedError'),
         variant: "destructive",
       });
     }
@@ -96,7 +98,7 @@ export function UserNav({ onSettingsClick }: UserNavProps) {
       <DropdownMenuContent className="w-56 bg-background" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Account</p>
+            <p className="text-sm font-medium leading-none">{t('userNav.account')}</p>
             <p className="text-xs leading-none text-muted-foreground truncate">
               {userEmail}
             </p>
@@ -105,12 +107,28 @@ export function UserNav({ onSettingsClick }: UserNavProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={onSettingsClick} className="cursor-pointer">
           <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
+          <span>{t('userNav.settings')}</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onClick={(e) => e.preventDefault()}>
+          <Globe className="mr-2 h-4 w-4" />
+          <span className="mr-2">{t('userNav.language')}:</span>
+          <button
+            onClick={() => i18n.changeLanguage('en')}
+            className={`px-2 py-0.5 text-xs rounded ${i18n.language === 'en' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+          >
+            EN
+          </button>
+          <button
+            onClick={() => i18n.changeLanguage('pt')}
+            className={`px-2 py-0.5 text-xs rounded ml-1 ${i18n.language === 'pt' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
+          >
+            PT
+          </button>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Logout</span>
+          <span>{t('userNav.logout')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

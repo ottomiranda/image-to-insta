@@ -2,16 +2,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Settings } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { CampaignCard } from "@/components/CampaignCard";
 import { PublishCampaignDialog } from "@/components/PublishCampaignDialog";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { UserNav } from "@/components/UserNav";
 import { Campaign } from "@/types/campaign";
+import { useTranslation } from "react-i18next";
 
 export default function Campaigns() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { campaigns, isLoading, deleteCampaign, updateCampaign } = useCampaigns();
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
@@ -49,13 +51,13 @@ export default function Campaigns() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Campaigns</h1>
-            <p className="text-sm text-muted-foreground">Manage your fashion marketing campaigns</p>
+            <h1 className="text-2xl font-bold">{t('campaigns.title')}</h1>
+            <p className="text-sm text-muted-foreground">{t('campaigns.description')}</p>
           </div>
           <div className="flex gap-2">
             <Button onClick={() => navigate("/create")}>
               <Plus className="h-4 w-4 mr-2" />
-              New Campaign
+              {t('campaigns.newCampaign')}
             </Button>
             <UserNav onSettingsClick={() => setSettingsOpen(true)} />
           </div>
@@ -65,15 +67,15 @@ export default function Campaigns() {
       <main className="container mx-auto px-4 py-8">
         <Tabs value={statusFilter} onValueChange={setStatusFilter} className="mb-6">
           <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="draft">Draft</TabsTrigger>
-            <TabsTrigger value="published">Published</TabsTrigger>
-            <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
+            <TabsTrigger value="all">{t('campaigns.all')}</TabsTrigger>
+            <TabsTrigger value="draft">{t('campaigns.draft')}</TabsTrigger>
+            <TabsTrigger value="published">{t('campaigns.published')}</TabsTrigger>
+            <TabsTrigger value="scheduled">{t('campaigns.scheduled')}</TabsTrigger>
           </TabsList>
         </Tabs>
 
         {isLoading ? (
-          <div className="text-center py-12 text-muted-foreground">Loading campaigns...</div>
+          <div className="text-center py-12 text-muted-foreground">{t('common.loading')}</div>
         ) : filteredCampaigns && filteredCampaigns.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCampaigns.map((campaign) => (
@@ -89,12 +91,12 @@ export default function Campaigns() {
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
               {statusFilter === "all"
-                ? "No campaigns yet. Create your first campaign!"
-                : `No ${statusFilter} campaigns found.`}
+                ? t('campaigns.noCampaignsDesc')
+                : t('campaigns.noCampaigns')}
             </p>
             <Button onClick={() => navigate("/create")}>
               <Plus className="h-4 w-4 mr-2" />
-              Create Campaign
+              {t('campaigns.newCampaign')}
             </Button>
           </div>
         )}
