@@ -193,5 +193,14 @@
     "select": "Select",
     "dresses": "Dresses",
     "accessories": "Accessories"
+  },
+  "productSelection": {
+    "title": "Select Products",
+    "description": "Choose 1 centerpiece dress and multiple accessories",
+    "dresses": "Dresses",
+    "accessories": "Accessories",
+    "confirmSelection": "Confirm Selection",
+    "item": "item",
+    "items": "items"
   }
 }

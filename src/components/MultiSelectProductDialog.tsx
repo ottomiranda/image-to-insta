@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface ProductImage {
   src: string;
@@ -34,6 +35,8 @@ export const MultiSelectProductDialog = ({
   accessories,
   initialSelection,
 }: MultiSelectProductDialogProps) => {
+  const { t } = useTranslation();
+  
   const [selectedDress, setSelectedDress] = React.useState<string | null>(
     initialSelection?.centerpiece || null
   );
@@ -64,20 +67,20 @@ export const MultiSelectProductDialog = ({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-xl border-white/10">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-white">
-            Select Products
+            {t("productSelection.title")}
           </DialogTitle>
           <p className="text-sm text-gray-400">
-            Choose 1 centerpiece dress and multiple accessories
+            {t("productSelection.description")}
           </p>
         </DialogHeader>
 
         <Tabs defaultValue="dresses" className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-muted/50">
             <TabsTrigger value="dresses" className="data-[state=active]:bg-primary">
-              Dresses {selectedDress && "✓"}
+              {t("productSelection.dresses")} {selectedDress && "✓"}
             </TabsTrigger>
             <TabsTrigger value="accessories" className="data-[state=active]:bg-primary">
-              Accessories {selectedAccessories.length > 0 && `(${selectedAccessories.length})`}
+              {t("productSelection.accessories")} {selectedAccessories.length > 0 && `(${selectedAccessories.length})`}
             </TabsTrigger>
           </TabsList>
 
@@ -155,7 +158,7 @@ export const MultiSelectProductDialog = ({
             className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90"
             size="lg"
           >
-            Confirm Selection {totalItems > 0 && `(${totalItems} ${totalItems === 1 ? 'item' : 'items'})`}
+            {t("productSelection.confirmSelection")} {totalItems > 0 && `(${totalItems} ${totalItems === 1 ? t("productSelection.item") : t("productSelection.items")})`}
           </Button>
         </DialogFooter>
       </DialogContent>

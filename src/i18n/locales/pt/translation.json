@@ -193,5 +193,14 @@
     "select": "Selecionar",
     "dresses": "Vestidos",
     "accessories": "Acessórios"
+  },
+  "productSelection": {
+    "title": "Selecionar Produtos",
+    "description": "Escolha 1 vestido principal e múltiplos acessórios",
+    "dresses": "Vestidos",
+    "accessories": "Acessórios",
+    "confirmSelection": "Confirmar Seleção",
+    "item": "item",
+    "items": "itens"
   }
 }
