@@ -18,13 +18,30 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY não configurada');
     }
 
-    console.log('Iniciando geração de campanha...');
+    if (!productImage) {
+      throw new Error('Imagem do produto é obrigatória');
+    }
 
-    // Step 1: Generate look visual using Gemini 2.5 Flash Image Preview
-    console.log('Gerando look visual...');
-    const imagePrompt = `Create a professional fashion look photograph based on this description: ${prompt}. 
-    The image should be high quality, fashion-forward, and suitable for e-commerce. 
-    Style: modern, clean, professional product photography with good lighting.`;
+    console.log('Iniciando geração de campanha...');
+    console.log('Imagens recebidas - Produto:', !!productImage, 'Modelo:', !!modelImage);
+
+    // Step 1: Generate look visual using Gemini 2.5 Flash Image Preview with image composition
+    console.log('Gerando look visual com composição de imagens...');
+    
+    const imagePrompt = modelImage
+      ? `Compose a professional fashion look photograph by digitally dressing the model in the provided model image with the product from the product image. Context: ${prompt}. The result should be high-quality, fashion-forward, and suitable for e-commerce with professional lighting.`
+      : `Create a complete professional fashion look incorporating the provided product image as the central piece. Add complementary fashion items to create a cohesive outfit. Context: ${prompt}. Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting.`;
+
+    // Build multimodal content array
+    const contentArray: any[] = [
+      { type: 'text', text: imagePrompt },
+      { type: 'image_url', image_url: { url: productImage } }
+    ];
+
+    // Add model image if provided
+    if (modelImage) {
+      contentArray.push({ type: 'image_url', image_url: { url: modelImage } });
+    }
 
     const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -37,7 +54,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: imagePrompt
+            content: contentArray
           }
         ],
         modalities: ['image', 'text']
