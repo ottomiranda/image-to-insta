@@ -18,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { MoreVertical, Copy, Trash2, Send } from "lucide-react";
+import { MoreVertical, Copy, Trash2, Send, Pencil } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -77,6 +77,10 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate(`/create/${campaign.id}?mode=edit`)}>
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Edit
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate(`/create/${campaign.id}`)}>
                   <Copy className="mr-2 h-4 w-4" />
                   Duplicate

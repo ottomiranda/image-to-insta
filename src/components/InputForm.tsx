@@ -61,16 +61,25 @@ interface InputFormProps {
   onGenerate: (content: GeneratedContent) => void;
   isGenerating: boolean;
   setIsGenerating: (value: boolean) => void;
+  initialPrompt?: string;
+  initialProductSelection?: { centerpiece: string | null; accessories: string[] };
+  initialModelImage?: string | null;
 }
 
-const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps) => {
-  const [prompt, setPrompt] = useState("");
-  const [productSelection, setProductSelection] = useState<{ centerpiece: string | null; accessories: string[] }>({ 
-    centerpiece: null, 
-    accessories: [] 
-  });
-  const [modelImage, setModelImage] = useState<File | string | null>(null);
+const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, initialProductSelection, initialModelImage }: InputFormProps) => {
+  const [prompt, setPrompt] = useState(initialPrompt || "");
+  const [productSelection, setProductSelection] = useState<{ centerpiece: string | null; accessories: string[] }>(
+    initialProductSelection || { centerpiece: null, accessories: [] }
+  );
+  const [modelImage, setModelImage] = useState<File | string | null>(initialModelImage || null);
   const { toast } = useToast();
+
+  // Update state when initial props change
+  useState(() => {
+    if (initialPrompt) setPrompt(initialPrompt);
+    if (initialProductSelection) setProductSelection(initialProductSelection);
+    if (initialModelImage) setModelImage(initialModelImage);
+  });
 
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {

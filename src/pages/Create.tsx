@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Sparkles, Settings, ArrowLeft, Save } from "lucide-react";
 import InputForm from "@/components/InputForm";
 import ResultsDisplay from "@/components/ResultsDisplay";
@@ -33,8 +33,9 @@ export interface GeneratedContent {
 const Create = () => {
   const { campaignId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
-  const { saveCampaign } = useCampaigns();
+  const { saveCampaign, updateCampaign } = useCampaigns();
   const [title, setTitle] = useState("");
   const [prompt, setPrompt] = useState("");
   const [productSelection, setProductSelection] = useState<any>(null);
@@ -43,7 +44,9 @@ const Create = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  // Load campaign data if duplicating
+  const isEditMode = searchParams.get("mode") === "edit";
+
+  // Load campaign data if editing or duplicating
   useEffect(() => {
     if (campaignId) {
       const loadCampaign = async () => {
@@ -63,39 +66,86 @@ const Create = () => {
         }
 
         if (data) {
-          setTitle(`${data.title} (Copy)`);
+          // Set title based on mode
+          setTitle(isEditMode ? data.title : `${data.title} (Copy)`);
           setPrompt(data.prompt);
-          // Note: productSelection and modelImage would need to be reconstructed from stored data
+          
+          // Reconstruct product selection
+          setProductSelection({
+            centerpiece: data.centerpiece_image,
+            accessories: data.accessories_images || []
+          });
+          
+          // Set model image if exists
+          if (data.model_image) {
+            setModelImage(data.model_image);
+          }
+          
+          // Restore generated content only in edit mode
+          if (isEditMode) {
+            setGeneratedContent({
+              lookVisual: data.look_visual,
+              imageAnalysis: data.image_analysis as any,
+              shortDescription: data.short_description,
+              longDescription: data.long_description,
+              instagram: data.instagram as any,
+            });
+          }
         }
       };
       loadCampaign();
     }
-  }, [campaignId, toast]);
+  }, [campaignId, isEditMode, toast]);
 
   const handleSaveCampaign = async () => {
-    if (!generatedContent || !title) {
+    if (!title) {
       toast({
         title: "Missing information",
-        description: "Please add a title and generate content first.",
+        description: "Please add a title.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // In edit mode, allow saving without re-generating
+    // In duplicate/create mode, require generated content
+    if (!isEditMode && !generatedContent) {
+      toast({
+        title: "Missing information",
+        description: "Please generate content first.",
         variant: "destructive",
       });
       return;
     }
 
     try {
-      await saveCampaign({
+      const campaignData = {
         title,
         prompt,
-        status: "draft",
+        status: "draft" as const,
         centerpiece_image: productSelection?.centerpiece || "",
         accessories_images: productSelection?.accessories || [],
         model_image: modelImage,
-        look_visual: generatedContent.lookVisual,
-        image_analysis: generatedContent.imageAnalysis,
-        short_description: generatedContent.shortDescription,
-        long_description: generatedContent.longDescription,
-        instagram: generatedContent.instagram,
-      });
+        look_visual: generatedContent?.lookVisual || "",
+        image_analysis: generatedContent?.imageAnalysis,
+        short_description: generatedContent?.shortDescription || "",
+        long_description: generatedContent?.longDescription || "",
+        instagram: generatedContent?.instagram || { caption: "", hashtags: [], callToAction: "", altText: "", suggestedTime: "" },
+      };
+
+      if (isEditMode && campaignId) {
+        await updateCampaign({ id: campaignId, data: campaignData });
+        toast({
+          title: "Campaign updated",
+          description: "Your campaign has been updated successfully.",
+        });
+      } else {
+        await saveCampaign(campaignData);
+        toast({
+          title: "Campaign saved",
+          description: "Your campaign has been saved successfully.",
+        });
+      }
       navigate("/campaigns");
     } catch (error) {
       console.error("Error saving campaign:", error);
@@ -122,7 +172,7 @@ const Create = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-purple-400 to-accent bg-clip-text text-transparent">
-                  {campaignId ? "Duplicate Campaign" : "Create Campaign"}
+                  {isEditMode ? "Edit Campaign" : campaignId ? "Duplicate Campaign" : "Create Campaign"}
                 </h1>
                 <p className="text-xs text-gray-400">AI-powered fashion marketing pipeline</p>
               </div>
@@ -137,13 +187,13 @@ const Create = () => {
               >
                 <Settings className="h-5 w-5" />
               </Button>
-              {generatedContent && (
+              {(generatedContent || isEditMode) && (
                 <Button
                   onClick={handleSaveCampaign}
                   className="bg-gradient-to-r from-primary to-accent"
                 >
                   <Save className="h-4 w-4 mr-2" />
-                  Save Campaign
+                  {isEditMode ? "Update Campaign" : "Save Campaign"}
                 </Button>
               )}
             </div>
@@ -170,11 +220,12 @@ const Create = () => {
           <InputForm 
             onGenerate={(content) => {
               setGeneratedContent(content);
-              setProductSelection(productSelection);
-              setModelImage(modelImage);
             }}
             isGenerating={isGenerating}
             setIsGenerating={setIsGenerating}
+            initialPrompt={prompt}
+            initialProductSelection={productSelection}
+            initialModelImage={modelImage}
           />
           {generatedContent && (
             <ResultsDisplay content={generatedContent} />
