@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { Upload, ImageIcon } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -36,8 +36,8 @@ const ImageSelector = ({
   repositoryTitle,
   showCategories = false,
 }: ImageSelectorProps) => {
-  const [showRepository, setShowRepository] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [showRepository, setShowRepository] = React.useState(false);
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
