@@ -177,12 +177,6 @@ const Create = () => {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <Logo size="medium" onClick={() => navigate('/campaigns')} />
-              <div>
-                <h1 className="text-xl font-bold">
-                  {isEditMode ? t('campaigns.edit') : campaignId ? t('campaigns.duplicate') : t('create.title')}
-                </h1>
-                <p className="text-xs text-gray-400">AI-powered fashion marketing pipeline</p>
-              </div>
             </div>
             
             <div className="flex items-center gap-2">

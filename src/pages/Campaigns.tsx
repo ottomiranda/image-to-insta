@@ -54,7 +54,6 @@ export default function Campaigns() {
           <div>
             <div className="flex items-center gap-4 mb-2">
               <Logo size="large" onClick={() => navigate('/campaigns')} />
-              <h1 className="text-2xl font-bold">{t('campaigns.title')}</h1>
             </div>
             <p className="text-sm text-muted-foreground">{t('campaigns.description')}</p>
           </div>
