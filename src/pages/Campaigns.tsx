@@ -7,6 +7,7 @@ import { useCampaigns } from "@/hooks/useCampaigns";
 import { CampaignCard } from "@/components/CampaignCard";
 import { PublishCampaignDialog } from "@/components/PublishCampaignDialog";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
+import { UserNav } from "@/components/UserNav";
 import { Campaign } from "@/types/campaign";
 
 export default function Campaigns() {
@@ -52,13 +53,11 @@ export default function Campaigns() {
             <p className="text-sm text-muted-foreground">Manage your fashion marketing campaigns</p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={() => setSettingsOpen(true)}>
-              <Settings className="h-4 w-4" />
-            </Button>
             <Button onClick={() => navigate("/create")}>
               <Plus className="h-4 w-4 mr-2" />
               New Campaign
             </Button>
+            <UserNav onSettingsClick={() => setSettingsOpen(true)} />
           </div>
         </div>
       </header>

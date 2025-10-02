@@ -4,6 +4,7 @@ import { Sparkles, Settings, ArrowLeft, Save } from "lucide-react";
 import InputForm from "@/components/InputForm";
 import ResultsDisplay from "@/components/ResultsDisplay";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
+import { UserNav } from "@/components/UserNav";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -183,14 +184,6 @@ const Create = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setSettingsOpen(true)}
-                className="hover:bg-white/10"
-              >
-                <Settings className="h-5 w-5" />
-              </Button>
               {(generatedContent || isEditMode) && (
                 <Button
                   onClick={handleSaveCampaign}
@@ -200,6 +193,7 @@ const Create = () => {
                   {isEditMode ? "Update Campaign" : "Save Campaign"}
                 </Button>
               )}
+              <UserNav onSettingsClick={() => setSettingsOpen(true)} />
             </div>
           </div>
         </div>
