@@ -3,10 +3,41 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Upload, Wand2 } from "lucide-react";
+import { Wand2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import type { GeneratedContent } from "@/pages/Index";
+import ImageSelector from "./ImageSelector";
+
+// Import product repository images
+import redBohoDress from "@/assets/repository/products/red-boho-dress.jpg";
+import goldNecklace from "@/assets/repository/products/gold-necklace.jpg";
+import denimJacket from "@/assets/repository/products/denim-jacket.jpg";
+import blackHandbag from "@/assets/repository/products/black-handbag.jpg";
+import whiteSneakers from "@/assets/repository/products/white-sneakers.jpg";
+import sunglasses from "@/assets/repository/products/sunglasses.jpg";
+
+// Import model repository images
+import model1 from "@/assets/repository/models/model-1.jpg";
+import model2 from "@/assets/repository/models/model-2.jpg";
+import model3 from "@/assets/repository/models/model-3.jpg";
+import model4 from "@/assets/repository/models/model-4.jpg";
+
+const PRODUCT_REPOSITORY = [
+  { src: redBohoDress, name: "Red Boho Dress", alt: "Elegant red boho maxi dress" },
+  { src: goldNecklace, name: "Gold Necklace", alt: "Luxurious gold statement necklace" },
+  { src: denimJacket, name: "Denim Jacket", alt: "Classic denim jacket" },
+  { src: blackHandbag, name: "Black Handbag", alt: "Elegant black leather handbag" },
+  { src: whiteSneakers, name: "White Sneakers", alt: "White sneakers" },
+  { src: sunglasses, name: "Sunglasses", alt: "Oversized sunglasses" },
+];
+
+const MODEL_REPOSITORY = [
+  { src: model1, name: "Model Sarah", alt: "Professional fashion model portrait" },
+  { src: model2, name: "Model Emma", alt: "Elegant fashion model portrait" },
+  { src: model3, name: "Model Olivia", alt: "Contemporary fashion model portrait" },
+  { src: model4, name: "Model Sophia", alt: "Sophisticated fashion model portrait" },
+];
 
 interface InputFormProps {
   onGenerate: (content: GeneratedContent) => void;
@@ -16,21 +47,9 @@ interface InputFormProps {
 
 const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps) => {
   const [prompt, setPrompt] = useState("");
-  const [productImage, setProductImage] = useState<File | null>(null);
-  const [modelImage, setModelImage] = useState<File | null>(null);
+  const [productImage, setProductImage] = useState<File | string | null>(null);
+  const [modelImage, setModelImage] = useState<File | string | null>(null);
   const { toast } = useToast();
-
-  const handleProductImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setProductImage(e.target.files[0]);
-    }
-  };
-
-  const handleModelImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setModelImage(e.target.files[0]);
-    }
-  };
 
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -39,6 +58,22 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = error => reject(error);
     });
+  };
+
+  const imageToBase64 = async (image: File | string): Promise<string> => {
+    if (typeof image === "string") {
+      // If it's a repository image (imported path), fetch and convert
+      const response = await fetch(image);
+      const blob = await response.blob();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = error => reject(error);
+      });
+    }
+    // If it's a File object
+    return convertToBase64(image);
   };
 
   const handleGenerate = async () => {
@@ -54,8 +89,8 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
     setIsGenerating(true);
 
     try {
-      const productImageBase64 = await convertToBase64(productImage);
-      const modelImageBase64 = modelImage ? await convertToBase64(modelImage) : null;
+      const productImageBase64 = await imageToBase64(productImage);
+      const modelImageBase64 = modelImage ? await imageToBase64(modelImage) : null;
 
       const { data, error } = await supabase.functions.invoke('generate-campaign', {
         body: {
@@ -107,45 +142,24 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
           />
         </div>
 
-        {/* Product Image Upload */}
-        <div className="space-y-2">
-          <Label htmlFor="product-image" className="text-gray-300">Product Image *</Label>
-          <div className="border-2 border-dashed border-white/20 rounded-lg p-6 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all cursor-pointer bg-secondary/30">
-            <input
-              id="product-image"
-              type="file"
-              accept="image/*"
-              onChange={handleProductImageChange}
-              className="hidden"
-            />
-            <label htmlFor="product-image" className="flex flex-col items-center gap-2 cursor-pointer">
-              <Upload className="h-8 w-8 text-gray-400" />
-              <span className="text-sm text-gray-400">
-                {productImage ? productImage.name : "Click to upload"}
-              </span>
-            </label>
-          </div>
-        </div>
+        {/* Product Image Selector */}
+        <ImageSelector
+          label="Product Image"
+          value={productImage}
+          onChange={setProductImage}
+          required
+          repository={PRODUCT_REPOSITORY}
+          repositoryTitle="Select Product from Campaign Repository"
+        />
 
-        {/* Model Image Upload (Optional) */}
-        <div className="space-y-2">
-          <Label htmlFor="model-image" className="text-gray-300">Model Image (Optional)</Label>
-          <div className="border-2 border-dashed border-white/20 rounded-lg p-6 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all cursor-pointer bg-secondary/30">
-            <input
-              id="model-image"
-              type="file"
-              accept="image/*"
-              onChange={handleModelImageChange}
-              className="hidden"
-            />
-            <label htmlFor="model-image" className="flex flex-col items-center gap-2 cursor-pointer">
-              <Upload className="h-8 w-8 text-gray-400" />
-              <span className="text-sm text-gray-400">
-                {modelImage ? modelImage.name : "Click to upload"}
-              </span>
-            </label>
-          </div>
-        </div>
+        {/* Model Image Selector */}
+        <ImageSelector
+          label="Model Image"
+          value={modelImage}
+          onChange={setModelImage}
+          repository={MODEL_REPOSITORY}
+          repositoryTitle="Select Model from Campaign Repository"
+        />
 
         {/* Generate Button */}
         <Button
