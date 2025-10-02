@@ -22,6 +22,8 @@ import { MoreVertical, Copy, Trash2, Send, Pencil } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { enUS, ptBR } from "date-fns/locale";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -32,26 +34,33 @@ interface CampaignCardProps {
 export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
   const getStatusBadge = () => {
     switch (campaign.status) {
       case "published":
-        return <Badge variant="default">Published</Badge>;
+        return <Badge variant="default">{t('campaigns.published')}</Badge>;
       case "scheduled":
-        return <Badge variant="secondary">Scheduled</Badge>;
+        return <Badge variant="secondary">{t('campaigns.scheduled')}</Badge>;
       default:
-        return <Badge variant="outline">Draft</Badge>;
+        return <Badge variant="outline">{t('campaigns.draft')}</Badge>;
     }
   };
 
   const getTimestamp = () => {
+    const locale = i18n.language === 'pt' ? ptBR : enUS;
+    
     if (campaign.published_at) {
-      return `Published ${formatDistanceToNow(new Date(campaign.published_at), { addSuffix: true })}`;
+      return t('campaigns.publishedAt', { 
+        time: formatDistanceToNow(new Date(campaign.published_at), { addSuffix: true, locale })
+      });
     }
     if (campaign.scheduled_at) {
-      return `Scheduled for ${new Date(campaign.scheduled_at).toLocaleDateString()}`;
+      return t('campaigns.scheduledFor', { 
+        date: new Date(campaign.scheduled_at).toLocaleDateString()
+      });
     }
-    return formatDistanceToNow(new Date(campaign.created_at), { addSuffix: true });
+    return formatDistanceToNow(new Date(campaign.created_at), { addSuffix: true, locale });
   };
 
   return (
@@ -79,22 +88,22 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => navigate(`/create/${campaign.id}?mode=edit`)}>
                   <Pencil className="mr-2 h-4 w-4" />
-                  Edit
+                  {t('campaigns.edit')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate(`/create/${campaign.id}`)}>
                   <Copy className="mr-2 h-4 w-4" />
-                  Duplicate
+                  {t('campaigns.duplicate')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onPublish(campaign)}>
                   <Send className="mr-2 h-4 w-4" />
-                  Publish
+                  {t('campaigns.publish')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => setShowDeleteDialog(true)}
                   className="text-destructive"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Delete
+                  {t('campaigns.delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -106,15 +115,15 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{t('campaigns.deleteConfirm')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the campaign "{campaign.title}".
+              {t('campaigns.deleteConfirmDesc', { title: campaign.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('campaigns.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={() => onDelete(campaign.id)}>
-              Delete
+              {t('campaigns.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

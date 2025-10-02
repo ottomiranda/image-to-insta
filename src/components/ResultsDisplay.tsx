@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Copy, Download, Image as ImageIcon, FileText, Instagram } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { GeneratedContent } from "@/pages/Create";
+import { useTranslation } from "react-i18next";
 
 interface ResultsDisplayProps {
   content: GeneratedContent;
@@ -11,12 +12,13 @@ interface ResultsDisplayProps {
 
 const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast({
-      title: "Copied!",
-      description: `${label} copied to clipboard.`,
+      title: t('results.copied'),
+      description: t('results.copiedDesc', { label }),
     });
   };
 
@@ -26,8 +28,8 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
     link.download = 'generated-look.png';
     link.click();
     toast({
-      title: "Download started",
-      description: "The image is being downloaded.",
+      title: t('results.downloadStarted'),
+      description: t('results.downloadStartedDesc'),
     });
   };
 
@@ -54,18 +56,18 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
     link.click();
     
     toast({
-      title: "JSON exported",
-      description: "Data exported successfully.",
+      title: t('results.jsonExported'),
+      description: t('results.jsonExportedDesc'),
     });
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-white">Results</h2>
+        <h2 className="text-2xl font-bold text-white">{t('results.title')}</h2>
         <Button onClick={exportJSON} variant="outline" size="sm" className="border-white/20 hover:bg-white/5">
           <Download className="mr-2 h-4 w-4" />
-          Export JSON
+          {t('results.exportJSON')}
         </Button>
       </div>
 
@@ -74,7 +76,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
         <div className="p-4 border-b border-white/10 bg-black/40 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ImageIcon className="h-5 w-5 text-primary" />
-            <h3 className="font-semibold text-white">Look Visual</h3>
+            <h3 className="font-semibold text-white">{t('results.lookVisual')}</h3>
           </div>
           <Button onClick={downloadImage} variant="ghost" size="sm" className="hover:bg-white/10">
             <Download className="h-4 w-4" />
@@ -93,13 +95,13 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
       <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-white">Product Descriptions</h3>
+          <h3 className="font-semibold text-white">{t('results.productDescriptions')}</h3>
         </div>
         
         <div className="space-y-3">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Short</Badge>
+              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">{t('results.short')}</Badge>
               <Button
                 onClick={() => copyToClipboard(content.shortDescription, "Short description")}
                 variant="ghost"
@@ -114,7 +116,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Long</Badge>
+              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">{t('results.long')}</Badge>
               <Button
                 onClick={() => copyToClipboard(content.longDescription, "Long description")}
                 variant="ghost"
@@ -133,13 +135,13 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
       <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-2">
           <Instagram className="h-5 w-5 text-accent" />
-          <h3 className="font-semibold text-white">Instagram Post</h3>
+          <h3 className="font-semibold text-white">{t('results.instagramPost')}</h3>
         </div>
 
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-300">Caption</span>
+              <span className="text-sm font-medium text-gray-300">{t('results.caption')}</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.caption, "Caption")}
                 variant="ghost"
@@ -156,7 +158,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-300">Hashtags</span>
+              <span className="text-sm font-medium text-gray-300">{t('results.hashtags')}</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.hashtags.join(' '), "Hashtags")}
                 variant="ghost"
@@ -175,7 +177,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-300">Call to Action</span>
+              <span className="text-sm font-medium text-gray-300">{t('results.callToAction')}</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.callToAction, "CTA")}
                 variant="ghost"
@@ -190,7 +192,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-300">Alt Text</span>
+              <span className="text-sm font-medium text-gray-300">{t('results.altText')}</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.altText, "Alt text")}
                 variant="ghost"
@@ -204,7 +206,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
           </div>
 
           <div>
-            <span className="text-sm font-medium text-gray-300">Suggested Time</span>
+            <span className="text-sm font-medium text-gray-300">{t('results.suggestedTime')}</span>
             <p className="text-lg font-semibold text-primary mt-1">{content.instagram.suggestedTime}</p>
           </div>
         </div>

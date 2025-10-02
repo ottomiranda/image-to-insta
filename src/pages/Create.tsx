@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "react-i18next";
 
 export interface GeneratedContent {
   lookVisual: string;
@@ -36,6 +37,7 @@ const Create = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const { saveCampaign, updateCampaign } = useCampaigns();
   const [title, setTitle] = useState("");
   const [prompt, setPrompt] = useState("");
@@ -61,7 +63,7 @@ const Create = () => {
 
         if (error) {
           toast({
-            title: "Error loading campaign",
+            title: t('create.errorSaving'),
             description: error.message,
             variant: "destructive",
           });
@@ -105,8 +107,8 @@ const Create = () => {
   const handleSaveCampaign = async () => {
     if (!title) {
       toast({
-        title: "Missing information",
-        description: "Please add a title.",
+        title: t('create.titleRequired'),
+        description: t('create.titleRequiredDesc'),
         variant: "destructive",
       });
       return;
@@ -116,8 +118,8 @@ const Create = () => {
     // In duplicate/create mode, require generated content
     if (!isEditMode && !generatedContent) {
       toast({
-        title: "Missing information",
-        description: "Please generate content first.",
+        title: t('create.contentRequired'),
+        description: t('create.contentRequiredDesc'),
         variant: "destructive",
       });
       return;
@@ -141,14 +143,14 @@ const Create = () => {
       if (isEditMode && campaignId) {
         await updateCampaign({ id: campaignId, data: campaignData });
         toast({
-          title: "Campaign updated",
-          description: "Your campaign has been updated successfully.",
+          title: t('create.campaignSaved'),
+          description: t('create.campaignSavedDesc'),
         });
       } else {
         await saveCampaign(campaignData);
         toast({
-          title: "Campaign saved",
-          description: "Your campaign has been saved successfully.",
+          title: t('create.campaignSaved'),
+          description: t('create.campaignSavedDesc'),
         });
       }
       navigate("/campaigns");
@@ -177,7 +179,7 @@ const Create = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-purple-400 to-accent bg-clip-text text-transparent">
-                  {isEditMode ? "Edit Campaign" : campaignId ? "Duplicate Campaign" : "Create Campaign"}
+                  {isEditMode ? t('campaigns.edit') : campaignId ? t('campaigns.duplicate') : t('create.title')}
                 </h1>
                 <p className="text-xs text-gray-400">AI-powered fashion marketing pipeline</p>
               </div>
@@ -190,7 +192,7 @@ const Create = () => {
                   className="bg-gradient-to-r from-primary to-accent"
                 >
                   <Save className="h-4 w-4 mr-2" />
-                  {isEditMode ? "Update Campaign" : "Save Campaign"}
+                  {isEditMode ? t('create.save') : t('create.save')}
                 </Button>
               )}
               <UserNav onSettingsClick={() => setSettingsOpen(true)} />
@@ -204,10 +206,10 @@ const Create = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <Label htmlFor="campaign-title">Campaign Title *</Label>
+          <Label htmlFor="campaign-title">{t('create.campaignTitle')} *</Label>
           <Input
             id="campaign-title"
-            placeholder="Enter campaign title (e.g., Summer Collection 2024)"
+            placeholder={t('create.campaignTitlePlaceholder')}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="mt-2"
@@ -217,7 +219,7 @@ const Create = () => {
         <div className="grid gap-8 lg:grid-cols-2">
           {isLoadingCampaign ? (
             <div className="flex items-center justify-center p-12">
-              <p className="text-muted-foreground">Loading campaign data...</p>
+              <p className="text-muted-foreground">{t('common.loading')}</p>
             </div>
           ) : (
             <InputForm 

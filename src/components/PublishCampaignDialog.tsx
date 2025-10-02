@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface PublishCampaignDialogProps {
   open: boolean;
@@ -18,6 +19,7 @@ interface PublishCampaignDialogProps {
 export function PublishCampaignDialog({ open, onOpenChange, onPublish }: PublishCampaignDialogProps) {
   const [publishType, setPublishType] = useState<"now" | "schedule">("now");
   const [scheduledDate, setScheduledDate] = useState<Date>();
+  const { t } = useTranslation();
 
   const handleConfirm = () => {
     onPublish(publishType, scheduledDate);
@@ -28,17 +30,17 @@ export function PublishCampaignDialog({ open, onOpenChange, onPublish }: Publish
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Publish Campaign</DialogTitle>
+          <DialogTitle>{t('publishDialog.title')}</DialogTitle>
         </DialogHeader>
 
         <RadioGroup value={publishType} onValueChange={(v) => setPublishType(v as "now" | "schedule")}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="now" id="now" />
-            <Label htmlFor="now">Publish Now</Label>
+            <Label htmlFor="now">{t('publishDialog.publishNow')}</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="schedule" id="schedule" />
-            <Label htmlFor="schedule">Schedule</Label>
+            <Label htmlFor="schedule">{t('publishDialog.schedule')}</Label>
           </div>
         </RadioGroup>
 
@@ -53,7 +55,7 @@ export function PublishCampaignDialog({ open, onOpenChange, onPublish }: Publish
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {scheduledDate ? format(scheduledDate, "PPP") : <span>Pick a date</span>}
+                {scheduledDate ? format(scheduledDate, "PPP") : <span>{t('publishDialog.pickDate')}</span>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
@@ -69,10 +71,10 @@ export function PublishCampaignDialog({ open, onOpenChange, onPublish }: Publish
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {t('publishDialog.cancel')}
           </Button>
           <Button onClick={handleConfirm} disabled={publishType === "schedule" && !scheduledDate}>
-            Confirm
+            {t('publishDialog.confirm')}
           </Button>
         </DialogFooter>
       </DialogContent>

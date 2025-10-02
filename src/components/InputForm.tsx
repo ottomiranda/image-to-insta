@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import type { GeneratedContent } from "@/pages/Create";
 import ImageSelector from "./ImageSelector";
+import { useTranslation } from "react-i18next";
 
 // Import product repository images - Dresses
 import redBohoDress from "@/assets/repository/products/dresses/red-boho-dress.jpg";
@@ -74,6 +75,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
   });
   const [modelImage, setModelImage] = useState<File | string | null>(null);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   // Update state when initial props change
   useEffect(() => {
@@ -110,8 +112,8 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
   const handleGenerate = async () => {
     if (!prompt || !productSelection.centerpiece) {
       toast({
-        title: "Required fields",
-        description: "Please fill in the prompt and select at least one dress.",
+        title: t('create.requiredFields'),
+        description: t('create.requiredFieldsDesc'),
         variant: "destructive",
       });
       return;
@@ -140,14 +142,14 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
       onGenerate(data);
       
       toast({
-        title: "Campaign generated!",
-        description: "Your fashion campaign was created successfully.",
+        title: t('create.campaignGenerated'),
+        description: t('create.campaignGeneratedDesc'),
       });
     } catch (error) {
       console.error('Error generating campaign:', error);
       toast({
-        title: "Error generating campaign",
-        description: "An error occurred while processing your request. Please try again.",
+        title: t('create.errorGenerating'),
+        description: t('create.errorGeneratingDesc'),
         variant: "destructive",
       });
     } finally {
@@ -158,19 +160,19 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
   return (
     <Card className="p-6 space-y-6 h-fit sticky top-24 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-white">Create Campaign</h2>
+        <h2 className="text-2xl font-bold text-white">{t('create.title')}</h2>
         <p className="text-gray-400">
-          Describe your look and upload images to generate a complete campaign
+          {t('create.description')}
         </p>
       </div>
 
       <div className="space-y-4">
         {/* Prompt Input */}
         <div className="space-y-2">
-          <Label htmlFor="prompt" className="text-gray-300">Look Description *</Label>
+          <Label htmlFor="prompt" className="text-gray-300">{t('create.lookDescription')} *</Label>
           <Textarea
             id="prompt"
-            placeholder="E.g.: Create a chic evening look using our Red Boho Dress paired with gold accessories for a summer garden party"
+            placeholder={t('create.lookDescriptionPlaceholder')}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             className="min-h-[120px] resize-none"
@@ -179,7 +181,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
 
         {/* Product Selection */}
         <ImageSelector
-          label="Product Selection"
+          label={t('create.productSelection')}
           value={productSelection}
           onChange={(value) => {
             if (value && typeof value === 'object' && 'centerpiece' in value) {
@@ -188,14 +190,14 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           }}
           required
           productCategories={PRODUCT_CATEGORIES}
-          repositoryTitle="Select Products"
+          repositoryTitle={t('create.selectProducts')}
           showCategories={true}
           multiSelect={true}
         />
 
         {/* Model Image Selector */}
         <ImageSelector
-          label="Model Image (Optional)"
+          label={t('create.modelImage')}
           value={modelImage}
           onChange={(value) => {
             if (value && typeof value === 'object' && 'centerpiece' in value) {
@@ -205,7 +207,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
             setModelImage(value as File | string | null);
           }}
           modelRepository={MODEL_REPOSITORY}
-          repositoryTitle="Select Model from Campaign Repository"
+          repositoryTitle={t('create.selectModel')}
           showCategories={false}
         />
 
@@ -219,12 +221,12 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           {isGenerating ? (
             <>
               <Wand2 className="mr-2 h-5 w-5 animate-spin" />
-              Generating campaign...
+              {t('create.generatingCampaign')}
             </>
           ) : (
             <>
               <Wand2 className="mr-2 h-5 w-5" />
-              Generate Campaign
+              {t('create.generateCampaign')}
             </>
           )}
         </Button>

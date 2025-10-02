@@ -36,9 +36,10 @@ import {
   DEFAULT_BRAND_SETTINGS,
 } from "@/lib/brandDefaults";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const brandSettingsSchema = z.object({
-  brand_name: z.string().min(1, "Nome da marca é obrigatório").max(100),
+const createBrandSettingsSchema = (t: any) => z.object({
+  brand_name: z.string().min(1, t('brandSettings.brandName')).max(100),
   instagram_handle: z.string().optional(),
   website: z.string().url("URL inválida").optional().or(z.literal("")),
   brand_values: z.string().min(10, "Descreva os valores da sua marca (mínimo 10 caracteres)"),
@@ -51,7 +52,7 @@ const brandSettingsSchema = z.object({
   words_to_avoid: z.string().optional(),
 });
 
-type BrandSettingsFormValues = z.infer<typeof brandSettingsSchema>;
+type BrandSettingsFormValues = z.infer<ReturnType<typeof createBrandSettingsSchema>>;
 
 interface BrandSettingsDialogProps {
   open: boolean;
@@ -61,9 +62,10 @@ interface BrandSettingsDialogProps {
 export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogProps) {
   const { settings, updateSettings } = useBrandSettings();
   const [isSaving, setIsSaving] = useState(false);
+  const { t } = useTranslation();
 
   const form = useForm<BrandSettingsFormValues>({
-    resolver: zodResolver(brandSettingsSchema),
+    resolver: zodResolver(createBrandSettingsSchema(t)),
     defaultValues: DEFAULT_BRAND_SETTINGS,
   });
 
@@ -91,7 +93,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Configurações da Marca</DialogTitle>
+          <DialogTitle className="text-2xl">{t('brandSettings.title')}</DialogTitle>
           <DialogDescription>
             Configure a identidade da sua marca para personalizar as campanhas geradas
           </DialogDescription>
@@ -101,16 +103,16 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Informações Básicas */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">Informações Básicas</h3>
+              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.basicInfo')}</h3>
               
               <FormField
                 control={form.control}
                 name="brand_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome da Marca *</FormLabel>
+                    <FormLabel>{t('brandSettings.brandName')} *</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: Elegance Fashion" {...field} />
+                      <Input placeholder={t('brandSettings.brandNamePlaceholder')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,10 +154,10 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                 name="brand_values"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Valores da Marca *</FormLabel>
+                    <FormLabel>{t('brandSettings.targetAudience')} *</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Ex: Sustentabilidade, qualidade, exclusividade..."
+                        placeholder={t('brandSettings.targetAudiencePlaceholder')}
                         className="min-h-[100px]"
                         {...field}
                       />
@@ -168,18 +170,18 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
             {/* Tom de Voz e Estilo */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">Tom de Voz e Estilo</h3>
+              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.toneAndStyle')}</h3>
 
               <FormField
                 control={form.control}
                 name="tone_of_voice"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tom de Voz *</FormLabel>
+                    <FormLabel>{t('brandSettings.toneOfVoice')} *</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecione o tom de voz" />
+                          <SelectValue placeholder={t('brandSettings.selectTone')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -248,7 +250,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
             {/* Cores da Marca */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">Cores da Marca</h3>
+              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.brandColors')}</h3>
 
               <div className="grid grid-cols-2 gap-4">
                 <FormField
@@ -258,7 +260,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                     <FormItem>
                       <FormControl>
                         <ColorPicker
-                          label="Cor Primária *"
+                          label={t('brandSettings.primaryColor') + ' *'}
                           value={field.value}
                           onChange={field.onChange}
                         />
@@ -275,7 +277,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                     <FormItem>
                       <FormControl>
                         <ColorPicker
-                          label="Cor Secundária *"
+                          label={t('brandSettings.secondaryColor') + ' *'}
                           value={field.value}
                           onChange={field.onChange}
                         />
@@ -289,17 +291,17 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
             {/* Palavras-chave */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">Palavras-chave</h3>
+              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.keywords')}</h3>
 
               <FormField
                 control={form.control}
                 name="preferred_keywords"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Palavras-chave Preferidas</FormLabel>
+                    <FormLabel>{t('brandSettings.keywords')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Ex: elegante, sofisticado, exclusivo (separadas por vírgula)"
+                        placeholder={t('brandSettings.keywordsPlaceholder')}
                         {...field}
                       />
                     </FormControl>
@@ -334,16 +336,16 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                 onClick={() => onOpenChange(false)}
                 disabled={isSaving}
               >
-                Cancelar
+                {t('brandSettings.cancel')}
               </Button>
               <Button type="submit" disabled={isSaving}>
                 {isSaving ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Salvando...
+                    {t('brandSettings.saving')}
                   </>
                 ) : (
-                  "Salvar Configurações"
+                  t('brandSettings.save')
                 )}
               </Button>
             </div>
