@@ -28,9 +28,9 @@ export function PublishCampaignDialog({ open, onOpenChange, onPublish }: Publish
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="bg-card/95 backdrop-blur-xl border-white/10">
         <DialogHeader>
-          <DialogTitle>{t('publishDialog.title')}</DialogTitle>
+          <DialogTitle className="text-white">{t('publishDialog.title')}</DialogTitle>
         </DialogHeader>
 
         <RadioGroup value={publishType} onValueChange={(v) => setPublishType(v as "now" | "schedule")}>

@@ -67,9 +67,9 @@ const ProductRepositoryDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-[85vh] overflow-hidden bg-card/95 border-white/10 backdrop-blur-sm">
+      <DialogContent className="max-w-6xl max-h-[85vh] overflow-hidden bg-card/95 backdrop-blur-xl border-white/10">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-xl">{t("productRepository.title")}</DialogTitle>
+          <DialogTitle className="text-white text-xl">{t("productRepository.title")}</DialogTitle>
         </DialogHeader>
 
         <Tabs defaultValue="dresses" className="w-full">

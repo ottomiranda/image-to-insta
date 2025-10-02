@@ -211,9 +211,9 @@ const ImageSelector = ({
         />
       ) : (
         <Dialog open={showRepository} onOpenChange={setShowRepository}>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-card border-white/10">
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-card/95 backdrop-blur-xl border-white/10">
             <DialogHeader>
-              <DialogTitle className="text-foreground">{repositoryTitle}</DialogTitle>
+              <DialogTitle className="text-white">{repositoryTitle}</DialogTitle>
             </DialogHeader>
 
             <div className="grid grid-cols-3 gap-4 mt-4">
