@@ -15,12 +15,18 @@ import { LogoPositionSelector, LogoPosition } from "./LogoPositionSelector";
 import { useBrandSettings } from "@/hooks/useBrandSettings";
 
 // Import product repository images - Dresses
-import redBohoDress from "@/assets/repository/products/dresses/red-boho-dress.jpg";
 import blackCocktailDress from "@/assets/repository/products/dresses/black-cocktail-dress.jpg";
 import navySummerDress from "@/assets/repository/products/dresses/navy-summer-dress.jpg";
 import floralMidiDress from "@/assets/repository/products/dresses/floral-midi-dress.jpg";
 import whiteLinenDress from "@/assets/repository/products/dresses/white-linen-dress.jpg";
 import emeraldEveningGown from "@/assets/repository/products/dresses/emerald-evening-gown.jpg";
+import burgundySlipDress from "@/assets/repository/products/dresses/burgundy-slip-dress.jpg";
+import oliveCargoDress from "@/assets/repository/products/dresses/olive-cargo-dress.jpg";
+import champagneSequinDress from "@/assets/repository/products/dresses/champagne-sequin-dress.jpg";
+import coralWrapDress from "@/assets/repository/products/dresses/coral-wrap-dress.jpg";
+import charcoalBodyconDress from "@/assets/repository/products/dresses/charcoal-bodycon-dress.jpg";
+import lavenderChiffonDress from "@/assets/repository/products/dresses/lavender-chiffon-dress.jpg";
+import mustardShirtDress from "@/assets/repository/products/dresses/mustard-shirt-dress.jpg";
 
 // Import product repository images - Accessories
 import goldNecklace from "@/assets/repository/products/accessories/gold-necklace.jpg";
@@ -29,6 +35,12 @@ import whiteSneakers from "@/assets/repository/products/accessories/white-sneake
 import sunglasses from "@/assets/repository/products/accessories/sunglasses.jpg";
 import silverWatch from "@/assets/repository/products/accessories/silver-watch.jpg";
 import beigeBelt from "@/assets/repository/products/accessories/beige-belt.jpg";
+import brownCrossbodyBag from "@/assets/repository/products/accessories/brown-crossbody-bag.jpg";
+import pearlEarrings from "@/assets/repository/products/accessories/pearl-earrings.jpg";
+import redSilkScarf from "@/assets/repository/products/accessories/red-silk-scarf.jpg";
+import blackAnkleBoots from "@/assets/repository/products/accessories/black-ankle-boots.jpg";
+import tortoiseHairClip from "@/assets/repository/products/accessories/tortoise-hair-clip.jpg";
+import roseGoldBracelet from "@/assets/repository/products/accessories/rose-gold-bracelet.jpg";
 
 // Import model repository images
 import model1 from "@/assets/repository/models/model-1.jpg";
@@ -38,12 +50,18 @@ import model4 from "@/assets/repository/models/model-4.jpg";
 
 const PRODUCT_CATEGORIES = {
   dresses: [
-    { src: redBohoDress, name: "Red Boho Maxi Dress", alt: "Elegant red boho maxi dress on white background", category: "dresses" },
     { src: blackCocktailDress, name: "Black Cocktail Dress", alt: "Elegant black cocktail dress on white background", category: "dresses" },
     { src: navySummerDress, name: "Navy Summer Dress", alt: "Navy blue summer dress on white background", category: "dresses" },
     { src: floralMidiDress, name: "Floral Midi Dress", alt: "Floral print midi dress on white background", category: "dresses" },
     { src: whiteLinenDress, name: "White Linen Dress", alt: "White linen dress on white background", category: "dresses" },
     { src: emeraldEveningGown, name: "Emerald Evening Gown", alt: "Emerald green evening gown on white background", category: "dresses" },
+    { src: burgundySlipDress, name: "Burgundy Slip Dress", alt: "Burgundy satin slip dress on white background", category: "dresses" },
+    { src: oliveCargoDress, name: "Olive Cargo Dress", alt: "Olive green cargo midi dress on white background", category: "dresses" },
+    { src: champagneSequinDress, name: "Champagne Sequin Dress", alt: "Champagne gold sequin cocktail dress on white background", category: "dresses" },
+    { src: coralWrapDress, name: "Coral Wrap Dress", alt: "Coral pink wrap maxi dress on white background", category: "dresses" },
+    { src: charcoalBodyconDress, name: "Charcoal Bodycon Dress", alt: "Charcoal grey knit bodycon dress on white background", category: "dresses" },
+    { src: lavenderChiffonDress, name: "Lavender Chiffon Dress", alt: "Lavender chiffon A-line dress on white background", category: "dresses" },
+    { src: mustardShirtDress, name: "Mustard Shirt Dress", alt: "Mustard yellow shirt dress on white background", category: "dresses" },
   ],
   accessories: [
     { src: goldNecklace, name: "Gold Statement Necklace", alt: "Gold statement necklace on white background", category: "accessories" },
@@ -52,6 +70,12 @@ const PRODUCT_CATEGORIES = {
     { src: sunglasses, name: "Oversized Sunglasses", alt: "Oversized sunglasses on white background", category: "accessories" },
     { src: silverWatch, name: "Silver Watch", alt: "Silver wrist watch on white background", category: "accessories" },
     { src: beigeBelt, name: "Beige Leather Belt", alt: "Beige leather belt on white background", category: "accessories" },
+    { src: brownCrossbodyBag, name: "Brown Crossbody Bag", alt: "Brown leather crossbody bag on white background", category: "accessories" },
+    { src: pearlEarrings, name: "Pearl Earrings", alt: "Pearl drop earrings on white background", category: "accessories" },
+    { src: redSilkScarf, name: "Red Silk Scarf", alt: "Red silk scarf on white background", category: "accessories" },
+    { src: blackAnkleBoots, name: "Black Ankle Boots", alt: "Black ankle boots with heel on white background", category: "accessories" },
+    { src: tortoiseHairClip, name: "Tortoise Hair Clip", alt: "Tortoise shell hair clip on white background", category: "accessories" },
+    { src: roseGoldBracelet, name: "Rose Gold Bracelet", alt: "Rose gold bracelet on white background", category: "accessories" },
   ]
 };
 
