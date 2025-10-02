@@ -68,6 +68,66 @@ export type Database = {
         }
         Relationships: []
       }
+      campaigns: {
+        Row: {
+          accessories_images: Json | null
+          centerpiece_image: string
+          created_at: string
+          id: string
+          image_analysis: Json | null
+          instagram: Json
+          long_description: string
+          look_visual: string
+          model_image: string | null
+          prompt: string
+          published_at: string | null
+          scheduled_at: string | null
+          short_description: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accessories_images?: Json | null
+          centerpiece_image: string
+          created_at?: string
+          id?: string
+          image_analysis?: Json | null
+          instagram: Json
+          long_description: string
+          look_visual: string
+          model_image?: string | null
+          prompt: string
+          published_at?: string | null
+          scheduled_at?: string | null
+          short_description: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accessories_images?: Json | null
+          centerpiece_image?: string
+          created_at?: string
+          id?: string
+          image_analysis?: Json | null
+          instagram?: Json
+          long_description?: string
+          look_visual?: string
+          model_image?: string | null
+          prompt?: string
+          published_at?: string | null
+          scheduled_at?: string | null
+          short_description?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

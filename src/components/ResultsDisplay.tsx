@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Copy, Download, Image as ImageIcon, FileText, Instagram } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import type { GeneratedContent } from "@/pages/Index";
+import type { GeneratedContent } from "@/pages/Create";
 
 interface ResultsDisplayProps {
   content: GeneratedContent;

@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Wand2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import type { GeneratedContent } from "@/pages/Index";
+import type { GeneratedContent } from "@/pages/Create";
 import ImageSelector from "./ImageSelector";
 
 // Import product repository images - Dresses
