@@ -65,7 +65,10 @@ interface InputFormProps {
 
 const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps) => {
   const [prompt, setPrompt] = useState("");
-  const [productImage, setProductImage] = useState<File | string | null>(null);
+  const [productSelection, setProductSelection] = useState<{ centerpiece: string | null; accessories: string[] }>({ 
+    centerpiece: null, 
+    accessories: [] 
+  });
   const [modelImage, setModelImage] = useState<File | string | null>(null);
   const { toast } = useToast();
 
@@ -95,10 +98,10 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
   };
 
   const handleGenerate = async () => {
-    if (!prompt || !productImage) {
+    if (!prompt || !productSelection.centerpiece) {
       toast({
         title: "Required fields",
-        description: "Please fill in the prompt and upload the product image.",
+        description: "Please fill in the prompt and select at least one dress.",
         variant: "destructive",
       });
       return;
@@ -107,13 +110,17 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
     setIsGenerating(true);
 
     try {
-      const productImageBase64 = await imageToBase64(productImage);
+      const centerpieceBase64 = await imageToBase64(productSelection.centerpiece);
+      const accessoriesBase64 = await Promise.all(
+        productSelection.accessories.map(acc => imageToBase64(acc))
+      );
       const modelImageBase64 = modelImage ? await imageToBase64(modelImage) : null;
 
       const { data, error } = await supabase.functions.invoke('generate-campaign', {
         body: {
           prompt,
-          productImage: productImageBase64,
+          centerpiece: centerpieceBase64,
+          accessories: accessoriesBase64,
           modelImage: modelImageBase64,
         }
       });
@@ -153,29 +160,40 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
           <Label htmlFor="prompt" className="text-gray-300">Look Description *</Label>
           <Textarea
             id="prompt"
-            placeholder="E.g.: Create a casual summer look using our red boho dress as the centerpiece for an outdoor brunch"
+            placeholder="E.g.: Create a chic evening look using our Red Boho Dress paired with gold accessories for a summer garden party"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             className="min-h-[120px] resize-none"
           />
         </div>
 
-        {/* Product Image Selector */}
+        {/* Product Selection */}
         <ImageSelector
-          label="Product Image"
-          value={productImage}
-          onChange={setProductImage}
+          label="Product Selection"
+          value={productSelection}
+          onChange={(value) => {
+            if (value && typeof value === 'object' && 'centerpiece' in value) {
+              setProductSelection(value as { centerpiece: string | null; accessories: string[] });
+            }
+          }}
           required
           productCategories={PRODUCT_CATEGORIES}
-          repositoryTitle="Select Product from Campaign Repository"
+          repositoryTitle="Select Products"
           showCategories={true}
+          multiSelect={true}
         />
 
         {/* Model Image Selector */}
         <ImageSelector
           label="Model Image (Optional)"
           value={modelImage}
-          onChange={setModelImage}
+          onChange={(value) => {
+            if (value && typeof value === 'object' && 'centerpiece' in value) {
+              // Ignore multi-select for model selector
+              return;
+            }
+            setModelImage(value as File | string | null);
+          }}
           modelRepository={MODEL_REPOSITORY}
           repositoryTitle="Select Model from Campaign Repository"
           showCategories={false}

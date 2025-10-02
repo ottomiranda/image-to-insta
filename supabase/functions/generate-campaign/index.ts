@@ -11,32 +11,45 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, productImage, modelImage } = await req.json();
+    const { prompt, centerpiece, accessories = [], modelImage } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    if (!productImage) {
-      throw new Error('Product image is required');
+    if (!centerpiece) {
+      throw new Error('Centerpiece dress is required');
     }
 
     console.log('Starting campaign generation...');
-    console.log('Images received - Product:', !!productImage, 'Model:', !!modelImage);
+    console.log('Images received - Centerpiece:', !!centerpiece, 'Accessories:', accessories.length, 'Model:', !!modelImage);
 
     // Step 1: Generate look visual using Gemini 2.5 Flash Image Preview with image composition
     console.log('Generating look visual with image composition...');
     
     const imagePrompt = modelImage
-      ? `Compose a professional fashion look photograph by digitally dressing the model in the provided model image with the product from the product image. Context: ${prompt}. The result should be high-quality, fashion-forward, and suitable for e-commerce with professional lighting.`
-      : `Create a complete professional fashion look incorporating the provided product image as the central piece. Add complementary fashion items to create a cohesive outfit. Context: ${prompt}. Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting.`;
+      ? `Compose a professional fashion look photograph by digitally dressing the model with:
+         1. CENTERPIECE: The dress from the first product image
+         2. ACCESSORIES: ${accessories.length} complementary accessories from the following images
+         Context: ${prompt}
+         Create a cohesive, high-fashion editorial look with professional lighting and styling.`
+      : `Create a complete professional fashion look with:
+         1. CENTERPIECE: The dress from the first product image
+         2. ACCESSORIES: ${accessories.length} complementary items from the following images
+         Context: ${prompt}
+         Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting.`;
 
     // Build multimodal content array
     const contentArray: any[] = [
       { type: 'text', text: imagePrompt },
-      { type: 'image_url', image_url: { url: productImage } }
+      { type: 'image_url', image_url: { url: centerpiece } }
     ];
+
+    // Add all accessories
+    accessories.forEach((acc: string) => {
+      contentArray.push({ type: 'image_url', image_url: { url: acc } });
+    });
 
     // Add model image if provided
     if (modelImage) {

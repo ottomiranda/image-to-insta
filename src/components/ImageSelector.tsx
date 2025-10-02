@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Upload, ImageIcon } from "lucide-react";
+import { Upload, ImageIcon, Edit } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import ProductRepositoryDialog from "./ProductRepositoryDialog";
+import { MultiSelectProductDialog } from "./MultiSelectProductDialog";
 
 interface ProductImage {
   src: string;
@@ -14,8 +15,8 @@ interface ProductImage {
 
 interface ImageSelectorProps {
   label: string;
-  value: File | string | null;
-  onChange: (file: File | string) => void;
+  value: File | string | null | { centerpiece: string | null; accessories: string[] };
+  onChange: (value: File | string | null | { centerpiece: string | null; accessories: string[] }) => void;
   required?: boolean;
   productCategories?: {
     dresses: ProductImage[];
@@ -24,6 +25,7 @@ interface ImageSelectorProps {
   modelRepository?: { src: string; name: string; alt: string }[];
   repositoryTitle: string;
   showCategories?: boolean;
+  multiSelect?: boolean;
 }
 
 const ImageSelector = ({
@@ -35,6 +37,7 @@ const ImageSelector = ({
   modelRepository,
   repositoryTitle,
   showCategories = false,
+  multiSelect = false,
 }: ImageSelectorProps) => {
   const [showRepository, setShowRepository] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
@@ -52,8 +55,22 @@ const ImageSelector = ({
     setShowRepository(false);
   };
 
+  const handleMultiSelectConfirm = (selection: { centerpiece: string | null; accessories: string[] }) => {
+    onChange(selection);
+    setShowRepository(false);
+  };
+
   const getDisplayName = () => {
     if (selectedFile) return selectedFile.name;
+    
+    // Handle multi-select object
+    if (multiSelect && value && typeof value === 'object' && 'centerpiece' in value) {
+      const selection = value as { centerpiece: string | null; accessories: string[] };
+      const count = (selection.centerpiece ? 1 : 0) + selection.accessories.length;
+      if (count === 0) return "No items selected";
+      return `${count} ${count === 1 ? 'item' : 'items'} selected`;
+    }
+    
     if (typeof value === "string") {
       // Check in product categories if available
       if (productCategories) {
@@ -79,6 +96,8 @@ const ImageSelector = ({
     return null;
   };
 
+  const isMultiSelectValue = multiSelect && value && typeof value === 'object' && 'centerpiece' in value;
+  const multiSelectData = isMultiSelectValue ? value as { centerpiece: string | null; accessories: string[] } : null;
   const previewUrl = getPreviewUrl();
 
   return (
@@ -115,8 +134,53 @@ const ImageSelector = ({
         </div>
       </div>
 
-      {/* Preview */}
-      {previewUrl && (
+      {/* Multi-select preview */}
+      {multiSelectData && (multiSelectData.centerpiece || multiSelectData.accessories.length > 0) && (
+        <div className="space-y-3 mt-3">
+          {multiSelectData.centerpiece && (
+            <div className="space-y-2">
+              <p className="text-xs text-gray-400 font-medium">Centerpiece:</p>
+              <div className="relative w-full h-64 rounded-lg overflow-hidden border-2 border-primary/50">
+                <img
+                  src={multiSelectData.centerpiece}
+                  alt="Centerpiece"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          )}
+          {multiSelectData.accessories.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs text-gray-400 font-medium">
+                Accessories ({multiSelectData.accessories.length}):
+              </p>
+              <div className="grid grid-cols-3 gap-2">
+                {multiSelectData.accessories.map((acc, idx) => (
+                  <div key={idx} className="relative h-24 rounded-lg overflow-hidden border border-accent/50">
+                    <img
+                      src={acc}
+                      alt={`Accessory ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setShowRepository(true)}
+            className="w-full"
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Change Selection
+          </Button>
+        </div>
+      )}
+
+      {/* Single image preview */}
+      {!multiSelectData && previewUrl && (
         <div className="mt-2 relative">
           <img
             src={previewUrl}
@@ -127,8 +191,17 @@ const ImageSelector = ({
         </div>
       )}
 
-      {/* Repository Dialog - Conditional rendering based on type */}
-      {showCategories && productCategories ? (
+      {/* Repository Dialogs */}
+      {multiSelect && showCategories && productCategories ? (
+        <MultiSelectProductDialog
+          open={showRepository}
+          onOpenChange={setShowRepository}
+          onConfirm={handleMultiSelectConfirm}
+          dresses={productCategories.dresses}
+          accessories={productCategories.accessories}
+          initialSelection={multiSelectData || undefined}
+        />
+      ) : showCategories && productCategories ? (
         <ProductRepositoryDialog
           open={showRepository}
           onOpenChange={setShowRepository}
