@@ -48,7 +48,18 @@ serve(async (req) => {
             .maybeSingle();
           
           brandSettings = settings;
-          console.log('Brand settings loaded:', !!brandSettings);
+          
+          if (brandSettings) {
+            console.log('✅ Brand settings applied:', {
+              brand: brandSettings.brand_name,
+              tone: brandSettings.tone_of_voice,
+              style: brandSettings.preferred_style,
+              keywords: brandSettings.preferred_keywords || 'none',
+              avoid: brandSettings.words_to_avoid || 'none'
+            });
+          } else {
+            console.log('⚠️ No brand settings found - using generic defaults');
+          }
         }
       } catch (error) {
         console.log('Could not fetch brand settings:', error);
@@ -137,21 +148,69 @@ Create a complete professional fashion look with:
 
     // Step 2: Generate text content using Gemini 2.5 Pro with structured output
     console.log('Generating text content...');
-    const textPrompt = `You are a fashion marketing and SEO expert.${brandContext ? `\n\n${brandContext}` : ''} Based on this description: "${prompt}"
+    const textPrompt = `You are a professional fashion marketing expert creating content for ${brandSettings?.brand_name || 'a fashion brand'}.
 
-Generate the following content in English:
+========================================
+📸 ANALYZE THE PROVIDED IMAGE
+========================================
+CRITICAL INSTRUCTION: Describe ONLY what you see in the provided fashion look photograph. Do not invent scenarios, settings, or details not visible in the image.
 
-1. SHORT product description (max 200 characters) - SEO optimized, focused on key features
-2. LONG product description (100-150 words) - detailing material, fit, occasion, and style, SEO optimized
-3. Complete Instagram post including:
-   - Engaging caption (start with emoji or engaging question)
-   - 5-7 relevant fashion niche hashtags
-   - Clear and persuasive call-to-action
-   - Descriptive alt text for accessibility
-   - Best posting time (format: "HHam/pm")
+Identify:
+- Exact clothing pieces shown (dress/top/skirt, etc.)
+- Visible colors and patterns
+- Style aesthetic (minimalist, boho, elegant, etc.)
+- Accessories visible in the composition
+- Overall mood and vibe of the photograph
+- Lighting and presentation style
 
-${brandSettings ? `IMPORTANT: Reflect the brand's ${brandSettings.tone_of_voice} tone of voice and ${brandSettings.preferred_style} style in all content.` : ''}
-Respond in the JSON format specified by the tool.`;
+========================================
+🎨 BRAND CONTEXT
+========================================
+${brandContext}
+
+========================================
+💡 CAMPAIGN CONTEXT
+========================================
+Original creative brief: "${prompt}"
+Use this as thematic inspiration, but describe the ACTUAL image, not the brief.
+
+========================================
+📝 CONTENT GENERATION REQUIREMENTS
+========================================
+
+Generate the following in English:
+
+1. **SHORT DESCRIPTION** (max 200 characters)
+   - SEO-optimized
+   - Describe the actual look shown in the image
+   - Focus on main piece + key styling elements
+   ${brandSettings?.preferred_keywords ? `- Naturally incorporate: ${brandSettings.preferred_keywords}` : ''}
+
+2. **LONG DESCRIPTION** (100-150 words)
+   - Describe the complete look as shown in the photograph
+   - Mention visible colors, style, and pieces
+   - Suggest occasions/styling based on what's shown
+   - Use ${brandSettings?.tone_of_voice || 'professional'} tone
+   - Reflect ${brandSettings?.preferred_style || 'elegant'} aesthetic
+   ${brandSettings?.words_to_avoid ? `- NEVER use: ${brandSettings.words_to_avoid}` : ''}
+
+3. **INSTAGRAM POST**
+   - Caption: Reference the actual look/aesthetic in the photo
+   - 5-7 hashtags relevant to the style shown
+   - Call-to-action aligned with ${brandSettings?.target_market || 'fashion enthusiasts'}
+   - Alt text: Accurate description of image contents
+   - Posting time: Best for ${brandSettings?.target_market || 'general audience'}
+
+========================================
+⚠️ CRITICAL RULES
+========================================
+✅ Describe what IS in the image
+❌ Do NOT invent scenarios not shown
+✅ Match brand tone: ${brandSettings?.tone_of_voice || 'professional'}
+✅ Reflect brand style: ${brandSettings?.preferred_style || 'elegant'}
+${brandSettings?.brand_values ? `✅ Align with brand values: ${brandSettings.brand_values}` : ''}
+
+Respond using the JSON tool format.`;
 
     const textResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -164,7 +223,10 @@ Respond in the JSON format specified by the tool.`;
         messages: [
           {
             role: 'user',
-            content: textPrompt
+            content: [
+              { type: 'text', text: textPrompt },
+              { type: 'image_url', image_url: { url: lookVisual } }
+            ]
           }
         ],
         tools: [
@@ -176,6 +238,17 @@ Respond in the JSON format specified by the tool.`;
               parameters: {
                 type: 'object',
                 properties: {
+                  imageAnalysis: {
+                    type: 'object',
+                    description: 'Analysis of the actual generated image',
+                    properties: {
+                      mainPiece: { type: 'string', description: 'Primary clothing item visible' },
+                      colors: { type: 'string', description: 'Dominant colors in the image' },
+                      styleAesthetic: { type: 'string', description: 'Overall style vibe' },
+                      accessories: { type: 'string', description: 'Visible accessories' }
+                    },
+                    required: ['mainPiece', 'colors', 'styleAesthetic']
+                  },
                   shortDescription: {
                     type: 'string',
                     description: 'Short product description (max 200 characters)'
@@ -212,7 +285,7 @@ Respond in the JSON format specified by the tool.`;
                     required: ['caption', 'hashtags', 'callToAction', 'altText', 'suggestedTime']
                   }
                 },
-                required: ['shortDescription', 'longDescription', 'instagram']
+                required: ['imageAnalysis', 'shortDescription', 'longDescription', 'instagram']
               }
             }
           }
@@ -243,6 +316,7 @@ Respond in the JSON format specified by the tool.`;
     // Return complete campaign
     const result = {
       lookVisual,
+      imageAnalysis: content.imageAnalysis,
       shortDescription: content.shortDescription,
       longDescription: content.longDescription,
       instagram: content.instagram
