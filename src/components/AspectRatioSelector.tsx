@@ -148,7 +148,7 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
           <div className="space-y-4">
             <div className="flex items-center justify-center h-[200px] bg-gray-950 border border-white/20 rounded-lg">
               <div
-                className="bg-gradient-to-br from-primary/40 to-accent/40 border-2 border-white rounded"
+                className="bg-gradient-to-br from-primary/40 to-accent/40 border-2 border-primary/50 rounded"
                 style={{
                   width: `${previewDims.width}px`,
                   height: `${previewDims.height}px`,
@@ -178,8 +178,8 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
                     className={cn(
                       "w-full px-4 py-2.5 rounded-lg border transition-all text-left font-medium",
                       selectedRatio === ratio.value
-                        ? "bg-primary/20 border-primary text-white"
-                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-white/20"
+                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]"
                     )}
                   >
                     {ratio.label}
@@ -201,8 +201,8 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
                     className={cn(
                       "w-full px-4 py-2.5 rounded-lg border transition-all text-left font-medium",
                       selectedRatio === ratio.value
-                        ? "bg-primary/20 border-primary text-white"
-                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-white/20"
+                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]"
                     )}
                   >
                     {ratio.label}
@@ -224,8 +224,8 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
                     className={cn(
                       "w-full px-4 py-2.5 rounded-lg border transition-all text-left font-medium",
                       selectedRatio === ratio.value
-                        ? "bg-primary/20 border-primary text-white"
-                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-white/20"
+                        ? "bg-primary/20 border-primary text-white shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+                        : "bg-gray-800 border-white/10 text-gray-300 hover:bg-gray-700 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)]"
                     )}
                   >
                     {ratio.label}
