@@ -6,6 +6,141 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Language detection function
+async function detectLanguage(text: string, apiKey: string): Promise<string> {
+  try {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [{
+          role: 'user',
+          content: `Detect the language of this text and return ONLY the ISO 639-1 code: "${text}"`
+        }],
+        tools: [{
+          type: 'function',
+          function: {
+            name: 'detect_language',
+            description: 'Detect the language of the text',
+            parameters: {
+              type: 'object',
+              properties: {
+                languageCode: { 
+                  type: 'string', 
+                  description: 'ISO 639-1 language code (e.g., en, pt, es, fr, it, de)'
+                }
+              },
+              required: ['languageCode'],
+              additionalProperties: false
+            }
+          }
+        }],
+        tool_choice: { type: 'function', function: { name: 'detect_language' } }
+      })
+    });
+
+    if (!response.ok) {
+      console.error('Language detection failed, using English as fallback');
+      return 'en';
+    }
+
+    const data = await response.json();
+    const languageCode = JSON.parse(data.choices[0].message.tool_calls[0].function.arguments).languageCode;
+    console.log('🌍 Detected language:', languageCode);
+    return languageCode || 'en';
+  } catch (error) {
+    console.error('Error detecting language:', error);
+    return 'en'; // Fallback to English
+  }
+}
+
+// Helper to get language name
+function getLanguageName(code: string): string {
+  const names: Record<string, string> = {
+    'en': 'English',
+    'pt': 'Portuguese (Português)',
+    'es': 'Spanish (Español)',
+    'fr': 'French (Français)',
+    'it': 'Italian (Italiano)',
+    'de': 'German (Deutsch)'
+  };
+  return names[code] || 'English';
+}
+
+// Language-specific instructions
+const languageInstructions: Record<string, any> = {
+  'en': {
+    generate: 'Generate the following in English',
+    shortDesc: 'SHORT DESCRIPTION',
+    longDesc: 'LONG DESCRIPTION',
+    instagramPost: 'INSTAGRAM POST',
+    caption: 'Caption',
+    hashtags: 'Hashtags',
+    cta: 'Call to Action',
+    altText: 'Alt Text',
+    suggestedTime: 'Suggested Posting Time'
+  },
+  'pt': {
+    generate: 'Gere o seguinte em Português',
+    shortDesc: 'DESCRIÇÃO CURTA',
+    longDesc: 'DESCRIÇÃO LONGA',
+    instagramPost: 'POST DO INSTAGRAM',
+    caption: 'Legenda',
+    hashtags: 'Hashtags',
+    cta: 'Chamada para Ação',
+    altText: 'Texto Alternativo',
+    suggestedTime: 'Horário Sugerido para Publicação'
+  },
+  'es': {
+    generate: 'Genera lo siguiente en Español',
+    shortDesc: 'DESCRIPCIÓN CORTA',
+    longDesc: 'DESCRIPCIÓN LARGA',
+    instagramPost: 'PUBLICACIÓN DE INSTAGRAM',
+    caption: 'Leyenda',
+    hashtags: 'Hashtags',
+    cta: 'Llamada a la Acción',
+    altText: 'Texto Alternativo',
+    suggestedTime: 'Hora Sugerida de Publicación'
+  },
+  'fr': {
+    generate: 'Générez ce qui suit en Français',
+    shortDesc: 'DESCRIPTION COURTE',
+    longDesc: 'DESCRIPTION LONGUE',
+    instagramPost: 'POST INSTAGRAM',
+    caption: 'Légende',
+    hashtags: 'Hashtags',
+    cta: 'Appel à l\'Action',
+    altText: 'Texte Alternatif',
+    suggestedTime: 'Heure de Publication Suggérée'
+  },
+  'it': {
+    generate: 'Genera quanto segue in Italiano',
+    shortDesc: 'DESCRIZIONE BREVE',
+    longDesc: 'DESCRIZIONE LUNGA',
+    instagramPost: 'POST INSTAGRAM',
+    caption: 'Didascalia',
+    hashtags: 'Hashtag',
+    cta: 'Invito all\'Azione',
+    altText: 'Testo Alternativo',
+    suggestedTime: 'Orario Consigliato per la Pubblicazione'
+  },
+  'de': {
+    generate: 'Generieren Sie Folgendes auf Deutsch',
+    shortDesc: 'KURZE BESCHREIBUNG',
+    longDesc: 'LANGE BESCHREIBUNG',
+    instagramPost: 'INSTAGRAM-BEITRAG',
+    caption: 'Bildunterschrift',
+    hashtags: 'Hashtags',
+    cta: 'Handlungsaufforderung',
+    altText: 'Alternativtext',
+    suggestedTime: 'Vorgeschlagene Veröffentlichungszeit'
+  }
+};
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -26,6 +161,12 @@ serve(async (req) => {
     console.log('Starting campaign generation...');
     console.log('Images received - Centerpiece:', !!centerpiece, 'Accessories:', accessories.length, 'Model:', !!modelImage);
     console.log('Aspect ratio requested:', aspectRatio || 'default (1:1)');
+    
+    // Step 0: Detect prompt language
+    console.log('📝 Detecting language from prompt...');
+    const detectedLanguage = await detectLanguage(prompt, LOVABLE_API_KEY);
+    const langInstructions = languageInstructions[detectedLanguage] || languageInstructions['en'];
+    console.log(`🌍 Using language: ${getLanguageName(detectedLanguage)}`);
 
     // Get user from authorization header and fetch brand settings
     const authHeader = req.headers.get('Authorization');
@@ -316,18 +457,24 @@ Original creative brief: "${prompt}"
 Use this as thematic inspiration, but describe the ACTUAL image, not the brief.
 
 ========================================
+🌍 LANGUAGE REQUIREMENT
+========================================
+CRITICAL: ALL generated content MUST be in ${getLanguageName(detectedLanguage)}.
+This language was detected from the user's original prompt.
+
+========================================
 📝 CONTENT GENERATION REQUIREMENTS
 ========================================
 
-Generate the following in English:
+${langInstructions.generate}:
 
-1. **SHORT DESCRIPTION** (max 200 characters)
+1. **${langInstructions.shortDesc}** (max 200 characters in ${getLanguageName(detectedLanguage)})
    - SEO-optimized
    - Describe the actual look shown in the image
    - Focus on main piece + key styling elements
    ${brandSettings?.preferred_keywords ? `- Naturally incorporate: ${brandSettings.preferred_keywords}` : ''}
 
-2. **LONG DESCRIPTION** (100-150 words)
+2. **${langInstructions.longDesc}** (100-150 words in ${getLanguageName(detectedLanguage)})
    - Describe the complete look as shown in the photograph
    - Mention visible colors, style, and pieces
    - Suggest occasions/styling based on what's shown
@@ -335,12 +482,12 @@ Generate the following in English:
    - Reflect ${brandSettings?.preferred_style || 'elegant'} aesthetic
    ${brandSettings?.words_to_avoid ? `- NEVER use: ${brandSettings.words_to_avoid}` : ''}
 
-3. **INSTAGRAM POST**
-   - Caption: Reference the actual look/aesthetic in the photo
-   - 5-7 hashtags relevant to the style shown
-   - Call-to-action aligned with ${brandSettings?.target_market || 'fashion enthusiasts'}
-   - Alt text: Accurate description of image contents
-   - Posting time: Best for ${brandSettings?.target_market || 'general audience'}
+3. **${langInstructions.instagramPost}** (all content in ${getLanguageName(detectedLanguage)})
+   - ${langInstructions.caption}: Reference the actual look/aesthetic in the photo
+   - 5-7 ${langInstructions.hashtags.toLowerCase()} relevant to the style shown
+   - ${langInstructions.cta}: Aligned with ${brandSettings?.target_market || 'fashion enthusiasts'}
+   - ${langInstructions.altText}: Accurate description of image contents
+   - ${langInstructions.suggestedTime}: Best for ${brandSettings?.target_market || 'general audience'}
 
 ========================================
 ⚠️ CRITICAL RULES
