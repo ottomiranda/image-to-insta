@@ -234,10 +234,10 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-xl border-white/10">
         <DialogHeader>
-          <DialogTitle className="text-2xl">{t('brandSettings.title')}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-2xl text-white">{t('brandSettings.title')}</DialogTitle>
+          <DialogDescription className="text-gray-400">
             Configure a identidade da sua marca para personalizar as campanhas geradas
           </DialogDescription>
         </DialogHeader>
@@ -246,7 +246,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Informações Básicas */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.basicInfo')}</h3>
+              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.basicInfo')}</h3>
               
               <FormField
                 control={form.control}
@@ -353,7 +353,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
             {/* Tom de Voz e Estilo */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.toneAndStyle')}</h3>
+              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.toneAndStyle')}</h3>
 
               <FormField
                 control={form.control}
@@ -433,7 +433,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
             {/* Cores da Marca */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.brandColors')}</h3>
+              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.brandColors')}</h3>
 
               <div className="grid grid-cols-2 gap-4">
                 <FormField
@@ -474,7 +474,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
             {/* Palavras-chave */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b pb-2">{t('brandSettings.keywords')}</h3>
+              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.keywords')}</h3>
 
               <FormField
                 control={form.control}
@@ -512,7 +512,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
             </div>
 
             {/* Footer com botões */}
-            <div className="flex justify-end gap-3 pt-4 border-t sticky bottom-0 bg-background pb-4">
+            <div className="flex justify-end gap-3 pt-4 border-t border-white/10 sticky bottom-0 bg-card/95 pb-4">
               <Button
                 type="button"
                 variant="outline"
