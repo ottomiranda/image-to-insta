@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 interface ProductImage {
   src: string;
@@ -26,6 +27,8 @@ const ProductRepositoryDialog = ({
   dresses,
   accessories,
 }: ProductRepositoryDialogProps) => {
+  const { t } = useTranslation();
+  
   const handleSelect = (imageSrc: string) => {
     onSelect(imageSrc);
     onOpenChange(false);
@@ -48,7 +51,7 @@ const ProductRepositoryDialog = ({
           </div>
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <Button variant="secondary" size="sm">
-              Select
+              {t("productRepository.select")}
             </Button>
           </div>
           <div className="p-3 bg-card/90 backdrop-blur-sm border-t border-white/10">
@@ -66,7 +69,7 @@ const ProductRepositoryDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-[85vh] overflow-hidden bg-card/95 border-white/10 backdrop-blur-sm">
         <DialogHeader>
-          <DialogTitle className="text-foreground text-xl">Product Repository</DialogTitle>
+          <DialogTitle className="text-foreground text-xl">{t("productRepository.title")}</DialogTitle>
         </DialogHeader>
 
         <Tabs defaultValue="dresses" className="w-full">
@@ -75,13 +78,13 @@ const ProductRepositoryDialog = ({
               value="dresses"
               className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary"
             >
-              Dresses ({dresses.length})
+              {t("productRepository.dresses")} ({dresses.length})
             </TabsTrigger>
             <TabsTrigger 
               value="accessories"
               className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary"
             >
-              Accessories ({accessories.length})
+              {t("productRepository.accessories")} ({accessories.length})
             </TabsTrigger>
           </TabsList>
 

@@ -187,5 +187,11 @@
     "delete": "Excluir",
     "edit": "Editar",
     "close": "Fechar"
+  },
+  "productRepository": {
+    "title": "Repositório de Produtos",
+    "select": "Selecionar",
+    "dresses": "Vestidos",
+    "accessories": "Acessórios"
   }
 }
