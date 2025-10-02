@@ -69,6 +69,7 @@
     "selectModel": "Selecionar Modelo do Repositório de Campanhas",
     "cameraAngle": "Ângulo de Câmera",
     "selectAngle": "Selecionar ângulo de câmera",
+    "generatingContent": "Gerando conteúdo da campanha...",
     "cameraAngles": {
       "closeUp": "Close-up (Plano Detalhe)",
       "mediumShot": "Medium shot (Plano Médio)",

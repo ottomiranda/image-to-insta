@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Sparkles, Settings, ArrowLeft, Save } from "lucide-react";
 import InputForm from "@/components/InputForm";
 import ResultsDisplay from "@/components/ResultsDisplay";
+import ResultsDisplaySkeleton from "@/components/ResultsDisplaySkeleton";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { UserNav } from "@/components/UserNav";
 import { Button } from "@/components/ui/button";
@@ -233,8 +234,15 @@ const Create = () => {
               initialModelImage={modelImage}
             />
           )}
-          {generatedContent && (
-            <ResultsDisplay content={generatedContent} />
+          {isGenerating && (
+            <div className="animate-fade-in">
+              <ResultsDisplaySkeleton />
+            </div>
+          )}
+          {generatedContent && !isGenerating && (
+            <div className="animate-fade-in">
+              <ResultsDisplay content={generatedContent} />
+            </div>
           )}
         </div>
       </main>

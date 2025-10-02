@@ -69,6 +69,7 @@
     "selectModel": "Select Model from Campaign Repository",
     "cameraAngle": "Camera Angle",
     "selectAngle": "Select camera angle",
+    "generatingContent": "Generating campaign content...",
     "cameraAngles": {
       "closeUp": "Close-up (Detail Shot)",
       "mediumShot": "Medium shot",
