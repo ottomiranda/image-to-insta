@@ -127,8 +127,12 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
   };
 
   const uploadLogo = async (): Promise<string | null> => {
-    if (!logoFile) return null;
+    if (!logoFile) {
+      console.log('uploadLogo: No logo file to upload');
+      return null;
+    }
 
+    console.log('uploadLogo: Starting upload...', { fileName: logoFile.name, fileSize: logoFile.size });
     setIsUploadingLogo(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -136,17 +140,22 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
       const fileExt = logoFile.name.split('.').pop();
       const fileName = `${user.id}/logo-${Date.now()}.${fileExt}`;
+      console.log('uploadLogo: Uploading to storage...', fileName);
 
       const { error: uploadError } = await supabase.storage
         .from('brand-logos')
         .upload(fileName, logoFile, { upsert: true });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('uploadLogo: Upload error', uploadError);
+        throw uploadError;
+      }
 
       const { data: { publicUrl } } = supabase.storage
         .from('brand-logos')
         .getPublicUrl(fileName);
 
+      console.log('uploadLogo: Upload successful!', publicUrl);
       return publicUrl;
     } catch (error) {
       console.error("Error uploading logo:", error);
@@ -162,19 +171,28 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
   };
 
   const onSubmit = async (data: BrandSettingsFormValues) => {
+    console.log('onSubmit: Form submitted', { hasLogoFile: !!logoFile, currentLogoUrl: data.logo_url });
     try {
       setIsSaving(true);
       
       // Upload logo if a new file was selected
       let logoUrl = data.logo_url || '';
       if (logoFile) {
+        console.log('onSubmit: Uploading new logo file...');
         const uploadedUrl = await uploadLogo();
         if (uploadedUrl) {
           logoUrl = uploadedUrl;
+          console.log('onSubmit: Logo uploaded successfully', logoUrl);
+        } else {
+          console.log('onSubmit: Logo upload failed or returned null');
         }
+      } else {
+        console.log('onSubmit: No new logo file, keeping existing URL:', logoUrl);
       }
 
+      console.log('onSubmit: Updating settings with logo_url:', logoUrl);
       await updateSettings({ ...data, logo_url: logoUrl } as BrandSettings);
+      console.log('onSubmit: Settings updated successfully');
       onOpenChange(false);
     } catch (error) {
       console.error("Error saving brand settings:", error);
