@@ -6,7 +6,7 @@ import { Plus, Settings } from "lucide-react";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { CampaignCard } from "@/components/CampaignCard";
 import { PublishCampaignDialog } from "@/components/PublishCampaignDialog";
-import BrandSettingsDialog from "@/components/BrandSettingsDialog";
+import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { Campaign } from "@/types/campaign";
 
 export default function Campaigns() {

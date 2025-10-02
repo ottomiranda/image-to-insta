@@ -3,7 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Sparkles, Settings, ArrowLeft, Save } from "lucide-react";
 import InputForm from "@/components/InputForm";
 import ResultsDisplay from "@/components/ResultsDisplay";
-import BrandSettingsDialog from "@/components/BrandSettingsDialog";
+import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

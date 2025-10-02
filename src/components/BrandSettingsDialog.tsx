@@ -58,7 +58,7 @@ interface BrandSettingsDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const BrandSettingsDialog = ({ open, onOpenChange }: BrandSettingsDialogProps) => {
+export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogProps) {
   const { settings, updateSettings } = useBrandSettings();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -352,6 +352,4 @@ const BrandSettingsDialog = ({ open, onOpenChange }: BrandSettingsDialogProps) =
       </DialogContent>
     </Dialog>
   );
-};
-
-export default BrandSettingsDialog;
+}
