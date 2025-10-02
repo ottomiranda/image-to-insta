@@ -66,7 +66,31 @@
     "contentRequired": "Content required",
     "contentRequiredDesc": "Please generate campaign content before saving.",
     "selectProducts": "Select Products",
-    "selectModel": "Select Model from Campaign Repository"
+    "selectModel": "Select Model from Campaign Repository",
+    "cameraAngle": "Camera Angle",
+    "selectAngle": "Select camera angle",
+    "cameraAngles": {
+      "closeUp": "Close-up (Detail Shot)",
+      "mediumShot": "Medium shot",
+      "wideShot": "Wide shot (General)",
+      "overheadView": "Overhead view",
+      "birdsEyeView": "Bird's eye view",
+      "eyeLevel": "Eye level",
+      "lowAngle": "Low angle (Contra-plongée)",
+      "highAngle": "High angle (Plongée)",
+      "wormsEyeView": "Worm's eye view",
+      "dutchAngle": "Dutch angle (Tilted)",
+      "sideView": "Side view (Profile)",
+      "rearView": "Rear view",
+      "frontal": "Frontal Angle",
+      "threeQuarterView": "3/4 view (Three Quarters)",
+      "extremeCloseUp": "Extreme close-up",
+      "fullBodyShot": "Full body shot",
+      "portrait": "Portrait",
+      "selfie": "Selfie (Self-portrait)",
+      "zenital": "Zenital (Top View 90°)",
+      "overTheShoulder": "Over-the-shoulder"
+    }
   },
   "brandSettings": {
     "title": "Brand Settings",

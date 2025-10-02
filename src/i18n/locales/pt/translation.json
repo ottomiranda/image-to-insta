@@ -66,7 +66,31 @@
     "contentRequired": "Conteúdo obrigatório",
     "contentRequiredDesc": "Por favor, gere o conteúdo da campanha antes de salvar.",
     "selectProducts": "Selecionar Produtos",
-    "selectModel": "Selecionar Modelo do Repositório de Campanhas"
+    "selectModel": "Selecionar Modelo do Repositório de Campanhas",
+    "cameraAngle": "Ângulo de Câmera",
+    "selectAngle": "Selecionar ângulo de câmera",
+    "cameraAngles": {
+      "closeUp": "Close-up (Plano Detalhe)",
+      "mediumShot": "Medium shot (Plano Médio)",
+      "wideShot": "Wide shot (Plano Aberto / Geral)",
+      "overheadView": "Overhead view (Visão de Cima)",
+      "birdsEyeView": "Bird's eye view (Visão Aérea)",
+      "eyeLevel": "Eye level (Nível dos Olhos)",
+      "lowAngle": "Low angle (Ângulo Baixo / Contra-plongée)",
+      "highAngle": "High angle (Ângulo Alto / Plongée)",
+      "wormsEyeView": "Worm's eye view (Visão do Chão)",
+      "dutchAngle": "Dutch angle (Ângulo Holandês / Inclinado)",
+      "sideView": "Side view (Visão Lateral / Perfil)",
+      "rearView": "Rear view (Visão Traseira)",
+      "frontal": "Frontal (Ângulo Frontal)",
+      "threeQuarterView": "3/4 view (Ângulo ¾ ou Três Quartos)",
+      "extremeCloseUp": "Extreme close-up (Plano Muito Detalhado)",
+      "fullBodyShot": "Full body shot (Corpo Inteiro)",
+      "portrait": "Portrait (Retrato clássico)",
+      "selfie": "Selfie (Auto-retrato)",
+      "zenital": "Zenital (Zenithal ou Vista de Cima a 90°)",
+      "overTheShoulder": "Over-the-shoulder (Sobre o Ombro)"
+    }
   },
   "brandSettings": {
     "title": "Configurações da Marca",

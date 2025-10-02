@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Wand2 } from "lucide-react";
+import { Wand2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import type { GeneratedContent } from "@/pages/Create";
 import ImageSelector from "./ImageSelector";
 import { useTranslation } from "react-i18next";
+import { CameraAngleSelector } from "./CameraAngleSelector";
 
 // Import product repository images - Dresses
 import redBohoDress from "@/assets/repository/products/dresses/red-boho-dress.jpg";
@@ -74,6 +75,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
     accessories: []
   });
   const [modelImage, setModelImage] = useState<File | string | null>(null);
+  const [selectedAngle, setSelectedAngle] = useState<string | null>(null);
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -128,9 +130,12 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
       );
       const modelImageBase64 = modelImage ? await imageToBase64(modelImage) : null;
 
+      // Compose prompt with camera angle if selected
+      const composedPrompt = selectedAngle ? `${selectedAngle}: ${prompt}` : prompt;
+
       const { data, error } = await supabase.functions.invoke('generate-campaign', {
         body: {
-          prompt,
+          prompt: composedPrompt,
           centerpiece: centerpieceBase64,
           accessories: accessoriesBase64,
           modelImage: modelImageBase64,
@@ -170,13 +175,33 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
         {/* Prompt Input */}
         <div className="space-y-2">
           <Label htmlFor="prompt" className="text-gray-300">{t('create.lookDescription')} *</Label>
-          <Textarea
-            id="prompt"
-            placeholder={t('create.lookDescriptionPlaceholder')}
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            className="min-h-[120px] resize-none"
-          />
+          <div className="flex gap-2 items-start">
+            <CameraAngleSelector
+              onSelectAngle={setSelectedAngle}
+              selectedAngle={selectedAngle}
+            />
+            <div className="flex-1 relative">
+              {selectedAngle && (
+                <div className="absolute top-2 left-2 z-10 flex items-center gap-1.5 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full px-3 py-1">
+                  <span className="text-xs font-medium text-white">{selectedAngle}</span>
+                  <button
+                    onClick={() => setSelectedAngle(null)}
+                    className="hover:bg-white/10 rounded-full p-0.5 transition-colors"
+                    aria-label="Remove angle"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              )}
+              <Textarea
+                id="prompt"
+                placeholder={t('create.lookDescriptionPlaceholder')}
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className={`min-h-[120px] resize-none ${selectedAngle ? 'pt-10' : ''}`}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Product Selection */}
