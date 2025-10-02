@@ -42,6 +42,7 @@ const Create = () => {
   const [modelImage, setModelImage] = useState<any>(null);
   const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isLoadingCampaign, setIsLoadingCampaign] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const isEditMode = searchParams.get("mode") === "edit";
@@ -50,6 +51,7 @@ const Create = () => {
   useEffect(() => {
     if (campaignId) {
       const loadCampaign = async () => {
+        setIsLoadingCampaign(true);
         const { data, error } = await supabase
           .from("campaigns")
           .select("*")
@@ -62,6 +64,7 @@ const Create = () => {
             description: error.message,
             variant: "destructive",
           });
+          setIsLoadingCampaign(false);
           return;
         }
 
@@ -92,6 +95,7 @@ const Create = () => {
             });
           }
         }
+        setIsLoadingCampaign(false);
       };
       loadCampaign();
     }
@@ -217,16 +221,22 @@ const Create = () => {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
-          <InputForm 
-            onGenerate={(content) => {
-              setGeneratedContent(content);
-            }}
-            isGenerating={isGenerating}
-            setIsGenerating={setIsGenerating}
-            initialPrompt={prompt}
-            initialProductSelection={productSelection}
-            initialModelImage={modelImage}
-          />
+          {isLoadingCampaign ? (
+            <div className="flex items-center justify-center p-12">
+              <p className="text-muted-foreground">Loading campaign data...</p>
+            </div>
+          ) : (
+            <InputForm 
+              onGenerate={(content) => {
+                setGeneratedContent(content);
+              }}
+              isGenerating={isGenerating}
+              setIsGenerating={setIsGenerating}
+              initialPrompt={prompt}
+              initialProductSelection={productSelection}
+              initialModelImage={modelImage}
+            />
+          )}
           {generatedContent && (
             <ResultsDisplay content={generatedContent} />
           )}
