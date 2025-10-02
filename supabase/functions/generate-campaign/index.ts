@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -25,20 +26,65 @@ serve(async (req) => {
     console.log('Starting campaign generation...');
     console.log('Images received - Centerpiece:', !!centerpiece, 'Accessories:', accessories.length, 'Model:', !!modelImage);
 
+    // Get user from authorization header and fetch brand settings
+    const authHeader = req.headers.get('Authorization');
+    let brandSettings = null;
+    
+    if (authHeader) {
+      try {
+        const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+        const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
+        
+        const token = authHeader.replace('Bearer ', '');
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
+        
+        if (!userError && user) {
+          // Fetch brand settings for this user
+          const { data: settings } = await supabaseClient
+            .from('brand_settings')
+            .select('*')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          
+          brandSettings = settings;
+          console.log('Brand settings loaded:', !!brandSettings);
+        }
+      } catch (error) {
+        console.log('Could not fetch brand settings:', error);
+      }
+    }
+
+    // Build brand context if settings exist
+    const brandContext = brandSettings ? `
+BRAND IDENTITY:
+- Brand Name: ${brandSettings.brand_name}
+- Brand Values: ${brandSettings.brand_values}
+- Tone of Voice: ${brandSettings.tone_of_voice}
+- Target Market: ${brandSettings.target_market}
+- Style: ${brandSettings.preferred_style}
+${brandSettings.preferred_keywords ? `- Preferred Keywords: ${brandSettings.preferred_keywords}` : ''}
+${brandSettings.words_to_avoid ? `- Avoid Words: ${brandSettings.words_to_avoid}` : ''}
+
+Please ensure all generated content reflects this brand's identity, tone, and values.
+` : '';
+
     // Step 1: Generate look visual using Gemini 2.5 Flash Image Preview with image composition
     console.log('Generating look visual with image composition...');
     
     const imagePrompt = modelImage
-      ? `Compose a professional fashion look photograph by digitally dressing the model with:
+      ? `${brandContext}
+Compose a professional fashion look photograph by digitally dressing the model with:
          1. CENTERPIECE: The dress from the first product image
          2. ACCESSORIES: ${accessories.length} complementary accessories from the following images
          Context: ${prompt}
-         Create a cohesive, high-fashion editorial look with professional lighting and styling.`
-      : `Create a complete professional fashion look with:
+         Create a cohesive, high-fashion editorial look with professional lighting and styling that aligns with the brand's aesthetic.`
+      : `${brandContext}
+Create a complete professional fashion look with:
          1. CENTERPIECE: The dress from the first product image
          2. ACCESSORIES: ${accessories.length} complementary items from the following images
          Context: ${prompt}
-         Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting.`;
+         Style: high-quality, fashion-forward, suitable for e-commerce with professional lighting that matches the brand's preferred style.`;
 
     // Build multimodal content array
     const contentArray: any[] = [
@@ -91,7 +137,7 @@ serve(async (req) => {
 
     // Step 2: Generate text content using Gemini 2.5 Pro with structured output
     console.log('Generating text content...');
-    const textPrompt = `You are a fashion marketing and SEO expert. Based on this description: "${prompt}"
+    const textPrompt = `You are a fashion marketing and SEO expert.${brandContext ? `\n\n${brandContext}` : ''} Based on this description: "${prompt}"
 
 Generate the following content in English:
 
@@ -104,6 +150,7 @@ Generate the following content in English:
    - Descriptive alt text for accessibility
    - Best posting time (format: "HHam/pm")
 
+${brandSettings ? `IMPORTANT: Reflect the brand's ${brandSettings.tone_of_voice} tone of voice and ${brandSettings.preferred_style} style in all content.` : ''}
 Respond in the JSON format specified by the tool.`;
 
     const textResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {

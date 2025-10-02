@@ -14,7 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      brand_settings: {
+        Row: {
+          brand_name: string
+          brand_values: string
+          created_at: string
+          id: string
+          instagram_handle: string | null
+          preferred_keywords: string | null
+          preferred_style: string
+          primary_color: string
+          secondary_color: string
+          target_market: string
+          tone_of_voice: string
+          updated_at: string
+          user_id: string
+          website: string | null
+          words_to_avoid: string | null
+        }
+        Insert: {
+          brand_name: string
+          brand_values: string
+          created_at?: string
+          id?: string
+          instagram_handle?: string | null
+          preferred_keywords?: string | null
+          preferred_style: string
+          primary_color?: string
+          secondary_color?: string
+          target_market: string
+          tone_of_voice: string
+          updated_at?: string
+          user_id: string
+          website?: string | null
+          words_to_avoid?: string | null
+        }
+        Update: {
+          brand_name?: string
+          brand_values?: string
+          created_at?: string
+          id?: string
+          instagram_handle?: string | null
+          preferred_keywords?: string | null
+          preferred_style?: string
+          primary_color?: string
+          secondary_color?: string
+          target_market?: string
+          tone_of_voice?: string
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+          words_to_avoid?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
