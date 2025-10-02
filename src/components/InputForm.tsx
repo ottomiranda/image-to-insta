@@ -86,10 +86,10 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
   };
 
   return (
-    <Card className="p-6 space-y-6 h-fit sticky top-24">
+    <Card className="p-6 space-y-6 h-fit sticky top-24 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold">Criar Campanha</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-2xl font-bold text-white">Criar Campanha</h2>
+        <p className="text-gray-400">
           Descreva seu look e faça upload das imagens para gerar uma campanha completa
         </p>
       </div>
@@ -97,7 +97,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
       <div className="space-y-4">
         {/* Prompt Input */}
         <div className="space-y-2">
-          <Label htmlFor="prompt">Descrição do Look *</Label>
+          <Label htmlFor="prompt" className="text-gray-300">Descrição do Look *</Label>
           <Textarea
             id="prompt"
             placeholder="Ex: Criar look de verão casual usando nosso vestido vermelho boho como peça central para um brunch ao ar livre"
@@ -109,8 +109,8 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
 
         {/* Product Image Upload */}
         <div className="space-y-2">
-          <Label htmlFor="product-image">Imagem do Produto *</Label>
-          <div className="border-2 border-dashed border-border rounded-lg p-6 hover:border-primary transition-colors cursor-pointer">
+          <Label htmlFor="product-image" className="text-gray-300">Imagem do Produto *</Label>
+          <div className="border-2 border-dashed border-white/20 rounded-lg p-6 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all cursor-pointer bg-secondary/30">
             <input
               id="product-image"
               type="file"
@@ -119,8 +119,8 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
               className="hidden"
             />
             <label htmlFor="product-image" className="flex flex-col items-center gap-2 cursor-pointer">
-              <Upload className="h-8 w-8 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">
+              <Upload className="h-8 w-8 text-gray-400" />
+              <span className="text-sm text-gray-400">
                 {productImage ? productImage.name : "Clique para fazer upload"}
               </span>
             </label>
@@ -129,8 +129,8 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
 
         {/* Model Image Upload (Optional) */}
         <div className="space-y-2">
-          <Label htmlFor="model-image">Imagem da Modelo (Opcional)</Label>
-          <div className="border-2 border-dashed border-border rounded-lg p-6 hover:border-primary transition-colors cursor-pointer">
+          <Label htmlFor="model-image" className="text-gray-300">Imagem da Modelo (Opcional)</Label>
+          <div className="border-2 border-dashed border-white/20 rounded-lg p-6 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all cursor-pointer bg-secondary/30">
             <input
               id="model-image"
               type="file"
@@ -139,8 +139,8 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
               className="hidden"
             />
             <label htmlFor="model-image" className="flex flex-col items-center gap-2 cursor-pointer">
-              <Upload className="h-8 w-8 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">
+              <Upload className="h-8 w-8 text-gray-400" />
+              <span className="text-sm text-gray-400">
                 {modelImage ? modelImage.name : "Clique para fazer upload"}
               </span>
             </label>
@@ -151,7 +151,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
         <Button
           onClick={handleGenerate}
           disabled={isGenerating}
-          className="w-full"
+          className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all"
           size="lg"
         >
           {isGenerating ? (

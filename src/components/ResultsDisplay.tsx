@@ -62,143 +62,149 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Resultados</h2>
-        <Button onClick={exportJSON} variant="outline" size="sm">
+        <h2 className="text-2xl font-bold text-white">Resultados</h2>
+        <Button onClick={exportJSON} variant="outline" size="sm" className="border-white/20 hover:bg-white/5">
           <Download className="mr-2 h-4 w-4" />
           Exportar JSON
         </Button>
       </div>
 
       {/* Look Visual */}
-      <Card className="overflow-hidden">
-        <div className="p-4 border-b border-border bg-muted/30 flex items-center justify-between">
+      <Card className="overflow-hidden bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
+        <div className="p-4 border-b border-white/10 bg-black/40 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ImageIcon className="h-5 w-5 text-primary" />
-            <h3 className="font-semibold">Look Visual</h3>
+            <h3 className="font-semibold text-white">Look Visual</h3>
           </div>
-          <Button onClick={downloadImage} variant="ghost" size="sm">
+          <Button onClick={downloadImage} variant="ghost" size="sm" className="hover:bg-white/10">
             <Download className="h-4 w-4" />
           </Button>
         </div>
-        <div className="p-4">
+        <div className="p-4 bg-black/20">
           <img 
             src={content.lookVisual} 
             alt="Look gerado"
-            className="w-full rounded-lg shadow-lg"
+            className="w-full rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
           />
         </div>
       </Card>
 
       {/* Product Descriptions */}
-      <Card className="p-6 space-y-4">
+      <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold">Descrições do Produto</h3>
+          <h3 className="font-semibold text-white">Descrições do Produto</h3>
         </div>
         
         <div className="space-y-3">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary">Curta</Badge>
+              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Curta</Badge>
               <Button
                 onClick={() => copyToClipboard(content.shortDescription, "Descrição curta")}
                 variant="ghost"
                 size="sm"
+                className="hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <p className="text-sm bg-muted p-3 rounded-md">{content.shortDescription}</p>
+            <p className="text-sm bg-black/40 p-3 rounded-md border border-white/10 text-gray-200">{content.shortDescription}</p>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary">Longa</Badge>
+              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Longa</Badge>
               <Button
                 onClick={() => copyToClipboard(content.longDescription, "Descrição longa")}
                 variant="ghost"
                 size="sm"
+                className="hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <p className="text-sm bg-muted p-3 rounded-md">{content.longDescription}</p>
+            <p className="text-sm bg-black/40 p-3 rounded-md border border-white/10 text-gray-200">{content.longDescription}</p>
           </div>
         </div>
       </Card>
 
       {/* Instagram Post */}
-      <Card className="p-6 space-y-4">
+      <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-2">
           <Instagram className="h-5 w-5 text-accent" />
-          <h3 className="font-semibold">Post para Instagram</h3>
+          <h3 className="font-semibold text-white">Post para Instagram</h3>
         </div>
 
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Legenda</span>
+              <span className="text-sm font-medium text-gray-300">Legenda</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.caption, "Legenda")}
                 variant="ghost"
                 size="sm"
+                className="hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <p className="text-sm bg-muted p-3 rounded-md whitespace-pre-wrap">
+            <p className="text-sm bg-black/40 p-3 rounded-md border border-white/10 text-gray-200 whitespace-pre-wrap">
               {content.instagram.caption}
             </p>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Hashtags</span>
+              <span className="text-sm font-medium text-gray-300">Hashtags</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.hashtags.join(' '), "Hashtags")}
                 variant="ghost"
                 size="sm"
+                className="hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
             <div className="flex flex-wrap gap-2">
               {content.instagram.hashtags.map((tag, index) => (
-                <Badge key={index} variant="outline">{tag}</Badge>
+                <Badge key={index} variant="outline" className="border-primary/50 text-primary bg-primary/10">{tag}</Badge>
               ))}
             </div>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Call to Action</span>
+              <span className="text-sm font-medium text-gray-300">Call to Action</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.callToAction, "CTA")}
                 variant="ghost"
                 size="sm"
+                className="hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <p className="text-sm bg-muted p-3 rounded-md">{content.instagram.callToAction}</p>
+            <p className="text-sm bg-black/40 p-3 rounded-md border border-white/10 text-gray-200">{content.instagram.callToAction}</p>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Alt Text</span>
+              <span className="text-sm font-medium text-gray-300">Alt Text</span>
               <Button
                 onClick={() => copyToClipboard(content.instagram.altText, "Alt text")}
                 variant="ghost"
                 size="sm"
+                className="hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            <p className="text-sm bg-muted p-3 rounded-md">{content.instagram.altText}</p>
+            <p className="text-sm bg-black/40 p-3 rounded-md border border-white/10 text-gray-200">{content.instagram.altText}</p>
           </div>
 
           <div>
-            <span className="text-sm font-medium">Horário Sugerido</span>
+            <span className="text-sm font-medium text-gray-300">Horário Sugerido</span>
             <p className="text-lg font-semibold text-primary mt-1">{content.instagram.suggestedTime}</p>
           </div>
         </div>
