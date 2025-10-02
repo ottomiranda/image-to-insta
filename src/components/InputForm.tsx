@@ -21,12 +21,12 @@ import floralMidiDress from "@/assets/repository/products/dresses/floral-midi-dr
 import whiteLinenDress from "@/assets/repository/products/dresses/white-linen-dress.jpg";
 import emeraldEveningGown from "@/assets/repository/products/dresses/emerald-evening-gown.jpg";
 import burgundySlipDress from "@/assets/repository/products/dresses/burgundy-slip-dress.jpg";
-import oliveCargoDress from "@/assets/repository/products/dresses/olive-cargo-dress.jpg";
 import champagneSequinDress from "@/assets/repository/products/dresses/champagne-sequin-dress.jpg";
-import coralWrapDress from "@/assets/repository/products/dresses/coral-wrap-dress.jpg";
-import charcoalBodyconDress from "@/assets/repository/products/dresses/charcoal-bodycon-dress.jpg";
 import lavenderChiffonDress from "@/assets/repository/products/dresses/lavender-chiffon-dress.jpg";
 import mustardShirtDress from "@/assets/repository/products/dresses/mustard-shirt-dress.jpg";
+import royalBlueVelvetDress from "@/assets/repository/products/dresses/royal-blue-velvet-dress.jpg";
+import creamLaceDress from "@/assets/repository/products/dresses/cream-lace-dress.jpg";
+import tealSatinDress from "@/assets/repository/products/dresses/teal-satin-dress.jpg";
 
 // Import product repository images - Accessories
 import goldNecklace from "@/assets/repository/products/accessories/gold-necklace.jpg";
@@ -56,12 +56,12 @@ const PRODUCT_CATEGORIES = {
     { src: whiteLinenDress, name: "White Linen Dress", alt: "White linen dress on white background", category: "dresses" },
     { src: emeraldEveningGown, name: "Emerald Evening Gown", alt: "Emerald green evening gown on white background", category: "dresses" },
     { src: burgundySlipDress, name: "Burgundy Slip Dress", alt: "Burgundy satin slip dress on white background", category: "dresses" },
-    { src: oliveCargoDress, name: "Olive Cargo Dress", alt: "Olive green cargo midi dress on white background", category: "dresses" },
     { src: champagneSequinDress, name: "Champagne Sequin Dress", alt: "Champagne gold sequin cocktail dress on white background", category: "dresses" },
-    { src: coralWrapDress, name: "Coral Wrap Dress", alt: "Coral pink wrap maxi dress on white background", category: "dresses" },
-    { src: charcoalBodyconDress, name: "Charcoal Bodycon Dress", alt: "Charcoal grey knit bodycon dress on white background", category: "dresses" },
     { src: lavenderChiffonDress, name: "Lavender Chiffon Dress", alt: "Lavender chiffon A-line dress on white background", category: "dresses" },
     { src: mustardShirtDress, name: "Mustard Shirt Dress", alt: "Mustard yellow shirt dress on white background", category: "dresses" },
+    { src: royalBlueVelvetDress, name: "Royal Blue Velvet Dress", alt: "Royal blue velvet midi dress on white background", category: "dresses" },
+    { src: creamLaceDress, name: "Cream Lace Dress", alt: "Cream beige lace maxi dress on white background", category: "dresses" },
+    { src: tealSatinDress, name: "Teal Satin Dress", alt: "Teal satin midi dress on white background", category: "dresses" },
   ],
   accessories: [
     { src: goldNecklace, name: "Gold Statement Necklace", alt: "Gold statement necklace on white background", category: "accessories" },
