@@ -44,8 +44,8 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
   const handleGenerate = async () => {
     if (!prompt || !productImage) {
       toast({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha o prompt e faça upload da imagem do produto.",
+        title: "Required fields",
+        description: "Please fill in the prompt and upload the product image.",
         variant: "destructive",
       });
       return;
@@ -70,14 +70,14 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
       onGenerate(data);
       
       toast({
-        title: "Campanha gerada!",
-        description: "Sua campanha de moda foi criada com sucesso.",
+        title: "Campaign generated!",
+        description: "Your fashion campaign was created successfully.",
       });
     } catch (error) {
       console.error('Error generating campaign:', error);
       toast({
-        title: "Erro ao gerar campanha",
-        description: "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+        title: "Error generating campaign",
+        description: "An error occurred while processing your request. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -88,19 +88,19 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
   return (
     <Card className="p-6 space-y-6 h-fit sticky top-24 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-white">Criar Campanha</h2>
+        <h2 className="text-2xl font-bold text-white">Create Campaign</h2>
         <p className="text-gray-400">
-          Descreva seu look e faça upload das imagens para gerar uma campanha completa
+          Describe your look and upload images to generate a complete campaign
         </p>
       </div>
 
       <div className="space-y-4">
         {/* Prompt Input */}
         <div className="space-y-2">
-          <Label htmlFor="prompt" className="text-gray-300">Descrição do Look *</Label>
+          <Label htmlFor="prompt" className="text-gray-300">Look Description *</Label>
           <Textarea
             id="prompt"
-            placeholder="Ex: Criar look de verão casual usando nosso vestido vermelho boho como peça central para um brunch ao ar livre"
+            placeholder="E.g.: Create a casual summer look using our red boho dress as the centerpiece for an outdoor brunch"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             className="min-h-[120px] resize-none"
@@ -109,7 +109,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
 
         {/* Product Image Upload */}
         <div className="space-y-2">
-          <Label htmlFor="product-image" className="text-gray-300">Imagem do Produto *</Label>
+          <Label htmlFor="product-image" className="text-gray-300">Product Image *</Label>
           <div className="border-2 border-dashed border-white/20 rounded-lg p-6 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all cursor-pointer bg-secondary/30">
             <input
               id="product-image"
@@ -121,7 +121,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
             <label htmlFor="product-image" className="flex flex-col items-center gap-2 cursor-pointer">
               <Upload className="h-8 w-8 text-gray-400" />
               <span className="text-sm text-gray-400">
-                {productImage ? productImage.name : "Clique para fazer upload"}
+                {productImage ? productImage.name : "Click to upload"}
               </span>
             </label>
           </div>
@@ -129,7 +129,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
 
         {/* Model Image Upload (Optional) */}
         <div className="space-y-2">
-          <Label htmlFor="model-image" className="text-gray-300">Imagem da Modelo (Opcional)</Label>
+          <Label htmlFor="model-image" className="text-gray-300">Model Image (Optional)</Label>
           <div className="border-2 border-dashed border-white/20 rounded-lg p-6 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all cursor-pointer bg-secondary/30">
             <input
               id="model-image"
@@ -141,7 +141,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
             <label htmlFor="model-image" className="flex flex-col items-center gap-2 cursor-pointer">
               <Upload className="h-8 w-8 text-gray-400" />
               <span className="text-sm text-gray-400">
-                {modelImage ? modelImage.name : "Clique para fazer upload"}
+                {modelImage ? modelImage.name : "Click to upload"}
               </span>
             </label>
           </div>
@@ -157,12 +157,12 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating }: InputFormProps
           {isGenerating ? (
             <>
               <Wand2 className="mr-2 h-5 w-5 animate-spin" />
-              Gerando campanha...
+              Generating campaign...
             </>
           ) : (
             <>
               <Wand2 className="mr-2 h-5 w-5" />
-              Gerar Campanha
+              Generate Campaign
             </>
           )}
         </Button>

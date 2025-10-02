@@ -15,18 +15,18 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY não configurada');
+      throw new Error('LOVABLE_API_KEY not configured');
     }
 
     if (!productImage) {
-      throw new Error('Imagem do produto é obrigatória');
+      throw new Error('Product image is required');
     }
 
-    console.log('Iniciando geração de campanha...');
-    console.log('Imagens recebidas - Produto:', !!productImage, 'Modelo:', !!modelImage);
+    console.log('Starting campaign generation...');
+    console.log('Images received - Product:', !!productImage, 'Model:', !!modelImage);
 
     // Step 1: Generate look visual using Gemini 2.5 Flash Image Preview with image composition
-    console.log('Gerando look visual com composição de imagens...');
+    console.log('Generating look visual with image composition...');
     
     const imagePrompt = modelImage
       ? `Compose a professional fashion look photograph by digitally dressing the model in the provided model image with the product from the product image. Context: ${prompt}. The result should be high-quality, fashion-forward, and suitable for e-commerce with professional lighting.`
@@ -63,35 +63,35 @@ serve(async (req) => {
 
     if (!imageResponse.ok) {
       const errorText = await imageResponse.text();
-      console.error('Erro na geração de imagem:', errorText);
-      throw new Error(`Erro ao gerar imagem: ${imageResponse.status}`);
+      console.error('Error in image generation:', errorText);
+      throw new Error(`Error generating image: ${imageResponse.status}`);
     }
 
     const imageData = await imageResponse.json();
     const lookVisual = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
 
     if (!lookVisual) {
-      throw new Error('Falha ao gerar imagem do look');
+      throw new Error('Failed to generate look image');
     }
 
-    console.log('Look visual gerado com sucesso');
+    console.log('Look visual generated successfully');
 
     // Step 2: Generate text content using Gemini 2.5 Pro with structured output
-    console.log('Gerando conteúdo textual...');
-    const textPrompt = `Você é um especialista em marketing de moda e SEO. Baseado nesta descrição: "${prompt}"
+    console.log('Generating text content...');
+    const textPrompt = `You are a fashion marketing and SEO expert. Based on this description: "${prompt}"
 
-Gere o seguinte conteúdo em português brasileiro:
+Generate the following content in English:
 
-1. Descrição CURTA do produto (máximo 200 caracteres) - otimizada para SEO, focada em características principais
-2. Descrição LONGA do produto (100-150 palavras) - detalhando material, caimento, ocasião e estilo, otimizada para SEO
-3. Post completo para Instagram incluindo:
-   - Legenda cativante (inicie com emoji ou pergunta envolvente)
-   - 5-7 hashtags relevantes do nicho de moda
-   - Call-to-action final claro e persuasivo
-   - Alt text descritivo para acessibilidade
-   - Melhor horário de postagem (formato: "HHh")
+1. SHORT product description (max 200 characters) - SEO optimized, focused on key features
+2. LONG product description (100-150 words) - detailing material, fit, occasion, and style, SEO optimized
+3. Complete Instagram post including:
+   - Engaging caption (start with emoji or engaging question)
+   - 5-7 relevant fashion niche hashtags
+   - Clear and persuasive call-to-action
+   - Descriptive alt text for accessibility
+   - Best posting time (format: "HHam/pm")
 
-Responda no formato JSON especificado pela ferramenta.`;
+Respond in the JSON format specified by the tool.`;
 
     const textResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -112,41 +112,41 @@ Responda no formato JSON especificado pela ferramenta.`;
             type: 'function',
             function: {
               name: 'generate_campaign_content',
-              description: 'Gera conteúdo completo de campanha de moda',
+              description: 'Generates complete fashion campaign content',
               parameters: {
                 type: 'object',
                 properties: {
                   shortDescription: {
                     type: 'string',
-                    description: 'Descrição curta do produto (máx 200 caracteres)'
+                    description: 'Short product description (max 200 characters)'
                   },
                   longDescription: {
                     type: 'string',
-                    description: 'Descrição longa do produto (100-150 palavras)'
+                    description: 'Long product description (100-150 words)'
                   },
                   instagram: {
                     type: 'object',
                     properties: {
                       caption: {
                         type: 'string',
-                        description: 'Legenda completa para Instagram'
+                        description: 'Complete Instagram caption'
                       },
                       hashtags: {
                         type: 'array',
                         items: { type: 'string' },
-                        description: 'Lista de 5-7 hashtags'
+                        description: 'List of 5-7 hashtags'
                       },
                       callToAction: {
                         type: 'string',
-                        description: 'Call-to-action final'
+                        description: 'Final call-to-action'
                       },
                       altText: {
                         type: 'string',
-                        description: 'Texto alternativo para acessibilidade'
+                        description: 'Alt text for accessibility'
                       },
                       suggestedTime: {
                         type: 'string',
-                        description: 'Horário sugerido de postagem (formato HHh)'
+                        description: 'Suggested posting time (format HHam/pm)'
                       }
                     },
                     required: ['caption', 'hashtags', 'callToAction', 'altText', 'suggestedTime']
@@ -166,19 +166,19 @@ Responda no formato JSON especificado pela ferramenta.`;
 
     if (!textResponse.ok) {
       const errorText = await textResponse.text();
-      console.error('Erro na geração de texto:', errorText);
-      throw new Error(`Erro ao gerar conteúdo: ${textResponse.status}`);
+      console.error('Error in text generation:', errorText);
+      throw new Error(`Error generating content: ${textResponse.status}`);
     }
 
     const textData = await textResponse.json();
     const toolCall = textData.choices?.[0]?.message?.tool_calls?.[0];
     
     if (!toolCall) {
-      throw new Error('Falha ao gerar conteúdo estruturado');
+      throw new Error('Failed to generate structured content');
     }
 
     const content = JSON.parse(toolCall.function.arguments);
-    console.log('Conteúdo textual gerado com sucesso');
+    console.log('Text content generated successfully');
 
     // Return complete campaign
     const result = {
@@ -188,16 +188,16 @@ Responda no formato JSON especificado pela ferramenta.`;
       instagram: content.instagram
     };
 
-    console.log('Campanha gerada com sucesso!');
+    console.log('Campaign generated successfully!');
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
 
   } catch (error) {
-    console.error('Erro ao gerar campanha:', error);
+    console.error('Error generating campaign:', error);
     return new Response(
       JSON.stringify({ 
-        error: error instanceof Error ? error.message : 'Erro desconhecido',
+        error: error instanceof Error ? error.message : 'Unknown error',
         details: error 
       }),
       {

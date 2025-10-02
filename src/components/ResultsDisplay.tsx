@@ -15,33 +15,33 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast({
-      title: "Copiado!",
-      description: `${label} copiado para a área de transferência.`,
+      title: "Copied!",
+      description: `${label} copied to clipboard.`,
     });
   };
 
   const downloadImage = () => {
     const link = document.createElement('a');
     link.href = content.lookVisual;
-    link.download = 'look-gerado.png';
+    link.download = 'generated-look.png';
     link.click();
     toast({
-      title: "Download iniciado",
-      description: "A imagem está sendo baixada.",
+      title: "Download started",
+      description: "The image is being downloaded.",
     });
   };
 
   const exportJSON = () => {
     const jsonData = {
       look_visual: content.lookVisual,
-      descricao_curta: content.shortDescription,
-      descricao_longa: content.longDescription,
+      short_description: content.shortDescription,
+      long_description: content.longDescription,
       instagram: {
-        legenda: content.instagram.caption,
+        caption: content.instagram.caption,
         hashtags: content.instagram.hashtags,
         call_to_action: content.instagram.callToAction,
         alt_text: content.instagram.altText,
-        horario_sugerido: content.instagram.suggestedTime,
+        suggested_time: content.instagram.suggestedTime,
       }
     };
     
@@ -50,22 +50,22 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'campanha-completa.json';
+    link.download = 'complete-campaign.json';
     link.click();
     
     toast({
-      title: "JSON exportado",
-      description: "Os dados foram exportados com sucesso.",
+      title: "JSON exported",
+      description: "Data exported successfully.",
     });
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-white">Resultados</h2>
+        <h2 className="text-2xl font-bold text-white">Results</h2>
         <Button onClick={exportJSON} variant="outline" size="sm" className="border-white/20 hover:bg-white/5">
           <Download className="mr-2 h-4 w-4" />
-          Exportar JSON
+          Export JSON
         </Button>
       </div>
 
@@ -83,7 +83,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
         <div className="p-4 bg-black/20">
           <img 
             src={content.lookVisual} 
-            alt="Look gerado"
+            alt="Generated look"
             className="w-full rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
           />
         </div>
@@ -93,15 +93,15 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
       <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-white">Descrições do Produto</h3>
+          <h3 className="font-semibold text-white">Product Descriptions</h3>
         </div>
         
         <div className="space-y-3">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Curta</Badge>
+              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Short</Badge>
               <Button
-                onClick={() => copyToClipboard(content.shortDescription, "Descrição curta")}
+                onClick={() => copyToClipboard(content.shortDescription, "Short description")}
                 variant="ghost"
                 size="sm"
                 className="hover:bg-white/10"
@@ -114,9 +114,9 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Longa</Badge>
+              <Badge variant="secondary" className="border-white/20 bg-secondary/50 text-gray-300">Long</Badge>
               <Button
-                onClick={() => copyToClipboard(content.longDescription, "Descrição longa")}
+                onClick={() => copyToClipboard(content.longDescription, "Long description")}
                 variant="ghost"
                 size="sm"
                 className="hover:bg-white/10"
@@ -133,15 +133,15 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
       <Card className="p-6 space-y-4 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
         <div className="flex items-center gap-2">
           <Instagram className="h-5 w-5 text-accent" />
-          <h3 className="font-semibold text-white">Post para Instagram</h3>
+          <h3 className="font-semibold text-white">Instagram Post</h3>
         </div>
 
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-300">Legenda</span>
+              <span className="text-sm font-medium text-gray-300">Caption</span>
               <Button
-                onClick={() => copyToClipboard(content.instagram.caption, "Legenda")}
+                onClick={() => copyToClipboard(content.instagram.caption, "Caption")}
                 variant="ghost"
                 size="sm"
                 className="hover:bg-white/10"
@@ -204,7 +204,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
           </div>
 
           <div>
-            <span className="text-sm font-medium text-gray-300">Horário Sugerido</span>
+            <span className="text-sm font-medium text-gray-300">Suggested Time</span>
             <p className="text-lg font-semibold text-primary mt-1">{content.instagram.suggestedTime}</p>
           </div>
         </div>

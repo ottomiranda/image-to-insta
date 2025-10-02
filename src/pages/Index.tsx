@@ -31,9 +31,9 @@ const Index = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-purple-400 to-accent bg-clip-text text-transparent">
-                Do Look ao Post
+                From Look to Post
               </h1>
-              <p className="text-xs text-gray-400">Pipeline de marketing de moda com IA</p>
+              <p className="text-xs text-gray-400">AI-powered fashion marketing pipeline</p>
             </div>
           </div>
         </div>
