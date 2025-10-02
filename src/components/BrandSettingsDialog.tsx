@@ -263,7 +263,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
               {/* Logo Upload */}
               <div className="space-y-2">
-                <Label>Logo da Marca</Label>
+                <Label htmlFor="logo-upload">Logo da Marca</Label>
                 <div className="flex items-center gap-4">
                   {logoPreview ? (
                     <div className="relative w-32 h-32 border rounded-lg overflow-hidden bg-muted flex items-center justify-center">
