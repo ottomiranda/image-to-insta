@@ -55,12 +55,12 @@ const Auth = () => {
       if (error) throw error;
 
       toast({
-        title: "Conta criada!",
-        description: "Você foi registrado com sucesso.",
+        title: "Account created!",
+        description: "You have been successfully registered.",
       });
     } catch (error: any) {
       toast({
-        title: "Erro ao criar conta",
+        title: "Error creating account",
         description: error.message,
         variant: "destructive",
       });
@@ -82,12 +82,12 @@ const Auth = () => {
       if (error) throw error;
 
       toast({
-        title: "Login realizado!",
-        description: "Bem-vindo de volta.",
+        title: "Login successful!",
+        description: "Welcome back.",
       });
     } catch (error: any) {
       toast({
-        title: "Erro ao fazer login",
+        title: "Error logging in",
         description: error.message,
         variant: "destructive",
       });
@@ -110,14 +110,14 @@ const Auth = () => {
         <CardHeader>
           <CardTitle className="text-2xl">Fashion Campaign AI</CardTitle>
           <CardDescription>
-            Entre ou crie sua conta para começar a criar campanhas
+            Sign in or create your account to start creating campaigns
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Entrar</TabsTrigger>
-              <TabsTrigger value="signup">Criar Conta</TabsTrigger>
+              <TabsTrigger value="signin">Sign In</TabsTrigger>
+              <TabsTrigger value="signup">Create Account</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin">
@@ -135,7 +135,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Senha</Label>
+                  <Label htmlFor="signin-password">Password</Label>
                   <Input
                     id="signin-password"
                     type="password"
@@ -150,10 +150,10 @@ const Auth = () => {
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Entrando...
+                      Signing in...
                     </>
                   ) : (
-                    "Entrar"
+                    "Sign In"
                   )}
                 </Button>
               </form>
@@ -174,7 +174,7 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Senha</Label>
+                  <Label htmlFor="signup-password">Password</Label>
                   <Input
                     id="signup-password"
                     type="password"
@@ -186,17 +186,17 @@ const Auth = () => {
                     disabled={loading}
                   />
                   <p className="text-xs text-muted-foreground">
-                    Mínimo de 6 caracteres
+                    Minimum 6 characters
                   </p>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Criando conta...
+                      Creating account...
                     </>
                   ) : (
-                    "Criar Conta"
+                    "Create Account"
                   )}
                 </Button>
               </form>
