@@ -64,6 +64,8 @@ interface BrandSettingsDialogProps {
 }
 
 export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogProps) {
+  console.log('=== BrandSettingsDialog RENDER ===');
+  
   const { settings, updateSettings } = useBrandSettings();
   const [isSaving, setIsSaving] = useState(false);
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -76,6 +78,19 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
     resolver: zodResolver(createBrandSettingsSchema(t)),
     defaultValues: DEFAULT_BRAND_SETTINGS,
   });
+
+  // Monitor form state changes
+  useEffect(() => {
+    console.log('=== FORM STATE MONITOR ===', {
+      isValid: form.formState.isValid,
+      isDirty: form.formState.isDirty,
+      errors: form.formState.errors,
+      isSaving,
+      isUploadingLogo,
+      hasLogoFile: !!logoFile,
+      formValues: form.getValues(),
+    });
+  }, [form.formState.isValid, form.formState.isDirty, form.formState.errors, isSaving, isUploadingLogo, logoFile]);
 
   useEffect(() => {
     if (settings) {
@@ -91,9 +106,16 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
     const file = e.target.files?.[0];
     if (!file) return;
 
+    console.log('=== LOGO FILE SELECTED ===', {
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.type
+    });
+
     // Validate file type
     const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'];
     if (!validTypes.includes(file.type)) {
+      console.log('Invalid file type:', file.type);
       toast({
         title: "Formato inválido",
         description: "Por favor, envie um arquivo PNG, JPG ou SVG.",
@@ -104,6 +126,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
     // Validate file size (2MB)
     if (file.size > 2 * 1024 * 1024) {
+      console.log('File too large:', file.size);
       toast({
         title: "Arquivo muito grande",
         description: "O logo deve ter no máximo 2MB.",
@@ -112,9 +135,11 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
       return;
     }
 
+    console.log('Logo file validated, setting preview...');
     setLogoFile(file);
     const reader = new FileReader();
     reader.onloadend = () => {
+      console.log('Logo preview ready');
       setLogoPreview(reader.result as string);
     };
     reader.readAsDataURL(file);
@@ -171,7 +196,13 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
   };
 
   const onSubmit = async (data: BrandSettingsFormValues) => {
-    console.log('onSubmit: Form submitted', { hasLogoFile: !!logoFile, currentLogoUrl: data.logo_url });
+    console.log('=== FORM SUBMIT TRIGGERED ===');
+    console.log('Form values:', form.getValues());
+    console.log('Form errors:', form.formState.errors);
+    console.log('Is valid:', form.formState.isValid);
+    console.log('Logo file:', logoFile);
+    console.log('Data received:', data);
+    
     try {
       setIsSaving(true);
       
@@ -490,7 +521,16 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
               >
                 {t('brandSettings.cancel')}
               </Button>
-              <Button type="submit" disabled={isSaving || isUploadingLogo}>
+              <Button 
+                type="submit" 
+                disabled={isSaving || isUploadingLogo}
+                onClick={(e) => {
+                  console.log('=== BUTTON CLICKED ===');
+                  console.log('Button disabled:', isSaving || isUploadingLogo);
+                  console.log('Form valid:', form.formState.isValid);
+                  console.log('Form errors:', form.formState.errors);
+                }}
+              >
                 {isSaving || isUploadingLogo ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
