@@ -16,6 +16,7 @@ export interface BrandSettings {
   secondary_color: string;
   preferred_keywords?: string;
   words_to_avoid?: string;
+  logo_url?: string;
 }
 
 export const useBrandSettings = () => {

@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, centerpiece, accessories = [], modelImage } = await req.json();
+    const { prompt, centerpiece, accessories = [], modelImage, logoConfig } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     if (!LOVABLE_API_KEY) {
@@ -146,6 +146,91 @@ Create a complete professional fashion look with:
 
     console.log('Look visual generated successfully');
 
+    // Step 1.5: Apply logo overlay if requested
+    let finalVisual = lookVisual;
+    if (logoConfig && logoConfig.logoUrl) {
+      console.log('Applying logo overlay...');
+      try {
+        // Download logo from URL
+        const logoResponse = await fetch(logoConfig.logoUrl);
+        if (!logoResponse.ok) {
+          throw new Error('Failed to fetch logo');
+        }
+        const logoBlob = await logoResponse.blob();
+        const logoBuffer = await logoBlob.arrayBuffer();
+        const logoBase64 = `data:${logoBlob.type};base64,${btoa(String.fromCharCode(...new Uint8Array(logoBuffer)))}`;
+
+        // Build logo overlay prompt based on position
+        const buildLogoPrompt = (position: string) => {
+          const positionMap: Record<string, string> = {
+            'top-left': 'in the top-left corner with 5% margin from edges',
+            'top-center': 'centered at the top with 5% margin from top edge',
+            'top-right': 'in the top-right corner with 5% margin from edges',
+            'center-left': 'centered vertically on the left side with 5% margin from left edge',
+            'center': 'centered in the middle of the image',
+            'center-right': 'centered vertically on the right side with 5% margin from right edge',
+            'bottom-left': 'in the bottom-left corner with 5% margin from edges',
+            'bottom-center': 'centered at the bottom with 5% margin from bottom edge',
+            'bottom-right': 'in the bottom-right corner with 5% margin from edges',
+          };
+
+          const positionDesc = positionMap[position] || positionMap['bottom-right'];
+          
+          return `Place this brand logo ${positionDesc} of the fashion image. 
+The logo should be:
+- Semi-transparent (80% opacity) to blend naturally
+- Scaled to approximately 8-12% of the image width
+- Maintain its original aspect ratio
+- Have subtle drop shadow for visibility
+- Look professional and tasteful, not obtrusive
+- Preserve all details of the original fashion image
+
+CRITICAL: Only overlay the logo - do not alter, regenerate, or modify any other aspect of the base image. The fashion look, model, colors, and composition must remain exactly as shown.`;
+        };
+
+        const logoPrompt = buildLogoPrompt(logoConfig.position);
+
+        const logoOverlayResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'google/gemini-2.5-flash-image-preview',
+            messages: [
+              {
+                role: 'user',
+                content: [
+                  { type: 'text', text: logoPrompt },
+                  { type: 'image_url', image_url: { url: lookVisual } },
+                  { type: 'image_url', image_url: { url: logoBase64 } }
+                ]
+              }
+            ],
+            modalities: ['image', 'text']
+          }),
+        });
+
+        if (!logoOverlayResponse.ok) {
+          const errorText = await logoOverlayResponse.text();
+          console.error('Error applying logo overlay:', errorText);
+          // Continue without logo if overlay fails
+        } else {
+          const logoData = await logoOverlayResponse.json();
+          const overlaidImage = logoData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+          
+          if (overlaidImage) {
+            finalVisual = overlaidImage;
+            console.log('Logo overlay applied successfully');
+          }
+        }
+      } catch (logoError) {
+        console.error('Error in logo overlay process:', logoError);
+        // Continue with original image if logo overlay fails
+      }
+    }
+
     // Step 2: Generate text content using Gemini 2.5 Pro with structured output
     console.log('Generating text content...');
     const textPrompt = `You are a professional fashion marketing expert creating content for ${brandSettings?.brand_name || 'a fashion brand'}.
@@ -225,7 +310,7 @@ Respond using the JSON tool format.`;
             role: 'user',
             content: [
               { type: 'text', text: textPrompt },
-              { type: 'image_url', image_url: { url: lookVisual } }
+              { type: 'image_url', image_url: { url: finalVisual } }
             ]
           }
         ],
@@ -315,7 +400,7 @@ Respond using the JSON tool format.`;
 
     // Return complete campaign
     const result = {
-      lookVisual,
+      lookVisual: finalVisual,
       imageAnalysis: content.imageAnalysis,
       shortDescription: content.shortDescription,
       longDescription: content.longDescription,

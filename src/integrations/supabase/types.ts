@@ -21,6 +21,7 @@ export type Database = {
           created_at: string
           id: string
           instagram_handle: string | null
+          logo_url: string | null
           preferred_keywords: string | null
           preferred_style: string
           primary_color: string
@@ -38,6 +39,7 @@ export type Database = {
           created_at?: string
           id?: string
           instagram_handle?: string | null
+          logo_url?: string | null
           preferred_keywords?: string | null
           preferred_style: string
           primary_color?: string
@@ -55,6 +57,7 @@ export type Database = {
           created_at?: string
           id?: string
           instagram_handle?: string | null
+          logo_url?: string | null
           preferred_keywords?: string | null
           preferred_style?: string
           primary_color?: string

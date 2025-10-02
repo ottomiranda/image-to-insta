@@ -10,6 +10,8 @@ import type { GeneratedContent } from "@/pages/Create";
 import ImageSelector from "./ImageSelector";
 import { useTranslation } from "react-i18next";
 import { CameraAngleSelector } from "./CameraAngleSelector";
+import { LogoPositionSelector, LogoPosition } from "./LogoPositionSelector";
+import { useBrandSettings } from "@/hooks/useBrandSettings";
 
 // Import product repository images - Dresses
 import redBohoDress from "@/assets/repository/products/dresses/red-boho-dress.jpg";
@@ -76,8 +78,11 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
   });
   const [modelImage, setModelImage] = useState<File | string | null>(null);
   const [selectedAngle, setSelectedAngle] = useState<string | null>(null);
+  const [includeLogo, setIncludeLogo] = useState(false);
+  const [logoPosition, setLogoPosition] = useState<LogoPosition>("bottom-right");
   const { toast } = useToast();
   const { t } = useTranslation();
+  const { settings } = useBrandSettings();
 
   // Update state when initial props change
   useEffect(() => {
@@ -133,12 +138,19 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
       // Compose prompt with camera angle if selected
       const composedPrompt = selectedAngle ? `${selectedAngle}: ${prompt}` : prompt;
 
+      // Prepare logo config if logo is included and available
+      const logoConfig = includeLogo && settings?.logo_url ? {
+        logoUrl: settings.logo_url,
+        position: logoPosition,
+      } : undefined;
+
       const { data, error } = await supabase.functions.invoke('generate-campaign', {
         body: {
           prompt: composedPrompt,
           centerpiece: centerpieceBase64,
           accessories: accessoriesBase64,
           modelImage: modelImageBase64,
+          logoConfig,
         }
       });
 
@@ -234,6 +246,15 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           modelRepository={MODEL_REPOSITORY}
           repositoryTitle={t('create.selectModel')}
           showCategories={false}
+        />
+
+        {/* Logo Position Selector */}
+        <LogoPositionSelector
+          includeLogo={includeLogo}
+          onIncludeLogoChange={setIncludeLogo}
+          logoPosition={logoPosition}
+          onLogoPositionChange={setLogoPosition}
+          hasLogo={!!settings?.logo_url}
         />
 
         {/* Generate Button */}
