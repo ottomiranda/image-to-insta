@@ -143,38 +143,64 @@ REMINDER: Output image MUST be exactly ${dimensions.width}x${dimensions.height} 
       contentArray.push({ type: 'image_url', image_url: { url: modelImage } });
     }
 
+    // Test generationConfig with aspectRatio parameter
+    const requestBody = {
+      model: 'google/gemini-2.5-flash-image-preview',
+      messages: [
+        {
+          role: 'user',
+          content: contentArray
+        }
+      ],
+      modalities: ['image', 'text'],
+      generationConfig: {
+        aspectRatio: aspectRatio || "1:1",
+        numberOfImages: 1
+      }
+    };
+
+    console.log('🧪 Testing generationConfig with aspectRatio:', aspectRatio || "1:1");
+    console.log('📦 Request body:', JSON.stringify(requestBody, null, 2));
+
     const imageResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-image-preview',
-        messages: [
-          {
-            role: 'user',
-            content: contentArray
-          }
-        ],
-        modalities: ['image', 'text']
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!imageResponse.ok) {
       const errorText = await imageResponse.text();
-      console.error('Error in image generation:', errorText);
+      console.error('❌ Error in image generation:', errorText);
+      console.error('❌ Response status:', imageResponse.status);
       throw new Error(`Error generating image: ${imageResponse.status}`);
     }
 
     const imageData = await imageResponse.json();
+    console.log('📊 Image API Response structure:', JSON.stringify({
+      hasChoices: !!imageData.choices,
+      choicesLength: imageData.choices?.length,
+      hasMessage: !!imageData.choices?.[0]?.message,
+      hasImages: !!imageData.choices?.[0]?.message?.images,
+      imagesCount: imageData.choices?.[0]?.message?.images?.length,
+      messageKeys: imageData.choices?.[0]?.message ? Object.keys(imageData.choices[0].message) : []
+    }, null, 2));
+
     const lookVisual = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
 
     if (!lookVisual) {
+      console.error('❌ Failed to extract image from response');
       throw new Error('Failed to generate look image');
     }
 
-    console.log('Look visual generated successfully');
+    console.log('✅ Look visual generated successfully');
+    
+    // Try to detect actual image dimensions if available in response
+    if (imageData.choices?.[0]?.message?.images?.[0]?.metadata) {
+      console.log('📐 Image metadata from API:', imageData.choices[0].message.images[0].metadata);
+    }
 
     // Step 1.5: Apply logo overlay if requested
     let finalVisual = lookVisual;
