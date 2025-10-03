@@ -40,6 +40,8 @@ import { Loader2, Upload, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { BrandBookSettings } from "./BrandBookSettings";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const createBrandSettingsSchema = (t: any) => z.object({
   brand_name: z.string().min(1, t('brandSettings.brandName')).max(100),
@@ -509,6 +511,41 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                   </FormItem>
                 )}
               />
+            </div>
+
+            {/* Brand Book Rules - Avançado */}
+            <div className="space-y-4">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="brand-book" className="border-white/10">
+                  <AccordionTrigger className="text-lg font-semibold text-white hover:no-underline">
+                    📚 Brand Book Avançado
+                  </AccordionTrigger>
+                  <AccordionContent className="pt-4">
+                    <BrandBookSettings
+                      brandBookRules={settings?.brand_book_rules || {
+                        vocabulary: { preferred: [], forbidden: [], alternatives: {} },
+                        writing_style: { max_sentence_length: 20, use_emojis: true, max_emojis_per_post: 3, call_to_action_required: true },
+                        content_rules: { always_mention_sustainability: false, include_brand_hashtag: true, avoid_superlatives: false }
+                      }}
+                      validationStrictness={settings?.validation_strictness || 'medium'}
+                      onUpdate={(rules, strictness) => {
+                        updateSettings({
+                          ...settings,
+                          brand_name: settings?.brand_name || '',
+                          brand_values: settings?.brand_values || '',
+                          tone_of_voice: settings?.tone_of_voice || '',
+                          target_market: settings?.target_market || '',
+                          preferred_style: settings?.preferred_style || '',
+                          primary_color: settings?.primary_color || '#6366f1',
+                          secondary_color: settings?.secondary_color || '#8b5cf6',
+                          brand_book_rules: rules,
+                          validation_strictness: strictness
+                        });
+                      }}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
 
             {/* Footer com botões */}

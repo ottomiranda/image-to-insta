@@ -3,6 +3,25 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { DEFAULT_BRAND_SETTINGS } from "@/lib/brandDefaults";
 
+export interface BrandBookRules {
+  vocabulary: {
+    preferred: string[];
+    forbidden: string[];
+    alternatives: Record<string, string>;
+  };
+  writing_style: {
+    max_sentence_length?: number;
+    use_emojis?: boolean;
+    max_emojis_per_post?: number;
+    call_to_action_required?: boolean;
+  };
+  content_rules: {
+    always_mention_sustainability?: boolean;
+    include_brand_hashtag?: boolean;
+    avoid_superlatives?: boolean;
+  };
+}
+
 export interface BrandSettings {
   id?: string;
   brand_name: string;
@@ -17,6 +36,11 @@ export interface BrandSettings {
   preferred_keywords?: string;
   words_to_avoid?: string;
   logo_url?: string;
+  brand_book_rules?: BrandBookRules;
+  tone_examples?: any[];
+  competitor_brands?: string[];
+  content_guidelines?: Record<string, any>;
+  validation_strictness?: 'low' | 'medium' | 'high';
 }
 
 export const useBrandSettings = () => {
@@ -44,7 +68,7 @@ export const useBrandSettings = () => {
         throw error;
       }
 
-      setSettings(data || null);
+      setSettings((data as unknown as BrandSettings) || null);
     } catch (error) {
       console.error("Error fetching brand settings:", error);
       toast({
@@ -72,13 +96,13 @@ export const useBrandSettings = () => {
 
       const { data, error } = await supabase
         .from("brand_settings")
-        .upsert(settingsData, { onConflict: "user_id" })
+        .upsert([settingsData as any], { onConflict: "user_id" })
         .select()
         .single();
 
       if (error) throw error;
 
-      setSettings(data);
+      setSettings(data as unknown as BrandSettings);
       
       toast({
         title: "Configurações salvas",

@@ -2,3 +2,6 @@ project_id = "ycattlisqwyahxiaxnbc"
 
 [functions.generate-campaign]
 verify_jwt = false
+
+[functions.validate-content]
+verify_jwt = false

@@ -16,8 +16,11 @@ export type Database = {
     Tables: {
       brand_settings: {
         Row: {
+          brand_book_rules: Json | null
           brand_name: string
           brand_values: string
+          competitor_brands: string[] | null
+          content_guidelines: Json | null
           created_at: string
           id: string
           instagram_handle: string | null
@@ -27,15 +30,20 @@ export type Database = {
           primary_color: string
           secondary_color: string
           target_market: string
+          tone_examples: Json | null
           tone_of_voice: string
           updated_at: string
           user_id: string
+          validation_strictness: string | null
           website: string | null
           words_to_avoid: string | null
         }
         Insert: {
+          brand_book_rules?: Json | null
           brand_name: string
           brand_values: string
+          competitor_brands?: string[] | null
+          content_guidelines?: Json | null
           created_at?: string
           id?: string
           instagram_handle?: string | null
@@ -45,15 +53,20 @@ export type Database = {
           primary_color?: string
           secondary_color?: string
           target_market: string
+          tone_examples?: Json | null
           tone_of_voice: string
           updated_at?: string
           user_id: string
+          validation_strictness?: string | null
           website?: string | null
           words_to_avoid?: string | null
         }
         Update: {
+          brand_book_rules?: Json | null
           brand_name?: string
           brand_values?: string
+          competitor_brands?: string[] | null
+          content_guidelines?: Json | null
           created_at?: string
           id?: string
           instagram_handle?: string | null
@@ -63,13 +76,59 @@ export type Database = {
           primary_color?: string
           secondary_color?: string
           target_market?: string
+          tone_examples?: Json | null
           tone_of_voice?: string
           updated_at?: string
           user_id?: string
+          validation_strictness?: string | null
           website?: string | null
           words_to_avoid?: string | null
         }
         Relationships: []
+      }
+      brand_validations: {
+        Row: {
+          adjustments_made: Json | null
+          campaign_id: string | null
+          corrected_content: Json | null
+          created_at: string
+          id: string
+          original_content: Json
+          user_approved: boolean | null
+          user_id: string
+          validation_score: number | null
+        }
+        Insert: {
+          adjustments_made?: Json | null
+          campaign_id?: string | null
+          corrected_content?: Json | null
+          created_at?: string
+          id?: string
+          original_content: Json
+          user_approved?: boolean | null
+          user_id: string
+          validation_score?: number | null
+        }
+        Update: {
+          adjustments_made?: Json | null
+          campaign_id?: string | null
+          corrected_content?: Json | null
+          created_at?: string
+          id?: string
+          original_content?: Json
+          user_approved?: boolean | null
+          user_id?: string
+          validation_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brand_validations_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       campaigns: {
         Row: {

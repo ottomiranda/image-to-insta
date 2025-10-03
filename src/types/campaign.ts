@@ -27,4 +27,6 @@ export interface Campaign {
   published_at?: string;
   created_at: string;
   updated_at: string;
+  brand_compliance_score?: number;
+  brand_compliance_adjustments?: string[];
 }

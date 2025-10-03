@@ -601,13 +601,63 @@ Respond using the JSON tool format.`;
     const content = JSON.parse(toolCall.function.arguments);
     console.log('Text content generated successfully');
 
-    // Return complete campaign
+    // Step 3: Validate content against brand book if rules are configured
+    let validationResult = null;
+    let finalContent = content;
+    
+    if (brandSettings?.brand_book_rules || brandSettings?.validation_strictness) {
+      console.log('Validating content against brand book...');
+      try {
+        const validateResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/validate-content`, {
+          method: 'POST',
+          headers: {
+            'Authorization': req.headers.get('Authorization') || '',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: {
+              shortDescription: content.shortDescription,
+              longDescription: content.longDescription,
+              instagram: content.instagram
+            },
+            brandSettings: {
+              brand_book_rules: brandSettings.brand_book_rules,
+              validation_strictness: brandSettings.validation_strictness
+            }
+          })
+        });
+
+        if (validateResponse.ok) {
+          const validationData = await validateResponse.json();
+          console.log('Validation result:', validationData);
+          
+          if (validationData.success && validationData.validation) {
+            validationResult = validationData.validation;
+            
+            // Use corrected content if score is below threshold and corrections are available
+            if (validationResult.score < 70 && validationResult.correctedContent) {
+              console.log('Using corrected content due to low score:', validationResult.score);
+              finalContent = validationResult.correctedContent;
+            }
+          }
+        } else {
+          console.error('Validation failed:', await validateResponse.text());
+        }
+      } catch (validationError) {
+        console.error('Error during validation:', validationError);
+        // Continue with unvalidated content if validation fails
+      }
+    }
+
+    // Return complete campaign with validation results
     const result = {
       lookVisual: finalVisual,
       imageAnalysis: content.imageAnalysis,
-      shortDescription: content.shortDescription,
-      longDescription: content.longDescription,
-      instagram: content.instagram
+      shortDescription: finalContent.shortDescription || content.shortDescription,
+      longDescription: finalContent.longDescription || content.longDescription,
+      instagram: finalContent.instagram || content.instagram,
+      brandComplianceScore: validationResult?.score,
+      brandComplianceAdjustments: validationResult?.adjustments || []
     };
 
     console.log('Campaign generated successfully!');

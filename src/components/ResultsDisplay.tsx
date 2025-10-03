@@ -1,10 +1,11 @@
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Copy, Download, Image as ImageIcon, FileText, Instagram } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { GeneratedContent } from "@/pages/Create";
 import { useTranslation } from "react-i18next";
+import { BrandComplianceIndicator } from "./BrandComplianceIndicator";
 
 interface ResultsDisplayProps {
   content: GeneratedContent;
@@ -63,6 +64,19 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
 
   return (
     <div className="space-y-6">
+      {/* Brand Compliance Score */}
+      {content.brandComplianceScore !== undefined && (
+        <Card className="bg-card/50 backdrop-blur border-white/5">
+          <CardContent className="pt-6">
+            <BrandComplianceIndicator
+              score={content.brandComplianceScore}
+              adjustments={content.brandComplianceAdjustments}
+              showDetails={true}
+            />
+          </CardContent>
+        </Card>
+      )}
+
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">{t('results.title')}</h2>
         <Button onClick={exportJSON} variant="outline" size="sm" className="border-white/20 hover:bg-white/5">

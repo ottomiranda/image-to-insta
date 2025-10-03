@@ -24,6 +24,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { enUS, ptBR } from "date-fns/locale";
+import { BrandComplianceIndicator } from "./BrandComplianceIndicator";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -78,6 +79,15 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
             <div className="flex-1">
               <h3 className="font-semibold truncate">{campaign.title}</h3>
               <p className="text-sm text-muted-foreground">{getTimestamp()}</p>
+              {campaign.brand_compliance_score !== undefined && (
+                <div className="mt-2">
+                  <BrandComplianceIndicator
+                    score={campaign.brand_compliance_score}
+                    adjustments={campaign.brand_compliance_adjustments}
+                    compact={true}
+                  />
+                </div>
+              )}
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

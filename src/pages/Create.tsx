@@ -32,6 +32,8 @@ export interface GeneratedContent {
     altText: string;
     suggestedTime: string;
   };
+  brandComplianceScore?: number;
+  brandComplianceAdjustments?: string[];
 }
 
 const Create = () => {
@@ -140,6 +142,8 @@ const Create = () => {
         short_description: generatedContent?.shortDescription || "",
         long_description: generatedContent?.longDescription || "",
         instagram: generatedContent?.instagram || { caption: "", hashtags: [], callToAction: "", altText: "", suggestedTime: "" },
+        brand_compliance_score: generatedContent?.brandComplianceScore,
+        brand_compliance_adjustments: generatedContent?.brandComplianceAdjustments || [],
       };
 
       if (isEditMode && campaignId) {
