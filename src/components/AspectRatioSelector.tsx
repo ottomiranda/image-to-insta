@@ -123,8 +123,9 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
     return ratioMap[ratio] || { width: 1024, height: 1024 };
   };
 
-  const previewDims = selectedRatio ? getPreviewDimensions(selectedRatio) : { width: 150, height: 150 };
-  const pixelDims = selectedRatio ? getPixelDimensions(selectedRatio) : { width: 1024, height: 1024 };
+  const effectiveRatio = selectedRatio || "1:1";
+  const previewDims = getPreviewDimensions(effectiveRatio);
+  const pixelDims = getPixelDimensions(effectiveRatio);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -135,7 +136,7 @@ export function AspectRatioSelector({ onSelectRatio, selectedRatio }: AspectRati
           className="shrink-0"
           title={t('create.aspectRatio')}
         >
-          <DynamicAspectRatioIcon ratio={selectedRatio} />
+          <DynamicAspectRatioIcon ratio={selectedRatio || "1:1"} />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl bg-card/95 backdrop-blur-xl border-white/10">

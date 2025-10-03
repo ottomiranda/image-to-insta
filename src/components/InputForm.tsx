@@ -103,7 +103,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
   });
   const [modelImage, setModelImage] = useState<File | string | null>(null);
   const [selectedAngle, setSelectedAngle] = useState<string | null>(null);
-  const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>(null);
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState<string | null>("1:1");
   const [includeLogo, setIncludeLogo] = useState(false);
   const [logoPosition, setLogoPosition] = useState<LogoPosition>("bottom-right");
   const { toast } = useToast();
