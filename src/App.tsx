@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import Create from "./pages/Create";
 import Campaigns from "./pages/Campaigns";
+import CampaignDetails from "./pages/CampaignDetails";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import BrandAnalytics from "./pages/BrandAnalytics";
@@ -47,7 +48,15 @@ const App = () => (
             } 
           />
           <Route 
-            path="/brand-analytics" 
+            path="/campaigns/:campaignId" 
+            element={
+              <ProtectedRoute>
+                <CampaignDetails />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/brand-analytics"
             element={
               <ProtectedRoute>
                 <BrandAnalytics />
