@@ -301,5 +301,47 @@
       "required": "Required",
       "optional": "Optional"
     }
+  },
+  "brandAnalytics": {
+    "title": "Brand Compliance Analytics",
+    "description": "Detailed analysis of content compliance with your Brand Book",
+    "backToCampaigns": "Back to Campaigns",
+    "loading": "Loading analytics...",
+    "noValidations": "No validations found. Create your first campaign to see metrics.",
+    "createFirstCampaign": "Create First Campaign",
+    
+    "kpis": {
+      "avgScore": "Average Score",
+      "complianceRate": "Compliance Rate",
+      "totalValidations": "Total Validations",
+      "adjustmentsApplied": "Adjustments Applied",
+      "campaignsAnalyzed": "Campaigns analyzed",
+      "campaignsWithHighScore": "Campaigns with score ≥ 80%",
+      "automaticCorrections": "Automatic corrections"
+    },
+    
+    "scoreLabels": {
+      "excellent": "Excellent",
+      "veryGood": "Very Good",
+      "good": "Good",
+      "adequate": "Adequate",
+      "pending": "Validation Pending",
+      "needsImprovement": "Needs Improvements"
+    },
+    
+    "charts": {
+      "scoreEvolution": "Score Evolution",
+      "scoreEvolutionDesc": "Average compliance score over time",
+      "categoryBreakdown": "Violations by Category",
+      "categoryBreakdownDesc": "Distribution of adjustments by type",
+      "topAdjustments": "Top 10 Most Frequent Adjustments",
+      "topAdjustmentsDesc": "Most applied corrections by AI",
+      "avgScoreLabel": "Average Score",
+      "violationsLabel": "Violations",
+      "frequencyLabel": "Frequency",
+      "insufficientData": "Insufficient data for chart",
+      "noCategoryDetected": "No category detected",
+      "noAdjustmentsYet": "No adjustments recorded yet"
+    }
   }
 }

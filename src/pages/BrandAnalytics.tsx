@@ -7,6 +7,7 @@ import { Logo } from "@/components/Logo";
 import { UserNav } from "@/components/UserNav";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ChartContainer,
   ChartTooltip,
@@ -37,6 +38,16 @@ export default function BrandAnalytics() {
   const navigate = useNavigate();
   const { analytics, isLoading } = useBrandValidations();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const { t } = useTranslation();
+
+  const getScoreLabel = (score: number) => {
+    if (score >= 90) return t('brandAnalytics.scoreLabels.excellent');
+    if (score >= 80) return t('brandAnalytics.scoreLabels.veryGood');
+    if (score >= 70) return t('brandAnalytics.scoreLabels.good');
+    if (score >= 60) return t('brandAnalytics.scoreLabels.adequate');
+    if (score === 50) return t('brandAnalytics.scoreLabels.pending');
+    return t('brandAnalytics.scoreLabels.needsImprovement');
+  };
 
   if (isLoading) {
     return (
@@ -48,7 +59,7 @@ export default function BrandAnalytics() {
           </div>
         </header>
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center py-12 text-muted-foreground">Carregando analytics...</div>
+          <div className="text-center py-12 text-muted-foreground">{t('brandAnalytics.loading')}</div>
         </main>
       </div>
     );
@@ -66,14 +77,14 @@ export default function BrandAnalytics() {
         <main className="container mx-auto px-4 py-8">
           <Button variant="ghost" onClick={() => navigate('/campaigns')} className="mb-6">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar para Campanhas
+            {t('brandAnalytics.backToCampaigns')}
           </Button>
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
-              Nenhuma validação encontrada. Crie sua primeira campanha para ver as métricas.
+              {t('brandAnalytics.noValidations')}
             </p>
             <Button onClick={() => navigate('/create')}>
-              Criar Primeira Campanha
+              {t('brandAnalytics.createFirstCampaign')}
             </Button>
           </div>
         </main>
@@ -86,15 +97,6 @@ export default function BrandAnalytics() {
     if (score >= 80) return COLORS.excellent;
     if (score >= 70) return COLORS.good;
     return COLORS.poor;
-  };
-
-  const getScoreLabel = (score: number) => {
-    if (score >= 90) return "Excelente";
-    if (score >= 80) return "Muito Bom";
-    if (score >= 70) return "Bom";
-    if (score >= 60) return "Adequado";
-    if (score === 50) return "Validação Pendente";
-    return "Precisa Melhorias";
   };
 
   // Prepare pie chart data for category breakdown
@@ -123,14 +125,14 @@ export default function BrandAnalytics() {
         <div className="mb-6">
           <Button variant="ghost" onClick={() => navigate('/campaigns')}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar para Campanhas
+            {t('brandAnalytics.backToCampaigns')}
           </Button>
         </div>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Analytics de Brand Compliance</h1>
+          <h1 className="text-3xl font-bold mb-2">{t('brandAnalytics.title')}</h1>
           <p className="text-muted-foreground">
-            Análise detalhada da conformidade do conteúdo com seu Brand Book
+            {t('brandAnalytics.description')}
           </p>
         </div>
 
@@ -138,7 +140,7 @@ export default function BrandAnalytics() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Score Médio</CardDescription>
+              <CardDescription>{t('brandAnalytics.kpis.avgScore')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
@@ -159,7 +161,7 @@ export default function BrandAnalytics() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Taxa de Compliance</CardDescription>
+              <CardDescription>{t('brandAnalytics.kpis.complianceRate')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
@@ -169,14 +171,14 @@ export default function BrandAnalytics() {
                 <Award className="h-8 w-8 text-primary" />
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Campanhas com score ≥ 80%
+                {t('brandAnalytics.kpis.campaignsWithHighScore')}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Total de Validações</CardDescription>
+              <CardDescription>{t('brandAnalytics.kpis.totalValidations')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
@@ -184,14 +186,14 @@ export default function BrandAnalytics() {
                 <TrendingUp className="h-8 w-8 text-primary" />
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Campanhas analisadas
+                {t('brandAnalytics.kpis.campaignsAnalyzed')}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Ajustes Aplicados</CardDescription>
+              <CardDescription>{t('brandAnalytics.kpis.adjustmentsApplied')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
@@ -201,7 +203,7 @@ export default function BrandAnalytics() {
                 <AlertCircle className="h-8 w-8 text-warning" />
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Correções automáticas
+                {t('brandAnalytics.kpis.automaticCorrections')}
               </p>
             </CardContent>
           </Card>
@@ -212,15 +214,15 @@ export default function BrandAnalytics() {
           {/* Score Evolution Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Evolução do Score</CardTitle>
-              <CardDescription>Score médio de compliance ao longo do tempo</CardDescription>
+              <CardTitle>{t('brandAnalytics.charts.scoreEvolution')}</CardTitle>
+              <CardDescription>{t('brandAnalytics.charts.scoreEvolutionDesc')}</CardDescription>
             </CardHeader>
             <CardContent>
               {analytics.scoreEvolution.length > 0 ? (
                 <ChartContainer
                   config={{
                     avgScore: {
-                      label: "Score Médio",
+                      label: t('brandAnalytics.charts.avgScoreLabel'),
                       color: "hsl(var(--primary))",
                     },
                   }}
@@ -253,7 +255,7 @@ export default function BrandAnalytics() {
                 </ChartContainer>
               ) : (
                 <p className="text-center text-muted-foreground py-12">
-                  Dados insuficientes para gráfico
+                  {t('brandAnalytics.charts.insufficientData')}
                 </p>
               )}
             </CardContent>
@@ -262,8 +264,8 @@ export default function BrandAnalytics() {
           {/* Category Breakdown */}
           <Card>
             <CardHeader>
-              <CardTitle>Violações por Categoria</CardTitle>
-              <CardDescription>Distribuição de ajustes por tipo</CardDescription>
+              <CardTitle>{t('brandAnalytics.charts.categoryBreakdown')}</CardTitle>
+              <CardDescription>{t('brandAnalytics.charts.categoryBreakdownDesc')}</CardDescription>
             </CardHeader>
             <CardContent>
               {categoryChartData.length > 0 ? (
@@ -271,7 +273,7 @@ export default function BrandAnalytics() {
                   <ChartContainer
                     config={{
                       value: {
-                        label: "Violações",
+                        label: t('brandAnalytics.charts.violationsLabel'),
                         color: "hsl(var(--primary))",
                       },
                     }}
@@ -310,7 +312,7 @@ export default function BrandAnalytics() {
                 </div>
               ) : (
                 <p className="text-center text-muted-foreground py-12">
-                  Nenhuma categoria detectada
+                  {t('brandAnalytics.charts.noCategoryDetected')}
                 </p>
               )}
             </CardContent>
@@ -320,15 +322,15 @@ export default function BrandAnalytics() {
         {/* Top Adjustments */}
         <Card>
           <CardHeader>
-            <CardTitle>Top 10 Ajustes Mais Frequentes</CardTitle>
-            <CardDescription>Correções mais aplicadas pela IA</CardDescription>
+            <CardTitle>{t('brandAnalytics.charts.topAdjustments')}</CardTitle>
+            <CardDescription>{t('brandAnalytics.charts.topAdjustmentsDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             {analytics.topAdjustments.length > 0 ? (
               <ChartContainer
                 config={{
                   count: {
-                    label: "Frequência",
+                    label: t('brandAnalytics.charts.frequencyLabel'),
                     color: "hsl(var(--primary))",
                   },
                 }}
@@ -356,7 +358,7 @@ export default function BrandAnalytics() {
               </ChartContainer>
             ) : (
               <p className="text-center text-muted-foreground py-12">
-                Nenhum ajuste registrado ainda
+                {t('brandAnalytics.charts.noAdjustmentsYet')}
               </p>
             )}
           </CardContent>

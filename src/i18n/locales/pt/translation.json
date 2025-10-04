@@ -301,5 +301,47 @@
       "required": "Obrigatório",
       "optional": "Opcional"
     }
+  },
+  "brandAnalytics": {
+    "title": "Analytics de Brand Compliance",
+    "description": "Análise detalhada da conformidade do conteúdo com seu Brand Book",
+    "backToCampaigns": "Voltar para Campanhas",
+    "loading": "Carregando analytics...",
+    "noValidations": "Nenhuma validação encontrada. Crie sua primeira campanha para ver as métricas.",
+    "createFirstCampaign": "Criar Primeira Campanha",
+    
+    "kpis": {
+      "avgScore": "Score Médio",
+      "complianceRate": "Taxa de Compliance",
+      "totalValidations": "Total de Validações",
+      "adjustmentsApplied": "Ajustes Aplicados",
+      "campaignsAnalyzed": "Campanhas analisadas",
+      "campaignsWithHighScore": "Campanhas com score ≥ 80%",
+      "automaticCorrections": "Correções automáticas"
+    },
+    
+    "scoreLabels": {
+      "excellent": "Excelente",
+      "veryGood": "Muito Bom",
+      "good": "Bom",
+      "adequate": "Adequado",
+      "pending": "Validação Pendente",
+      "needsImprovement": "Precisa Melhorias"
+    },
+    
+    "charts": {
+      "scoreEvolution": "Evolução do Score",
+      "scoreEvolutionDesc": "Score médio de compliance ao longo do tempo",
+      "categoryBreakdown": "Violações por Categoria",
+      "categoryBreakdownDesc": "Distribuição de ajustes por tipo",
+      "topAdjustments": "Top 10 Ajustes Mais Frequentes",
+      "topAdjustmentsDesc": "Correções mais aplicadas pela IA",
+      "avgScoreLabel": "Score Médio",
+      "violationsLabel": "Violações",
+      "frequencyLabel": "Frequência",
+      "insufficientData": "Dados insuficientes para gráfico",
+      "noCategoryDetected": "Nenhuma categoria detectada",
+      "noAdjustmentsYet": "Nenhum ajuste registrado ainda"
+    }
   }
 }
