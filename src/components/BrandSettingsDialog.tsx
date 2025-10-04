@@ -437,12 +437,12 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                         <div className="flex items-center gap-2">
                           <Sparkles className="h-5 w-5 text-primary" />
                           <div>
-                            <CardTitle className="text-base">Personalizar Regras</CardTitle>
+                            <CardTitle className="text-base">{t('brandBook.customizeRules')}</CardTitle>
                             <CardDescription className="text-xs">
-                              Configure as regras específicas do seu Brand Book
+                              {t('brandBook.customizeDescription')}
                             </CardDescription>
                           </div>
-                          <Badge variant="secondary" className="ml-auto text-[10px]">Customização Avançada</Badge>
+                          <Badge variant="secondary" className="ml-auto text-[10px]">{t('brandBook.advancedCustomization')}</Badge>
                         </div>
                       </CardHeader>
                       <CardContent>
