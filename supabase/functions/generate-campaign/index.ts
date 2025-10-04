@@ -672,15 +672,34 @@ Respond using the JSON tool format.`;
           const errorText = await validateResponse.text();
           console.error('❌ VALIDATION: Request failed with status', validateResponse.status);
           console.error('❌ VALIDATION: Error response:', errorText);
+          // Set default score on validation failure
+          validationResult = {
+            score: 50,
+            adjustments: ['⚠️ Brand validation failed - using default score'],
+            violations: []
+          };
         }
       } catch (validationError) {
         console.error('❌ VALIDATION: Exception caught:', validationError);
         console.error('❌ VALIDATION: Error stack:', validationError instanceof Error ? validationError.stack : 'No stack');
-        // Continue with unvalidated content if validation fails
+        // Set default score on validation error
+        validationResult = {
+          score: 50,
+          adjustments: ['⚠️ Brand validation error - using default score'],
+          violations: []
+        };
       }
     } else {
       console.log('⏭️ VALIDATION: Skipped - no brand book rules or validation strictness configured');
     }
+
+    // Ensure we always have a compliance score
+    const complianceScore = validationResult?.score ?? 50;
+    const complianceAdjustments = validationResult?.adjustments || (
+      brandSettings?.brand_book_rules || brandSettings?.validation_strictness 
+        ? ['⚠️ Brand validation incomplete - using default score']
+        : []
+    );
 
     // Return complete campaign with validation results
     const result = {
@@ -689,8 +708,8 @@ Respond using the JSON tool format.`;
       shortDescription: finalContent.shortDescription || content.shortDescription,
       longDescription: finalContent.longDescription || content.longDescription,
       instagram: finalContent.instagram || content.instagram,
-      brand_compliance_score: validationResult?.score,
-      brand_compliance_adjustments: validationResult?.adjustments || []
+      brand_compliance_score: complianceScore,
+      brand_compliance_adjustments: complianceAdjustments
     };
 
     console.log('Campaign generated successfully!');
