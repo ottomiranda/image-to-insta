@@ -32,6 +32,7 @@ export function BrandComplianceIndicator({
     if (score >= 80) return "Muito Bom";
     if (score >= 70) return "Bom";
     if (score >= 60) return "Adequado";
+    if (score === 50) return "Validação Pendente";
     return "Precisa Melhorias";
   };
 
@@ -48,12 +49,21 @@ export function BrandComplianceIndicator({
           <TooltipContent className="max-w-sm">
             <div className="space-y-2">
               <p className="font-semibold">Brand Book Compliance: {getScoreLabel()}</p>
+              {score === 50 && adjustments.some(a => a.includes('⚠️')) && (
+                <p className="text-xs text-warning">
+                  ⚠️ Este score é provisório. A validação pode ter encontrado problemas.
+                </p>
+              )}
               {adjustments.length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs text-muted-foreground">Ajustes realizados:</p>
+                  <p className="text-xs text-muted-foreground">
+                    {adjustments.some(a => a.includes('⚠️')) ? 'Status:' : 'Ajustes realizados:'}
+                  </p>
                   <ul className="text-xs space-y-1">
                     {adjustments.slice(0, 3).map((adj, i) => (
-                      <li key={i}>• {adj}</li>
+                      <li key={i} className={adj.includes('⚠️') ? 'text-warning' : ''}>
+                        • {adj}
+                      </li>
                     ))}
                     {adjustments.length > 3 && (
                       <li className="text-muted-foreground">+{adjustments.length - 3} mais...</li>
@@ -80,18 +90,37 @@ export function BrandComplianceIndicator({
         </Badge>
       </div>
 
-      {showDetails && adjustments.length > 0 && (
-        <div className="space-y-2 text-sm">
-          <p className="text-muted-foreground font-medium">Ajustes aplicados:</p>
-          <ul className="space-y-1.5 text-muted-foreground">
-            {adjustments.map((adjustment, index) => (
-              <li key={index} className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 mt-0.5 text-green-500 shrink-0" />
-                <span>{adjustment}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {showDetails && (
+        <>
+          {score === 50 && adjustments.some(a => a.includes('⚠️')) && (
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-warning/10 text-warning text-sm">
+              <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+              <p>Score provisório. A validação pode ter encontrado problemas técnicos.</p>
+            </div>
+          )}
+          
+          {adjustments.length > 0 && (
+            <div className="space-y-2 text-sm">
+              <p className="text-muted-foreground font-medium">
+                {adjustments.some(a => a.includes('⚠️')) ? 'Status da validação:' : 'Ajustes aplicados:'}
+              </p>
+              <ul className="space-y-1.5 text-muted-foreground">
+                {adjustments.map((adjustment, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    {adjustment.includes('⚠️') ? (
+                      <AlertCircle className="h-4 w-4 mt-0.5 text-warning shrink-0" />
+                    ) : (
+                      <CheckCircle2 className="h-4 w-4 mt-0.5 text-green-500 shrink-0" />
+                    )}
+                    <span className={adjustment.includes('⚠️') ? 'text-warning' : ''}>
+                      {adjustment}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

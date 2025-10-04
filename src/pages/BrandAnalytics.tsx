@@ -93,6 +93,7 @@ export default function BrandAnalytics() {
     if (score >= 80) return "Muito Bom";
     if (score >= 70) return "Bom";
     if (score >= 60) return "Adequado";
+    if (score === 50) return "Validação Pendente";
     return "Precisa Melhorias";
   };
 

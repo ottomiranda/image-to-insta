@@ -32,9 +32,14 @@ export function BrandComplianceWidget() {
           <CardDescription>Análise de conformidade com o Brand Book</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground mb-4">
-            Nenhuma campanha validada ainda. Crie sua primeira campanha para ver as métricas.
-          </p>
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Nenhuma campanha validada ainda. Crie sua primeira campanha para ver as métricas.
+            </p>
+            <div className="p-3 bg-muted/50 rounded-lg text-xs text-muted-foreground">
+              💡 <strong>Dica:</strong> Configure seu Brand Book nas configurações para ativar a validação automática.
+            </div>
+          </div>
         </CardContent>
       </Card>
     );
