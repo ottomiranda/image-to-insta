@@ -1,0 +1,57 @@
+{
+  "templates": {
+    "title": "Templates de Brand Book",
+    "description": "Escolha um template pré-configurado para começar rapidamente",
+    "apply": "Aplicar Template",
+    "applied": "Aplicado",
+    "preview": "Preview",
+    "customize": "ou personalize",
+    
+    "luxury": {
+      "name": "Luxury Premium",
+      "description": "Para marcas de alto padrão com foco em exclusividade e sofisticação"
+    },
+    "sustainable": {
+      "name": "Sustainable & Conscious",
+      "description": "Para marcas eco-friendly com compromisso ambiental e social"
+    },
+    "streetwear": {
+      "name": "Streetwear Urban",
+      "description": "Para marcas jovens, urbanas e com atitude descolada"
+    },
+    "casual": {
+      "name": "Casual Everyday",
+      "description": "Para marcas do dia a dia, confortáveis e acessíveis"
+    },
+    "minimal": {
+      "name": "Minimal Contemporary",
+      "description": "Para marcas minimalistas com design clean e contemporâneo"
+    },
+    
+    "strictness": {
+      "low": "Baixo",
+      "medium": "Médio",
+      "high": "Alto",
+      "label": "Rigor"
+    },
+    
+    "sections": {
+      "preferred": "Palavras Preferidas",
+      "forbidden": "Palavras Proibidas",
+      "alternatives": "Substituições Automáticas",
+      "writingRules": "Regras de Escrita"
+    },
+    
+    "writingRules": {
+      "maxLength": "Comprimento máximo de frase",
+      "emojis": "Emojis",
+      "emojisAllowed": "Permitidos",
+      "emojisNotAllowed": "Não permitidos",
+      "maxEmojis": "máx",
+      "cta": "Call-to-action",
+      "ctaRequired": "Obrigatório",
+      "ctaOptional": "Opcional",
+      "words": "palavras"
+    }
+  }
+}

@@ -41,6 +41,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { BrandBookSettings } from "./BrandBookSettings";
+import { BrandBookTemplateSelector } from "./BrandBookTemplateSelector";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const createBrandSettingsSchema = (t: any) => z.object({
@@ -520,7 +521,37 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                   <AccordionTrigger className="text-lg font-semibold text-white hover:no-underline">
                     📚 Brand Book Avançado
                   </AccordionTrigger>
-                  <AccordionContent className="pt-4">
+                  <AccordionContent className="pt-4 space-y-6">
+                    {/* Templates Selector */}
+                    <BrandBookTemplateSelector
+                      onApplyTemplate={(rules, strictness) => {
+                        updateSettings({
+                          ...settings,
+                          brand_name: settings?.brand_name || '',
+                          brand_values: settings?.brand_values || '',
+                          tone_of_voice: settings?.tone_of_voice || '',
+                          target_market: settings?.target_market || '',
+                          preferred_style: settings?.preferred_style || '',
+                          primary_color: settings?.primary_color || '#6366f1',
+                          secondary_color: settings?.secondary_color || '#8b5cf6',
+                          brand_book_rules: rules,
+                          validation_strictness: strictness
+                        });
+                      }}
+                      currentRules={settings?.brand_book_rules}
+                    />
+
+                    {/* Divider */}
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-white/10" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-muted-foreground">ou personalize</span>
+                      </div>
+                    </div>
+
+                    {/* Custom Settings */}
                     <BrandBookSettings
                       brandBookRules={settings?.brand_book_rules || {
                         vocabulary: { preferred: [], forbidden: [], alternatives: {} },

@@ -1,0 +1,57 @@
+{
+  "templates": {
+    "title": "Brand Book Templates",
+    "description": "Choose a pre-configured template to get started quickly",
+    "apply": "Apply Template",
+    "applied": "Applied",
+    "preview": "Preview",
+    "customize": "or customize",
+    
+    "luxury": {
+      "name": "Luxury Premium",
+      "description": "For high-end brands focused on exclusivity and sophistication"
+    },
+    "sustainable": {
+      "name": "Sustainable & Conscious",
+      "description": "For eco-friendly brands with environmental and social commitment"
+    },
+    "streetwear": {
+      "name": "Streetwear Urban",
+      "description": "For young, urban brands with cool attitude"
+    },
+    "casual": {
+      "name": "Casual Everyday",
+      "description": "For everyday, comfortable and accessible brands"
+    },
+    "minimal": {
+      "name": "Minimal Contemporary",
+      "description": "For minimalist brands with clean and contemporary design"
+    },
+    
+    "strictness": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "label": "Strictness"
+    },
+    
+    "sections": {
+      "preferred": "Preferred Words",
+      "forbidden": "Forbidden Words",
+      "alternatives": "Automatic Substitutions",
+      "writingRules": "Writing Rules"
+    },
+    
+    "writingRules": {
+      "maxLength": "Maximum sentence length",
+      "emojis": "Emojis",
+      "emojisAllowed": "Allowed",
+      "emojisNotAllowed": "Not allowed",
+      "maxEmojis": "max",
+      "cta": "Call-to-action",
+      "ctaRequired": "Required",
+      "ctaOptional": "Optional",
+      "words": "words"
+    }
+  }
+}
