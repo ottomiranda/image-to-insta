@@ -190,7 +190,14 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
 
       if (error) throw error;
 
-      onGenerate(data);
+      // Transform snake_case to camelCase for frontend
+      const transformedData = {
+        ...data,
+        brandComplianceScore: data.brand_compliance_score,
+        brandComplianceAdjustments: data.brand_compliance_adjustments,
+      };
+
+      onGenerate(transformedData);
       
       toast({
         title: t('create.campaignGenerated'),
