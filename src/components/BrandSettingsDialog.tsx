@@ -260,7 +260,6 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                 <TabsTrigger value="brandbook" className="gap-2">
                   <BookOpen className="h-4 w-4" />
                   {t('brandBook.advancedTab')}
-                  <Badge variant="secondary" className="ml-2 text-xs">{t('brandBook.optional')}</Badge>
                 </TabsTrigger>
               </TabsList>
 
