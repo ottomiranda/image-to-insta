@@ -424,28 +424,35 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                 </div>
 
                 {/* Custom Settings */}
-                <BrandBookSettings
-                  brandBookRules={settings?.brand_book_rules || {
-                    vocabulary: { preferred: [], forbidden: [], alternatives: {} },
-                    writing_style: { max_sentence_length: 20, use_emojis: true, max_emojis_per_post: 3, call_to_action_required: true },
-                    content_rules: { always_mention_sustainability: false, include_brand_hashtag: true, avoid_superlatives: false }
-                  }}
-                  validationStrictness={settings?.validation_strictness || 'medium'}
-                  onUpdate={(rules, strictness) => {
-                    updateSettings({
-                      ...settings,
-                      brand_name: settings?.brand_name || '',
-                      brand_values: settings?.brand_values || '',
-                      tone_of_voice: settings?.tone_of_voice || '',
-                      target_market: settings?.target_market || '',
-                      preferred_style: settings?.preferred_style || '',
-                      primary_color: settings?.primary_color || '#6366f1',
-                      secondary_color: settings?.secondary_color || '#8b5cf6',
-                      brand_book_rules: rules,
-                      validation_strictness: strictness
-                    });
-                  }}
-                />
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Personalizar Regras</h3>
+                    <p className="text-sm text-muted-foreground">Configure as regras específicas do seu Brand Book</p>
+                  </div>
+                  
+                  <BrandBookSettings
+                    brandBookRules={settings?.brand_book_rules || {
+                      vocabulary: { preferred: [], forbidden: [], alternatives: {} },
+                      writing_style: { max_sentence_length: 20, use_emojis: true, max_emojis_per_post: 3, call_to_action_required: true },
+                      content_rules: { always_mention_sustainability: false, include_brand_hashtag: true, avoid_superlatives: false }
+                    }}
+                    validationStrictness={settings?.validation_strictness || 'medium'}
+                    onUpdate={(rules, strictness) => {
+                      updateSettings({
+                        ...settings,
+                        brand_name: settings?.brand_name || '',
+                        brand_values: settings?.brand_values || '',
+                        tone_of_voice: settings?.tone_of_voice || '',
+                        target_market: settings?.target_market || '',
+                        preferred_style: settings?.preferred_style || '',
+                        primary_color: settings?.primary_color || '#6366f1',
+                        secondary_color: settings?.secondary_color || '#8b5cf6',
+                        brand_book_rules: rules,
+                        validation_strictness: strictness
+                      });
+                    }}
+                  />
+                </div>
               </TabsContent>
             </Tabs>
 
