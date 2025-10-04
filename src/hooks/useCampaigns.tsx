@@ -10,9 +10,18 @@ export function useCampaigns() {
     queryKey: ["campaigns"],
     queryFn: async () => {
       try {
+        console.log("🔍 [useCampaigns] Starting fetch...");
+        
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) throw new Error("Not authenticated");
+        console.log("👤 [useCampaigns] User:", user ? user.id : "NO USER");
+        
+        if (!user) {
+          console.error("❌ [useCampaigns] Not authenticated");
+          throw new Error("Not authenticated");
+        }
 
+        console.log("📡 [useCampaigns] Fetching campaigns for user:", user.id);
+        
         const { data, error } = await supabase
           .from("campaigns")
           .select("*")
@@ -20,16 +29,18 @@ export function useCampaigns() {
           .order("created_at", { ascending: false });
 
         if (error) {
-          console.error("Error fetching campaigns:", error);
+          console.error("❌ [useCampaigns] Supabase error:", error);
           throw error;
         }
+        
+        console.log("✅ [useCampaigns] Campaigns fetched:", data?.length || 0);
         
         return data.map((c: any) => ({
           ...c,
           accessories_images: c.accessories_images || [],
         })) as Campaign[];
       } catch (error) {
-        console.error("Failed to fetch campaigns:", error);
+        console.error("💥 [useCampaigns] Failed to fetch campaigns:", error);
         throw error;
       }
     },
