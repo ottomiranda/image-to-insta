@@ -24,31 +24,41 @@ export interface ValidationAnalytics {
 }
 
 export function useBrandValidations() {
-  const { data: validations, isLoading } = useQuery({
-    queryKey: ["brand-validations"],
+  // Fetch campaigns instead of brand_validations to get real compliance data
+  const { data: campaigns, isLoading } = useQuery({
+    queryKey: ["campaigns-for-analytics"],
     queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
       const { data, error } = await supabase
-        .from("brand_validations")
+        .from("campaigns")
         .select("*")
+        .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      return data as BrandValidation[];
+      return data;
     },
   });
 
+  // Convert campaigns to BrandValidation format for compatibility
+  const validations = campaigns?.map(c => ({
+    id: c.id,
+    user_id: c.user_id,
+    campaign_id: c.id,
+    original_content: {},
+    corrected_content: {},
+    validation_score: c.brand_compliance_score,
+    adjustments_made: c.brand_compliance_adjustments || [],
+    user_approved: null,
+    created_at: c.created_at,
+  })) as BrandValidation[] | undefined;
+
   const { data: analytics } = useQuery({
-    queryKey: ["brand-validations-analytics"],
+    queryKey: ["brand-validations-analytics", campaigns?.length],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("brand_validations")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-
-      const validations = data as BrandValidation[];
-      if (!validations || validations.length === 0) {
+      if (!campaigns || campaigns.length === 0) {
         return {
           avgScore: 0,
           totalValidations: 0,
@@ -60,23 +70,34 @@ export function useBrandValidations() {
         };
       }
 
+      // Filter campaigns with compliance scores
+      const campaignsWithScores = campaigns.filter(c => c.brand_compliance_score !== null);
+      
+      if (campaignsWithScores.length === 0) {
+        return {
+          avgScore: 0,
+          totalValidations: campaigns.length,
+          complianceRate: 0,
+          topAdjustments: [],
+          scoreEvolution: [],
+          categoryBreakdown: [],
+          recentValidations: [],
+        };
+      }
+
       // Calculate average score
-      const scoresWithValue = validations.filter(v => v.validation_score !== null);
-      const avgScore = scoresWithValue.length > 0
-        ? scoresWithValue.reduce((acc, v) => acc + (v.validation_score || 0), 0) / scoresWithValue.length
-        : 0;
+      const avgScore = campaignsWithScores.reduce((acc, c) => acc + (c.brand_compliance_score || 0), 0) / campaignsWithScores.length;
 
       // Calculate compliance rate (>= 80%)
-      const compliantCount = scoresWithValue.filter(v => (v.validation_score || 0) >= 80).length;
-      const complianceRate = scoresWithValue.length > 0 
-        ? (compliantCount / scoresWithValue.length) * 100
-        : 0;
+      const compliantCount = campaignsWithScores.filter(c => (c.brand_compliance_score || 0) >= 80).length;
+      const complianceRate = (compliantCount / campaignsWithScores.length) * 100;
 
-      // Calculate top adjustments
+      // Calculate top adjustments from brand_compliance_adjustments
       const adjustmentCounts = new Map<string, number>();
-      validations.forEach(v => {
-        if (v.adjustments_made && Array.isArray(v.adjustments_made)) {
-          v.adjustments_made.forEach((adj: string) => {
+      campaignsWithScores.forEach(c => {
+        const adjustments = c.brand_compliance_adjustments;
+        if (adjustments && Array.isArray(adjustments)) {
+          adjustments.forEach((adj: string) => {
             adjustmentCounts.set(adj, (adjustmentCounts.get(adj) || 0) + 1);
           });
         }
@@ -86,17 +107,15 @@ export function useBrandValidations() {
         .sort((a, b) => b.count - a.count)
         .slice(0, 10);
 
-      // Calculate score evolution (last 30 days)
+      // Calculate score evolution by date
       const scoresByDate = new Map<string, { total: number; count: number }>();
-      validations.forEach(v => {
-        if (v.validation_score !== null) {
-          const date = new Date(v.created_at).toISOString().split('T')[0];
-          const existing = scoresByDate.get(date) || { total: 0, count: 0 };
-          scoresByDate.set(date, {
-            total: existing.total + (v.validation_score || 0),
-            count: existing.count + 1,
-          });
-        }
+      campaignsWithScores.forEach(c => {
+        const date = new Date(c.created_at).toISOString().split('T')[0];
+        const existing = scoresByDate.get(date) || { total: 0, count: 0 };
+        scoresByDate.set(date, {
+          total: existing.total + (c.brand_compliance_score || 0),
+          count: existing.count + 1,
+        });
       });
       const scoreEvolution = Array.from(scoresByDate.entries())
         .map(([date, { total, count }]) => ({
@@ -107,17 +126,18 @@ export function useBrandValidations() {
         .sort((a, b) => a.date.localeCompare(b.date))
         .slice(-30);
 
-      // Calculate category breakdown (simulated based on adjustments)
+      // Calculate category breakdown based on adjustments
       const categoryMap = new Map<string, number>();
-      validations.forEach(v => {
-        if (v.adjustments_made && Array.isArray(v.adjustments_made)) {
-          v.adjustments_made.forEach((adj: string) => {
+      campaignsWithScores.forEach(c => {
+        const adjustments = c.brand_compliance_adjustments;
+        if (adjustments && Array.isArray(adjustments)) {
+          adjustments.forEach((adj: string) => {
             const adjLower = adj.toLowerCase();
             if (adjLower.includes('vocabulário') || adjLower.includes('palavra') || adjLower.includes('substituíd')) {
               categoryMap.set('Vocabulário', (categoryMap.get('Vocabulário') || 0) + 1);
-            } else if (adjLower.includes('tom') || adjLower.includes('estilo')) {
+            } else if (adjLower.includes('tom') || adjLower.includes('voz') || adjLower.includes('alinhado')) {
               categoryMap.set('Tom de Voz', (categoryMap.get('Tom de Voz') || 0) + 1);
-            } else if (adjLower.includes('emoji') || adjLower.includes('frase') || adjLower.includes('cta')) {
+            } else if (adjLower.includes('emoji') || adjLower.includes('frase') || adjLower.includes('cta') || adjLower.includes('call-to-action')) {
               categoryMap.set('Estrutura', (categoryMap.get('Estrutura') || 0) + 1);
             } else {
               categoryMap.set('Conteúdo', (categoryMap.get('Conteúdo') || 0) + 1);
@@ -128,17 +148,30 @@ export function useBrandValidations() {
       const categoryBreakdown = Array.from(categoryMap.entries())
         .map(([category, count]) => ({ category, count }));
 
+      // Convert recent campaigns to validation format
+      const recentValidations = campaignsWithScores.slice(0, 10).map(c => ({
+        id: c.id,
+        user_id: c.user_id,
+        campaign_id: c.id,
+        original_content: {},
+        corrected_content: {},
+        validation_score: c.brand_compliance_score,
+        adjustments_made: c.brand_compliance_adjustments || [],
+        user_approved: null,
+        created_at: c.created_at,
+      })) as BrandValidation[];
+
       return {
         avgScore: Math.round(avgScore),
-        totalValidations: validations.length,
+        totalValidations: campaignsWithScores.length,
         complianceRate: Math.round(complianceRate),
         topAdjustments,
         scoreEvolution,
         categoryBreakdown,
-        recentValidations: validations.slice(0, 10),
+        recentValidations,
       } as ValidationAnalytics;
     },
-    enabled: !!validations,
+    enabled: !!campaigns,
   });
 
   return {
