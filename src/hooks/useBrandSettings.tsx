@@ -19,6 +19,7 @@ export interface BrandBookRules {
     always_mention_sustainability?: boolean;
     include_brand_hashtag?: boolean;
     avoid_superlatives?: boolean;
+    require_cta?: boolean;
   };
   identity?: {
     tone_of_voice: string;

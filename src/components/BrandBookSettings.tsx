@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { X, Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BrandBookRules } from "@/hooks/useBrandSettings";
@@ -142,9 +143,10 @@ export function BrandBookSettings({
       </div>
 
       <Tabs defaultValue="vocabulary" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="vocabulary">Vocabulário</TabsTrigger>
           <TabsTrigger value="style">Estilo de Escrita</TabsTrigger>
+          <TabsTrigger value="content">Regras de Conteúdo</TabsTrigger>
           <TabsTrigger value="identity">Identidade</TabsTrigger>
         </TabsList>
 
@@ -281,6 +283,104 @@ export function BrandBookSettings({
               min={0}
               max={10}
             />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="content" className="space-y-4 mt-4">
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="sustainability"
+              checked={rules.content_rules?.always_mention_sustainability || false}
+              onCheckedChange={(checked) => {
+                const updated = {
+                  ...rules,
+                  content_rules: {
+                    ...rules.content_rules,
+                    always_mention_sustainability: checked as boolean,
+                    include_brand_hashtag: rules.content_rules?.include_brand_hashtag || false,
+                    avoid_superlatives: rules.content_rules?.avoid_superlatives || false,
+                    require_cta: rules.content_rules?.require_cta || false
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+            />
+            <Label htmlFor="sustainability" className="cursor-pointer">
+              Sempre mencionar sustentabilidade
+            </Label>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="hashtag"
+              checked={rules.content_rules?.include_brand_hashtag || false}
+              onCheckedChange={(checked) => {
+                const updated = {
+                  ...rules,
+                  content_rules: {
+                    ...rules.content_rules,
+                    always_mention_sustainability: rules.content_rules?.always_mention_sustainability || false,
+                    include_brand_hashtag: checked as boolean,
+                    avoid_superlatives: rules.content_rules?.avoid_superlatives || false,
+                    require_cta: rules.content_rules?.require_cta || false
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+            />
+            <Label htmlFor="hashtag" className="cursor-pointer">
+              Incluir hashtag da marca
+            </Label>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="superlatives"
+              checked={rules.content_rules?.avoid_superlatives || false}
+              onCheckedChange={(checked) => {
+                const updated = {
+                  ...rules,
+                  content_rules: {
+                    ...rules.content_rules,
+                    always_mention_sustainability: rules.content_rules?.always_mention_sustainability || false,
+                    include_brand_hashtag: rules.content_rules?.include_brand_hashtag || false,
+                    avoid_superlatives: checked as boolean,
+                    require_cta: rules.content_rules?.require_cta || false
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+            />
+            <Label htmlFor="superlatives" className="cursor-pointer">
+              Evitar superlativos
+            </Label>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="cta"
+              checked={rules.content_rules?.require_cta || false}
+              onCheckedChange={(checked) => {
+                const updated = {
+                  ...rules,
+                  content_rules: {
+                    ...rules.content_rules,
+                    always_mention_sustainability: rules.content_rules?.always_mention_sustainability || false,
+                    include_brand_hashtag: rules.content_rules?.include_brand_hashtag || false,
+                    avoid_superlatives: rules.content_rules?.avoid_superlatives || false,
+                    require_cta: checked as boolean
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+            />
+            <Label htmlFor="cta" className="cursor-pointer">
+              Exigir call-to-action
+            </Label>
           </div>
         </TabsContent>
 
