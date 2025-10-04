@@ -23,14 +23,25 @@ serve(async (req) => {
   }
 
   try {
-    const { content, brandSettings, campaign_id } = await req.json();
+    console.log('🔍 VALIDATE-CONTENT: Function invoked');
+    const requestBody = await req.json();
+    console.log('🔍 VALIDATE-CONTENT: Request body keys:', Object.keys(requestBody));
+    
+    const { content, brandSettings, campaign_id } = requestBody;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
+      console.error('❌ VALIDATE-CONTENT: LOVABLE_API_KEY is not configured');
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log('Starting content validation:', { brandSettings, campaign_id });
+    console.log('🔍 VALIDATE-CONTENT: Starting validation with:', {
+      hasContent: !!content,
+      contentKeys: content ? Object.keys(content) : null,
+      hasBrandSettings: !!brandSettings,
+      brandSettingsKeys: brandSettings ? Object.keys(brandSettings) : null,
+      campaign_id
+    });
 
     const brandBookRules = brandSettings.brand_book_rules || {
       vocabulary: { preferred: [], forbidden: [], alternatives: {} },
@@ -75,7 +86,8 @@ Return a JSON object with this structure:
   }
 }`;
 
-    console.log('Calling AI for validation...');
+    console.log('📤 VALIDATE-CONTENT: Calling AI for validation...');
+    console.log('📤 VALIDATE-CONTENT: Prompt length:', validationPrompt.length);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -101,14 +113,21 @@ Return a JSON object with this structure:
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('AI validation error:', response.status, errorText);
+      console.error('❌ VALIDATE-CONTENT: AI validation error:', response.status, errorText);
       throw new Error(`AI validation failed: ${response.status}`);
     }
 
     const aiResponse = await response.json();
+    console.log('📥 VALIDATE-CONTENT: AI response structure:', {
+      hasChoices: !!aiResponse.choices,
+      choicesLength: aiResponse.choices?.length,
+      hasMessage: !!aiResponse.choices?.[0]?.message,
+      hasContent: !!aiResponse.choices?.[0]?.message?.content
+    });
+    
     const validationText = aiResponse.choices?.[0]?.message?.content || "{}";
     
-    console.log('AI validation response:', validationText);
+    console.log('📥 VALIDATE-CONTENT: AI validation response text (first 500 chars):', validationText.substring(0, 500));
 
     // Parse AI response
     let validationResult: ValidationResult;
@@ -117,9 +136,18 @@ Return a JSON object with this structure:
       const jsonMatch = validationText.match(/```json\n([\s\S]*?)\n```/) || 
                         validationText.match(/```\n([\s\S]*?)\n```/);
       const jsonText = jsonMatch ? jsonMatch[1] : validationText;
+      console.log('🔍 VALIDATE-CONTENT: Attempting to parse JSON (first 300 chars):', jsonText.substring(0, 300));
+      
       validationResult = JSON.parse(jsonText);
+      console.log('✅ VALIDATE-CONTENT: Successfully parsed validation result:', {
+        score: validationResult.score,
+        adjustmentsCount: validationResult.adjustments?.length,
+        violationsCount: validationResult.violations?.length,
+        hasCorrectedContent: !!validationResult.correctedContent
+      });
     } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
+      console.error('❌ VALIDATE-CONTENT: Failed to parse AI response:', parseError);
+      console.error('❌ VALIDATE-CONTENT: Raw text that failed to parse:', validationText);
       // Return original content with low score if parsing fails
       validationResult = {
         score: 50,
@@ -131,6 +159,7 @@ Return a JSON object with this structure:
           message: 'Validation completed with limited analysis'
         }]
       };
+      console.log('⚠️ VALIDATE-CONTENT: Using fallback validation result');
     }
 
     // Apply strictness multiplier
@@ -140,6 +169,14 @@ Return a JSON object with this structure:
     } else if (strictnessLevel === 'low') {
       finalScore = Math.min(100, finalScore + 10);
     }
+
+    console.log('✅ VALIDATE-CONTENT: Returning final validation result:', {
+      score: finalScore,
+      originalScore: validationResult.score,
+      strictnessLevel,
+      adjustmentsCount: validationResult.adjustments?.length,
+      violationsCount: validationResult.violations?.length
+    });
 
     return new Response(
       JSON.stringify({

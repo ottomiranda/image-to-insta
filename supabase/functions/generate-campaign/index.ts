@@ -605,9 +605,30 @@ Respond using the JSON tool format.`;
     let validationResult = null;
     let finalContent = content;
     
+    console.log('🔍 VALIDATION CHECK - brandSettings:', {
+      hasBrandSettings: !!brandSettings,
+      hasBrandBookRules: !!brandSettings?.brand_book_rules,
+      hasValidationStrictness: !!brandSettings?.validation_strictness,
+      strictnessValue: brandSettings?.validation_strictness,
+      brandBookRulesStructure: brandSettings?.brand_book_rules ? Object.keys(brandSettings.brand_book_rules) : null
+    });
+    
     if (brandSettings?.brand_book_rules || brandSettings?.validation_strictness) {
-      console.log('Validating content against brand book...');
+      console.log('✅ VALIDATION: Brand book rules or strictness found - proceeding with validation...');
       try {
+        console.log('📤 VALIDATION: Calling validate-content function...');
+        console.log('📤 VALIDATION: Request payload:', JSON.stringify({
+          contentKeys: Object.keys({
+            shortDescription: content.shortDescription,
+            longDescription: content.longDescription,
+            instagram: content.instagram
+          }),
+          brandSettingsKeys: Object.keys({
+            brand_book_rules: brandSettings.brand_book_rules,
+            validation_strictness: brandSettings.validation_strictness
+          })
+        }, null, 2));
+        
         const validateResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/validate-content`, {
           method: 'POST',
           headers: {
@@ -627,26 +648,38 @@ Respond using the JSON tool format.`;
           })
         });
 
+        console.log('📥 VALIDATION: Response status:', validateResponse.status, validateResponse.ok);
+
         if (validateResponse.ok) {
           const validationData = await validateResponse.json();
-          console.log('Validation result:', validationData);
+          console.log('📥 VALIDATION: Full response data:', JSON.stringify(validationData, null, 2));
           
           if (validationData.success && validationData.validation) {
             validationResult = validationData.validation;
+            console.log('✅ VALIDATION: Success! Score:', validationResult.score);
+            console.log('✅ VALIDATION: Adjustments:', validationResult.adjustments);
+            console.log('✅ VALIDATION: Violations:', validationResult.violations?.length || 0);
             
             // Use corrected content if score is below threshold and corrections are available
             if (validationResult.score < 70 && validationResult.correctedContent) {
-              console.log('Using corrected content due to low score:', validationResult.score);
+              console.log('🔄 VALIDATION: Using corrected content due to low score:', validationResult.score);
               finalContent = validationResult.correctedContent;
             }
+          } else {
+            console.error('⚠️ VALIDATION: Response missing success or validation data');
           }
         } else {
-          console.error('Validation failed:', await validateResponse.text());
+          const errorText = await validateResponse.text();
+          console.error('❌ VALIDATION: Request failed with status', validateResponse.status);
+          console.error('❌ VALIDATION: Error response:', errorText);
         }
       } catch (validationError) {
-        console.error('Error during validation:', validationError);
+        console.error('❌ VALIDATION: Exception caught:', validationError);
+        console.error('❌ VALIDATION: Error stack:', validationError instanceof Error ? validationError.stack : 'No stack');
         // Continue with unvalidated content if validation fails
       }
+    } else {
+      console.log('⏭️ VALIDATION: Skipped - no brand book rules or validation strictness configured');
     }
 
     // Return complete campaign with validation results
