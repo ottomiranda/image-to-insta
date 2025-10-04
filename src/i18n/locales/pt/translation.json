@@ -175,6 +175,7 @@
   "userNav": {
     "account": "Conta",
     "settings": "Configurações",
+    "guidedTour": "Tour Guiado",
     "language": "Idioma",
     "logout": "Sair",
     "errorSigningOut": "Erro ao sair",
@@ -186,7 +187,50 @@
     "cancel": "Cancelar",
     "delete": "Excluir",
     "edit": "Editar",
-    "close": "Fechar"
+    "close": "Fechar",
+    "back": "Voltar",
+    "next": "Próximo"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Bem-vindo ao Fashion Campaign AI! 👋",
+      "description": "Vamos fazer um tour rápido para mostrar como criar campanhas incríveis com conformidade de marca baseada em IA.",
+      "duration": "Leva apenas 2 minutos",
+      "start": "Vamos lá!",
+      "skip": "Pular Tutorial"
+    },
+    "steps": {
+      "dashboard": {
+        "title": "Seu Dashboard de Campanhas",
+        "content": "Aqui você gerencia todas as suas campanhas de marketing. Visualize, edite e acompanhe scores de compliance em um só lugar."
+      },
+      "compliance": {
+        "title": "Score de Conformidade de Marca",
+        "content": "Monitore o alinhamento das suas campanhas com seu brand book. Verde (90%+) é excelente, amarelo (70-89%) precisa revisão, e vermelho (<70%) requer atenção."
+      },
+      "campaignCard": {
+        "title": "Cards de Campanha",
+        "content": "Cada card mostra o título, status e score de compliance da sua campanha. Use os botões de ação para editar, duplicar, publicar ou excluir campanhas."
+      },
+      "newCampaign": {
+        "title": "Criar Novas Campanhas",
+        "content": "Clique aqui para começar a criar uma nova campanha. Nossa IA vai ajudar você a gerar conteúdo que combina perfeitamente com sua marca."
+      },
+      "createForm": {
+        "title": "Criação de Campanha",
+        "content": "Descreva seu look, selecione produtos do seu repositório, adicione uma imagem de modelo e configure ângulos de câmera e proporções."
+      },
+      "brandSettings": {
+        "title": "Configurações de Marca",
+        "content": "Configure seu brand book aqui: tom de voz, público-alvo, palavras-chave e cores. Isso garante que todo conteúdo permaneça alinhado à marca."
+      },
+      "generate": {
+        "title": "Gerar Conteúdo",
+        "content": "Clique aqui para gerar conteúdo de campanha com IA, incluindo visuais, descrições de produtos e posts do Instagram—tudo validado pelo seu brand book!"
+      }
+    },
+    "finish": "Finalizar Tour",
+    "skip": "Pular"
   },
   "productRepository": {
     "title": "Repositório de Produtos",

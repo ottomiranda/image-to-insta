@@ -175,6 +175,7 @@
   "userNav": {
     "account": "Account",
     "settings": "Settings",
+    "guidedTour": "Guided Tour",
     "language": "Language",
     "logout": "Logout",
     "errorSigningOut": "Error signing out",
@@ -186,7 +187,50 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "back": "Back",
+    "next": "Next"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welcome to Fashion Campaign AI! 👋",
+      "description": "Let's take a quick tour to show you how to create stunning campaigns with AI-powered brand compliance.",
+      "duration": "Takes only 2 minutes",
+      "start": "Let's Go!",
+      "skip": "Skip Tutorial"
+    },
+    "steps": {
+      "dashboard": {
+        "title": "Your Campaign Dashboard",
+        "content": "This is where you manage all your marketing campaigns. View, edit, and track compliance scores in one place."
+      },
+      "compliance": {
+        "title": "Brand Compliance Score",
+        "content": "Monitor how well your campaigns align with your brand book. Green (90%+) is excellent, yellow (70-89%) needs review, and red (<70%) requires attention."
+      },
+      "campaignCard": {
+        "title": "Campaign Cards",
+        "content": "Each card shows your campaign's title, status, and compliance score. Use the action buttons to edit, duplicate, publish, or delete campaigns."
+      },
+      "newCampaign": {
+        "title": "Create New Campaigns",
+        "content": "Click here to start creating a new campaign. Our AI will help you generate content that matches your brand perfectly."
+      },
+      "createForm": {
+        "title": "Campaign Creation",
+        "content": "Describe your look, select products from your repository, add a model image, and configure camera angles and aspect ratios."
+      },
+      "brandSettings": {
+        "title": "Brand Settings",
+        "content": "Configure your brand book here: tone of voice, target audience, keywords, and colors. This ensures all content stays on-brand."
+      },
+      "generate": {
+        "title": "Generate Content",
+        "content": "Click here to generate AI-powered campaign content including visuals, product descriptions, and Instagram posts—all validated against your brand book!"
+      }
+    },
+    "finish": "Finish Tour",
+    "skip": "Skip"
   },
   "productRepository": {
     "title": "Product Repository",

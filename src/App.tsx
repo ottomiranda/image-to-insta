@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import BrandAnalytics from "./pages/BrandAnalytics";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { OnboardingTour } from "@/components/OnboardingTour";
 import "./i18n/config";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <OnboardingTour />
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route 

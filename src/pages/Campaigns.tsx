@@ -59,18 +59,20 @@ export default function Campaigns() {
             <p className="text-sm text-muted-foreground">{t('campaigns.description')}</p>
           </div>
           <div className="flex gap-2">
-            <Button onClick={() => navigate("/create")}>
+            <Button onClick={() => navigate("/create")} data-onboarding="new-campaign-btn">
               <Plus className="h-4 w-4 mr-2" />
               {t('campaigns.newCampaign')}
             </Button>
-            <UserNav onSettingsClick={() => setSettingsOpen(true)} />
+            <div data-onboarding="user-nav">
+              <UserNav onSettingsClick={() => setSettingsOpen(true)} />
+            </div>
           </div>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-8">
         {/* Brand Compliance Widget */}
-        <div className="mb-8">
+        <div className="mb-8" data-onboarding="compliance-widget">
           <BrandComplianceWidget />
         </div>
 
@@ -99,13 +101,14 @@ export default function Campaigns() {
           </div>
         ) : filteredCampaigns && filteredCampaigns.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCampaigns.map((campaign) => (
-              <CampaignCard
-                key={campaign.id}
-                campaign={campaign}
-                onDelete={deleteCampaign}
-                onPublish={handlePublish}
-              />
+            {filteredCampaigns.map((campaign, index) => (
+              <div key={campaign.id} data-onboarding={index === 0 ? "campaign-card" : undefined}>
+                <CampaignCard
+                  campaign={campaign}
+                  onDelete={deleteCampaign}
+                  onPublish={handlePublish}
+                />
+              </div>
             ))}
           </div>
         ) : (

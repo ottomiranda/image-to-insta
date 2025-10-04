@@ -216,7 +216,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
   };
 
   return (
-    <Card className="p-6 space-y-6 h-fit sticky top-24 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]">
+    <Card className="p-6 space-y-6 h-fit sticky top-24 bg-card/80 backdrop-blur-sm border-white/10 shadow-[var(--shadow-card)]" data-onboarding="create-form">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold text-white">{t('create.title')}</h2>
         <p className="text-gray-400">
@@ -310,6 +310,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           disabled={isGenerating}
           className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all"
           size="lg"
+          data-onboarding="generate-btn"
         >
           {isGenerating ? (
             <>

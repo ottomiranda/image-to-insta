@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Settings, LogOut, Globe } from "lucide-react";
+import { User, Settings, LogOut, Globe, GraduationCap } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useOnboarding } from "@/hooks/useOnboarding";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +24,7 @@ export function UserNav({ onSettingsClick }: UserNavProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t, i18n } = useTranslation();
+  const { restartTour } = useOnboarding();
   const [userEmail, setUserEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -108,6 +110,10 @@ export function UserNav({ onSettingsClick }: UserNavProps) {
         <DropdownMenuItem onClick={onSettingsClick} className="cursor-pointer">
           <Settings className="mr-2 h-4 w-4" />
           <span>{t('userNav.settings')}</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={restartTour} className="cursor-pointer">
+          <GraduationCap className="mr-2 h-4 w-4" />
+          <span>{t('userNav.guidedTour')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer" onClick={(e) => e.preventDefault()}>
           <Globe className="mr-2 h-4 w-4" />
