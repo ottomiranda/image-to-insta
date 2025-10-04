@@ -8,6 +8,7 @@ import Create from "./pages/Create";
 import Campaigns from "./pages/Campaigns";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import BrandAnalytics from "./pages/BrandAnalytics";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import "./i18n/config";
 
@@ -42,6 +43,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Create />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/brand-analytics" 
+            element={
+              <ProtectedRoute>
+                <BrandAnalytics />
               </ProtectedRoute>
             } 
           />

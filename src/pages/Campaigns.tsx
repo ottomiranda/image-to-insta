@@ -11,6 +11,7 @@ import { UserNav } from "@/components/UserNav";
 import { Campaign } from "@/types/campaign";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/Logo";
+import { BrandComplianceWidget } from "@/components/BrandComplianceWidget";
 
 export default function Campaigns() {
   const navigate = useNavigate();
@@ -68,6 +69,11 @@ export default function Campaigns() {
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {/* Brand Compliance Widget */}
+        <div className="mb-8">
+          <BrandComplianceWidget />
+        </div>
+
         <Tabs value={statusFilter} onValueChange={setStatusFilter} className="mb-6">
           <TabsList>
             <TabsTrigger value="all">{t('campaigns.all')}</TabsTrigger>
