@@ -202,5 +202,104 @@
     "confirmSelection": "Confirm Selection",
     "item": "item",
     "items": "items"
+  },
+  
+  "brandBook": {
+    "advancedTab": "Advanced Brand Book",
+    "optional": "Optional",
+    "description": "Configure your brand identity to personalize generated campaigns",
+    "brandLogo": "Brand Logo",
+    "uploadInstructions": "Upload your brand logo to include it in generated images.",
+    "uploadFormats": "Accepted formats: PNG, JPG, SVG (max 2MB)",
+    "divider": "or configure manually",
+    "customizeRules": "Customize Rules",
+    "customizeDescription": "Configure specific rules for your Brand Book",
+    "advancedCustomization": "Advanced Customization",
+    "cancel": "Cancel",
+    "save": "Save",
+    
+    "templates": {
+      "title": "Brand Book Templates",
+      "description": "Choose a pre-configured template or customize your own rules",
+      "rigor": "Strictness",
+      "preview": "Preview",
+      "apply": "Apply",
+      "applied": "Applied",
+      "strictness": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      }
+    },
+    
+    "settings": {
+      "validationLevel": "Validation Strictness Level",
+      "validationOptions": {
+        "low": "Low - Light suggestions",
+        "medium": "Medium - Balanced (Recommended)",
+        "high": "High - Strict validation"
+      },
+      "validationDesc": {
+        "low": "Light validation: accepts more variations",
+        "medium": "Balanced validation: ideal for most cases",
+        "high": "Strict validation: higher penalties for violations"
+      },
+      
+      "sections": {
+        "vocabulary": "Vocabulary",
+        "writingStyle": "Writing Style",
+        "contentRules": "Content Rules",
+        "identity": "Identity"
+      },
+      
+      "vocabulary": {
+        "preferred": "Preferred Words",
+        "preferredPlaceholder": "E.g.: sustainable, elegant",
+        "forbidden": "Forbidden Words",
+        "forbiddenPlaceholder": "E.g.: cheap, common",
+        "alternatives": "Automatic Substitutions",
+        "alternativesFrom": "From: cheap",
+        "alternativesTo": "To: affordable"
+      },
+      
+      "writingStyle": {
+        "maxSentence": "Maximum Sentence Length",
+        "maxEmojis": "Maximum Emojis per Post"
+      },
+      
+      "contentRules": {
+        "sustainability": "Always mention sustainability",
+        "hashtag": "Include brand hashtag",
+        "superlatives": "Avoid superlatives",
+        "cta": "Require call-to-action"
+      },
+      
+      "identity": {
+        "tone": "Tone of Voice",
+        "tonePlaceholder": "E.g.: Professional and trustworthy",
+        "market": "Target Market",
+        "marketPlaceholder": "E.g.: Women 25-40 years old",
+        "style": "Preferred Style",
+        "stylePlaceholder": "E.g.: Minimalist and elegant",
+        "values": "Brand Values",
+        "valuesPlaceholder": "E.g.: Sustainability, quality, innovation"
+      }
+    },
+    
+    "preview": {
+      "preferredWords": "Preferred Words",
+      "forbiddenWords": "Forbidden Words",
+      "alternatives": "Automatic Substitutions",
+      "writingRules": "Writing Rules",
+      "maxSentence": "Maximum sentence length",
+      "words": "words",
+      "emojis": "Emojis",
+      "allowed": "Allowed",
+      "notAllowed": "Not allowed",
+      "max": "max",
+      "cta": "Call-to-action",
+      "required": "Required",
+      "optional": "Optional"
+    }
   }
 }

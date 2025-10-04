@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { X, Plus, BookOpen, PenTool, CheckCircle, User } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BrandBookRules } from "@/hooks/useBrandSettings";
+import { useTranslation } from "react-i18next";
 
 interface BrandBookSettingsProps {
   brandBookRules: BrandBookRules;
@@ -20,6 +21,7 @@ export function BrandBookSettings({
   validationStrictness,
   onUpdate 
 }: BrandBookSettingsProps) {
+  const { t } = useTranslation();
   const [rules, setRules] = useState<BrandBookRules>(brandBookRules);
   const [strictness, setStrictness] = useState(validationStrictness);
   
@@ -123,21 +125,21 @@ export function BrandBookSettings({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Label>Nível de Rigor na Validação</Label>
+        <Label>{t('brandBook.settings.validationLevel')}</Label>
         <Select value={strictness} onValueChange={handleStrictnessChange}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="low">Baixo - Sugestões leves</SelectItem>
-            <SelectItem value="medium">Médio - Equilíbrio (Recomendado)</SelectItem>
-            <SelectItem value="high">Alto - Validação rigorosa</SelectItem>
+            <SelectItem value="low">{t('brandBook.settings.validationOptions.low')}</SelectItem>
+            <SelectItem value="medium">{t('brandBook.settings.validationOptions.medium')}</SelectItem>
+            <SelectItem value="high">{t('brandBook.settings.validationOptions.high')}</SelectItem>
           </SelectContent>
         </Select>
         <p className="text-xs text-muted-foreground">
-          {strictness === 'high' && "Validação rigorosa: penalidades maiores para violações"}
-          {strictness === 'medium' && "Validação equilibrada: ideal para maioria dos casos"}
-          {strictness === 'low' && "Validação suave: aceita mais variações"}
+          {strictness === 'high' && t('brandBook.settings.validationDesc.high')}
+          {strictness === 'medium' && t('brandBook.settings.validationDesc.medium')}
+          {strictness === 'low' && t('brandBook.settings.validationDesc.low')}
         </p>
       </div>
 
@@ -147,18 +149,18 @@ export function BrandBookSettings({
           <AccordionTrigger className="text-base font-semibold">
             <div className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
-              Vocabulário
+              {t('brandBook.settings.sections.vocabulary')}
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-6 pt-4">
             {/* Preferred Words */}
             <div className="space-y-3">
-              <Label>Palavras Preferidas</Label>
+              <Label>{t('brandBook.settings.vocabulary.preferred')}</Label>
               <div className="flex gap-2">
                 <Input
                   value={preferredWord}
                   onChange={(e) => setPreferredWord(e.target.value)}
-                  placeholder="Ex: sustentável, elegante"
+                  placeholder={t('brandBook.settings.vocabulary.preferredPlaceholder')}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddPreferred())}
                 />
                 <Button type="button" onClick={handleAddPreferred} size="sm">
@@ -179,12 +181,12 @@ export function BrandBookSettings({
 
             {/* Forbidden Words */}
             <div className="space-y-3">
-              <Label>Palavras Proibidas</Label>
+              <Label>{t('brandBook.settings.vocabulary.forbidden')}</Label>
               <div className="flex gap-2">
                 <Input
                   value={forbiddenWord}
                   onChange={(e) => setForbiddenWord(e.target.value)}
-                  placeholder="Ex: barato, comum"
+                  placeholder={t('brandBook.settings.vocabulary.forbiddenPlaceholder')}
                   onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddForbidden())}
                 />
                 <Button type="button" onClick={handleAddForbidden} size="sm">
@@ -205,19 +207,19 @@ export function BrandBookSettings({
 
             {/* Alternatives */}
             <div className="space-y-3">
-              <Label>Substituições Automáticas</Label>
+              <Label>{t('brandBook.settings.vocabulary.alternatives')}</Label>
               <div className="flex gap-2">
                 <Input
                   value={alternativeFrom}
                   onChange={(e) => setAlternativeFrom(e.target.value)}
-                  placeholder="De: barato"
+                  placeholder={t('brandBook.settings.vocabulary.alternativesFrom')}
                   className="flex-1"
                 />
                 <span className="flex items-center">→</span>
                 <Input
                   value={alternativeTo}
                   onChange={(e) => setAlternativeTo(e.target.value)}
-                  placeholder="Para: acessível"
+                  placeholder={t('brandBook.settings.vocabulary.alternativesTo')}
                   className="flex-1"
                 />
                 <Button type="button" onClick={handleAddAlternative} size="sm">
@@ -248,12 +250,12 @@ export function BrandBookSettings({
           <AccordionTrigger className="text-base font-semibold">
             <div className="flex items-center gap-2">
               <PenTool className="h-4 w-4" />
-              Estilo de Escrita
+              {t('brandBook.settings.sections.writingStyle')}
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-4 pt-4">
             <div className="space-y-3">
-              <Label>Comprimento Máximo de Frase</Label>
+              <Label>{t('brandBook.settings.writingStyle.maxSentence')}</Label>
               <Input
                 type="number"
                 value={rules.writing_style.max_sentence_length || 20}
@@ -274,7 +276,7 @@ export function BrandBookSettings({
             </div>
 
             <div className="space-y-3">
-              <Label>Máximo de Emojis por Post</Label>
+              <Label>{t('brandBook.settings.writingStyle.maxEmojis')}</Label>
               <Input
                 type="number"
                 value={rules.writing_style.max_emojis_per_post || 3}
@@ -301,7 +303,7 @@ export function BrandBookSettings({
           <AccordionTrigger className="text-base font-semibold">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
-              Regras de Conteúdo
+              {t('brandBook.settings.sections.contentRules')}
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-4 pt-4">
@@ -316,8 +318,7 @@ export function BrandBookSettings({
                       ...rules.content_rules,
                       always_mention_sustainability: checked as boolean,
                       include_brand_hashtag: rules.content_rules?.include_brand_hashtag || false,
-                      avoid_superlatives: rules.content_rules?.avoid_superlatives || false,
-                      require_cta: rules.content_rules?.require_cta || false
+                      avoid_superlatives: rules.content_rules?.avoid_superlatives || false
                     }
                   };
                   setRules(updated);
@@ -325,7 +326,7 @@ export function BrandBookSettings({
                 }}
               />
               <Label htmlFor="sustainability" className="cursor-pointer">
-                Sempre mencionar sustentabilidade
+                {t('brandBook.settings.contentRules.sustainability')}
               </Label>
             </div>
 
@@ -340,8 +341,7 @@ export function BrandBookSettings({
                       ...rules.content_rules,
                       always_mention_sustainability: rules.content_rules?.always_mention_sustainability || false,
                       include_brand_hashtag: checked as boolean,
-                      avoid_superlatives: rules.content_rules?.avoid_superlatives || false,
-                      require_cta: rules.content_rules?.require_cta || false
+                      avoid_superlatives: rules.content_rules?.avoid_superlatives || false
                     }
                   };
                   setRules(updated);
@@ -349,7 +349,7 @@ export function BrandBookSettings({
                 }}
               />
               <Label htmlFor="hashtag" className="cursor-pointer">
-                Incluir hashtag da marca
+                {t('brandBook.settings.contentRules.hashtag')}
               </Label>
             </div>
 
@@ -364,8 +364,7 @@ export function BrandBookSettings({
                       ...rules.content_rules,
                       always_mention_sustainability: rules.content_rules?.always_mention_sustainability || false,
                       include_brand_hashtag: rules.content_rules?.include_brand_hashtag || false,
-                      avoid_superlatives: checked as boolean,
-                      require_cta: rules.content_rules?.require_cta || false
+                      avoid_superlatives: checked as boolean
                     }
                   };
                   setRules(updated);
@@ -373,31 +372,7 @@ export function BrandBookSettings({
                 }}
               />
               <Label htmlFor="superlatives" className="cursor-pointer">
-                Evitar superlativos
-              </Label>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="cta"
-                checked={rules.content_rules?.require_cta || false}
-                onCheckedChange={(checked) => {
-                  const updated = {
-                    ...rules,
-                    content_rules: {
-                      ...rules.content_rules,
-                      always_mention_sustainability: rules.content_rules?.always_mention_sustainability || false,
-                      include_brand_hashtag: rules.content_rules?.include_brand_hashtag || false,
-                      avoid_superlatives: rules.content_rules?.avoid_superlatives || false,
-                      require_cta: checked as boolean
-                    }
-                  };
-                  setRules(updated);
-                  onUpdate(updated, strictness);
-                }}
-              />
-              <Label htmlFor="cta" className="cursor-pointer">
-                Exigir call-to-action
+                {t('brandBook.settings.contentRules.superlatives')}
               </Label>
             </div>
           </AccordionContent>
@@ -408,12 +383,12 @@ export function BrandBookSettings({
           <AccordionTrigger className="text-base font-semibold">
             <div className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              Identidade
+              {t('brandBook.settings.sections.identity')}
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-4 pt-4">
             <div className="space-y-3">
-              <Label>Tom de Voz</Label>
+              <Label>{t('brandBook.settings.identity.tone')}</Label>
               <Input
                 value={rules.identity?.tone_of_voice || ''}
                 onChange={(e) => {
@@ -430,12 +405,12 @@ export function BrandBookSettings({
                   setRules(updated);
                   onUpdate(updated, strictness);
                 }}
-                placeholder="Ex: Profissional e confiável"
+                placeholder={t('brandBook.settings.identity.tonePlaceholder')}
               />
             </div>
 
             <div className="space-y-3">
-              <Label>Mercado-Alvo</Label>
+              <Label>{t('brandBook.settings.identity.market')}</Label>
               <Input
                 value={rules.identity?.target_market || ''}
                 onChange={(e) => {
@@ -452,12 +427,12 @@ export function BrandBookSettings({
                   setRules(updated);
                   onUpdate(updated, strictness);
                 }}
-                placeholder="Ex: Mulheres 25-40 anos"
+                placeholder={t('brandBook.settings.identity.marketPlaceholder')}
               />
             </div>
 
             <div className="space-y-3">
-              <Label>Estilo Preferido</Label>
+              <Label>{t('brandBook.settings.identity.style')}</Label>
               <Input
                 value={rules.identity?.preferred_style || ''}
                 onChange={(e) => {
@@ -474,12 +449,12 @@ export function BrandBookSettings({
                   setRules(updated);
                   onUpdate(updated, strictness);
                 }}
-                placeholder="Ex: Minimalista e elegante"
+                placeholder={t('brandBook.settings.identity.stylePlaceholder')}
               />
             </div>
 
             <div className="space-y-3">
-              <Label>Valores da Marca</Label>
+              <Label>{t('brandBook.settings.identity.values')}</Label>
               <Input
                 value={rules.identity?.brand_values || ''}
                 onChange={(e) => {
@@ -496,7 +471,7 @@ export function BrandBookSettings({
                   setRules(updated);
                   onUpdate(updated, strictness);
                 }}
-                placeholder="Ex: Sustentabilidade, qualidade, transparência"
+                placeholder={t('brandBook.settings.identity.valuesPlaceholder')}
               />
             </div>
           </AccordionContent>

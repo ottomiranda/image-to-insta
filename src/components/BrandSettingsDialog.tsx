@@ -245,7 +245,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
         <DialogHeader>
           <DialogTitle className="text-2xl text-white">{t('brandSettings.title')}</DialogTitle>
           <DialogDescription className="text-gray-400">
-            Configure a identidade da sua marca para personalizar as campanhas geradas
+            {t('brandBook.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -255,12 +255,12 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
               <TabsList className="grid w-full grid-cols-2 mb-4">
                 <TabsTrigger value="basic" className="gap-2">
                   <Info className="h-4 w-4" />
-                  Informações Básicas
+                  {t('brandSettings.basicInfo')}
                 </TabsTrigger>
                 <TabsTrigger value="brandbook" className="gap-2">
                   <BookOpen className="h-4 w-4" />
-                  Brand Book Avançado
-                  <Badge variant="secondary" className="ml-2 text-xs">Opcional</Badge>
+                  {t('brandBook.advancedTab')}
+                  <Badge variant="secondary" className="ml-2 text-xs">{t('brandBook.optional')}</Badge>
                 </TabsTrigger>
               </TabsList>
 
@@ -315,7 +315,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
                 {/* Logo Upload */}
                 <div className="space-y-2">
-                  <Label htmlFor="logo-upload">Logo da Marca</Label>
+                  <Label htmlFor="logo-upload">{t('brandBook.brandLogo')}</Label>
                   <div className="flex items-center gap-4">
                     {logoPreview ? (
                       <div className="relative w-32 h-32 border rounded-lg overflow-hidden bg-muted flex items-center justify-center">
@@ -347,8 +347,8 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                       </label>
                     )}
                     <div className="flex-1 text-sm text-muted-foreground">
-                      <p>Faça upload do logo da sua marca para incluí-lo nas imagens geradas.</p>
-                      <p className="text-xs mt-1">Formatos aceitos: PNG, JPG, SVG (máx 2MB)</p>
+                      <p>{t('brandBook.uploadInstructions')}</p>
+                      <p className="text-xs mt-1">{t('brandBook.uploadFormats')}</p>
                     </div>
                   </div>
                 </div>
@@ -425,7 +425,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                       <div className="relative flex justify-center">
                         <span className="bg-card px-3 text-xs text-muted-foreground flex items-center gap-2">
                           <ChevronDown className="h-3 w-3 animate-bounce" />
-                          ou configure manualmente
+                          {t('brandBook.divider')}
                           <ChevronDown className="h-3 w-3 animate-bounce" />
                         </span>
                       </div>

@@ -202,5 +202,104 @@
     "confirmSelection": "Confirmar Seleção",
     "item": "item",
     "items": "itens"
+  },
+  
+  "brandBook": {
+    "advancedTab": "Brand Book Avançado",
+    "optional": "Opcional",
+    "description": "Configure a identidade da sua marca para personalizar as campanhas geradas",
+    "brandLogo": "Logo da Marca",
+    "uploadInstructions": "Faça upload do logo da sua marca para incluí-lo nas imagens geradas.",
+    "uploadFormats": "Formatos aceitos: PNG, JPG, SVG (máx 2MB)",
+    "divider": "ou configure manualmente",
+    "customizeRules": "Personalizar Regras",
+    "customizeDescription": "Configure as regras específicas do seu Brand Book",
+    "advancedCustomization": "Customização Avançada",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    
+    "templates": {
+      "title": "Templates de Brand Book",
+      "description": "Escolha um template pré-configurado ou personalize suas próprias regras",
+      "rigor": "Rigor",
+      "preview": "Preview",
+      "apply": "Aplicar",
+      "applied": "Aplicado",
+      "strictness": {
+        "low": "Baixo",
+        "medium": "Médio",
+        "high": "Alto"
+      }
+    },
+    
+    "settings": {
+      "validationLevel": "Nível de Rigor na Validação",
+      "validationOptions": {
+        "low": "Baixo - Sugestões leves",
+        "medium": "Médio - Balanceado (Recomendado)",
+        "high": "Alto - Validação rigorosa"
+      },
+      "validationDesc": {
+        "low": "Validação leve: aceita mais variações",
+        "medium": "Validação balanceada: ideal para a maioria dos casos",
+        "high": "Validação rigorosa: penalidades maiores para violações"
+      },
+      
+      "sections": {
+        "vocabulary": "Vocabulário",
+        "writingStyle": "Estilo de Escrita",
+        "contentRules": "Regras de Conteúdo",
+        "identity": "Identidade"
+      },
+      
+      "vocabulary": {
+        "preferred": "Palavras Preferidas",
+        "preferredPlaceholder": "Ex: sustentável, elegante",
+        "forbidden": "Palavras Proibidas",
+        "forbiddenPlaceholder": "Ex: barato, comum",
+        "alternatives": "Substituições Automáticas",
+        "alternativesFrom": "De: barato",
+        "alternativesTo": "Para: acessível"
+      },
+      
+      "writingStyle": {
+        "maxSentence": "Comprimento Máximo de Frase",
+        "maxEmojis": "Máximo de Emojis por Post"
+      },
+      
+      "contentRules": {
+        "sustainability": "Sempre mencionar sustentabilidade",
+        "hashtag": "Incluir hashtag da marca",
+        "superlatives": "Evitar superlativos",
+        "cta": "Exigir call-to-action"
+      },
+      
+      "identity": {
+        "tone": "Tom de Voz",
+        "tonePlaceholder": "Ex: Profissional e confiável",
+        "market": "Mercado Alvo",
+        "marketPlaceholder": "Ex: Mulheres de 25-40 anos",
+        "style": "Estilo Preferido",
+        "stylePlaceholder": "Ex: Minimalista e elegante",
+        "values": "Valores da Marca",
+        "valuesPlaceholder": "Ex: Sustentabilidade, qualidade, inovação"
+      }
+    },
+    
+    "preview": {
+      "preferredWords": "Palavras Preferidas",
+      "forbiddenWords": "Palavras Proibidas",
+      "alternatives": "Substituições Automáticas",
+      "writingRules": "Regras de Escrita",
+      "maxSentence": "Comprimento máximo de frase",
+      "words": "palavras",
+      "emojis": "Emojis",
+      "allowed": "Permitidos",
+      "notAllowed": "Não permitidos",
+      "max": "máx",
+      "cta": "Call-to-action",
+      "required": "Obrigatório",
+      "optional": "Opcional"
+    }
   }
 }
