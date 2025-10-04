@@ -656,8 +656,8 @@ Respond using the JSON tool format.`;
       shortDescription: finalContent.shortDescription || content.shortDescription,
       longDescription: finalContent.longDescription || content.longDescription,
       instagram: finalContent.instagram || content.instagram,
-      brandComplianceScore: validationResult?.score,
-      brandComplianceAdjustments: validationResult?.adjustments || []
+      brand_compliance_score: validationResult?.score,
+      brand_compliance_adjustments: validationResult?.adjustments || []
     };
 
     console.log('Campaign generated successfully!');
