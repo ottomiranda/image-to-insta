@@ -9,6 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import {
   Form,
   FormControl,
@@ -36,7 +38,7 @@ import {
   PREFERRED_STYLE_OPTIONS,
   DEFAULT_BRAND_SETTINGS,
 } from "@/lib/brandDefaults";
-import { Loader2, Upload, X } from "lucide-react";
+import { Loader2, Upload, X, Info, BookOpen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -237,7 +239,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-xl border-white/10">
+      <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col bg-card/95 backdrop-blur-xl border-white/10">
         <DialogHeader>
           <DialogTitle className="text-2xl text-white">{t('brandSettings.title')}</DialogTitle>
           <DialogDescription className="text-gray-400">
@@ -246,233 +248,220 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Informações Básicas */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.basicInfo')}</h3>
-              
-              <FormField
-                control={form.control}
-                name="brand_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('brandSettings.brandName')} *</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t('brandSettings.brandNamePlaceholder')} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 flex flex-col min-h-0">
+            <Tabs defaultValue="basic" className="flex-1 flex flex-col">
+              <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsTrigger value="basic" className="gap-2">
+                  <Info className="h-4 w-4" />
+                  Informações Básicas
+                </TabsTrigger>
+                <TabsTrigger value="brandbook" className="gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  Brand Book Avançado
+                  <Badge variant="secondary" className="ml-2 text-xs">Opcional</Badge>
+                </TabsTrigger>
+              </TabsList>
 
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="instagram_handle"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Instagram Handle</FormLabel>
-                      <FormControl>
-                        <Input placeholder="@suamarca" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              {/* Tab 1: Informações Básicas */}
+              <TabsContent value="basic" className="flex-1 overflow-y-auto space-y-6 mt-0 pr-2">
+                {/* Brand Name */}
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="brand_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t('brandSettings.brandName')} *</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t('brandSettings.brandNamePlaceholder')} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="website"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Website</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://suamarca.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="instagram_handle"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Instagram Handle</FormLabel>
+                          <FormControl>
+                            <Input placeholder="@suamarca" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-
-              {/* Logo Upload */}
-              <div className="space-y-2">
-                <Label htmlFor="logo-upload">Logo da Marca</Label>
-                <div className="flex items-center gap-4">
-                  {logoPreview ? (
-                    <div className="relative w-32 h-32 border rounded-lg overflow-hidden bg-muted flex items-center justify-center">
-                      <img
-                        src={logoPreview}
-                        alt="Logo preview"
-                        className="max-w-full max-h-full object-contain"
-                      />
-                      <button
-                        onClick={handleRemoveLogo}
-                        className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90"
-                        type="button"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ) : (
-                    <label className="w-32 h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
-                      <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                      <span className="text-xs text-muted-foreground text-center px-2">
-                        PNG, JPG, SVG<br />Max 2MB
-                      </span>
-                      <input
-                        type="file"
-                        accept="image/png,image/jpeg,image/jpg,image/svg+xml"
-                        onChange={handleLogoChange}
-                        className="hidden"
-                      />
-                    </label>
-                  )}
-                  <div className="flex-1 text-sm text-muted-foreground">
-                    <p>Faça upload do logo da sua marca para incluí-lo nas imagens geradas.</p>
-                    <p className="text-xs mt-1">Formatos aceitos: PNG, JPG, SVG (máx 2MB)</p>
+                    <FormField
+                      control={form.control}
+                      name="website"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Website</FormLabel>
+                          <FormControl>
+                            <Input placeholder="https://suamarca.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
-              </div>
-            </div>
 
-
-            {/* Cores da Marca */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.brandColors')}</h3>
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="primary_color"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <ColorPicker
-                          label={t('brandSettings.primaryColor') + ' *'}
-                          value={field.value}
-                          onChange={field.onChange}
+                {/* Logo Upload */}
+                <div className="space-y-2">
+                  <Label htmlFor="logo-upload">Logo da Marca</Label>
+                  <div className="flex items-center gap-4">
+                    {logoPreview ? (
+                      <div className="relative w-32 h-32 border rounded-lg overflow-hidden bg-muted flex items-center justify-center">
+                        <img
+                          src={logoPreview}
+                          alt="Logo preview"
+                          className="max-w-full max-h-full object-contain"
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="secondary_color"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <ColorPicker
-                          label={t('brandSettings.secondaryColor') + ' *'}
-                          value={field.value}
-                          onChange={field.onChange}
+                        <button
+                          onClick={handleRemoveLogo}
+                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 hover:bg-destructive/90"
+                          type="button"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <label className="w-32 h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
+                        <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                        <span className="text-xs text-muted-foreground text-center px-2">
+                          PNG, JPG, SVG<br />Max 2MB
+                        </span>
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                          onChange={handleLogoChange}
+                          className="hidden"
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-
-            {/* Brand Book Rules - Avançado */}
-            <div className="space-y-4">
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="brand-book" className="border-white/10">
-                  <AccordionTrigger className="text-lg font-semibold text-white hover:no-underline">
-                    📚 Brand Book Avançado
-                  </AccordionTrigger>
-                  <AccordionContent className="pt-4 space-y-6">
-                    {/* Templates Selector */}
-                    <BrandBookTemplateSelector
-                      onApplyTemplate={(rules, strictness) => {
-                        updateSettings({
-                          ...settings,
-                          brand_name: settings?.brand_name || '',
-                          brand_values: settings?.brand_values || '',
-                          tone_of_voice: settings?.tone_of_voice || '',
-                          target_market: settings?.target_market || '',
-                          preferred_style: settings?.preferred_style || '',
-                          primary_color: settings?.primary_color || '#6366f1',
-                          secondary_color: settings?.secondary_color || '#8b5cf6',
-                          brand_book_rules: rules,
-                          validation_strictness: strictness
-                        });
-                      }}
-                      currentRules={settings?.brand_book_rules}
-                    />
-
-                    {/* Divider */}
-                    <div className="relative">
-                      <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t border-white/10" />
-                      </div>
-                      <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-card px-2 text-muted-foreground">ou personalize</span>
-                      </div>
+                      </label>
+                    )}
+                    <div className="flex-1 text-sm text-muted-foreground">
+                      <p>Faça upload do logo da sua marca para incluí-lo nas imagens geradas.</p>
+                      <p className="text-xs mt-1">Formatos aceitos: PNG, JPG, SVG (máx 2MB)</p>
                     </div>
+                  </div>
+                </div>
 
-                    {/* Custom Settings */}
-                    <BrandBookSettings
-                      brandBookRules={settings?.brand_book_rules || {
-                        vocabulary: { preferred: [], forbidden: [], alternatives: {} },
-                        writing_style: { max_sentence_length: 20, use_emojis: true, max_emojis_per_post: 3, call_to_action_required: true },
-                        content_rules: { always_mention_sustainability: false, include_brand_hashtag: true, avoid_superlatives: false }
-                      }}
-                      validationStrictness={settings?.validation_strictness || 'medium'}
-                      onUpdate={(rules, strictness) => {
-                        updateSettings({
-                          ...settings,
-                          brand_name: settings?.brand_name || '',
-                          brand_values: settings?.brand_values || '',
-                          tone_of_voice: settings?.tone_of_voice || '',
-                          target_market: settings?.target_market || '',
-                          preferred_style: settings?.preferred_style || '',
-                          primary_color: settings?.primary_color || '#6366f1',
-                          secondary_color: settings?.secondary_color || '#8b5cf6',
-                          brand_book_rules: rules,
-                          validation_strictness: strictness
-                        });
-                      }}
+                {/* Cores da Marca */}
+                <div className="space-y-4">
+                  <h3 className="text-base font-semibold text-white">{t('brandSettings.brandColors')}</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="primary_color"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <ColorPicker
+                              label={t('brandSettings.primaryColor') + ' *'}
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
 
-            {/* Footer com botões */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-white/10 sticky bottom-0 bg-card/95 pb-4">
+                    <FormField
+                      control={form.control}
+                      name="secondary_color"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <ColorPicker
+                              label={t('brandSettings.secondaryColor') + ' *'}
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Tab 2: Brand Book Avançado */}
+              <TabsContent value="brandbook" className="flex-1 overflow-y-auto space-y-6 mt-0 pr-2">
+                {/* Templates Selector */}
+                <BrandBookTemplateSelector
+                  onApplyTemplate={(rules, strictness) => {
+                    updateSettings({
+                      ...settings,
+                      brand_name: settings?.brand_name || '',
+                      brand_values: settings?.brand_values || '',
+                      tone_of_voice: settings?.tone_of_voice || '',
+                      target_market: settings?.target_market || '',
+                      preferred_style: settings?.preferred_style || '',
+                      primary_color: settings?.primary_color || '#6366f1',
+                      secondary_color: settings?.secondary_color || '#8b5cf6',
+                      brand_book_rules: rules,
+                      validation_strictness: strictness
+                    });
+                  }}
+                  currentRules={settings?.brand_book_rules}
+                />
+
+                {/* Divider */}
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-white/10" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">ou personalize</span>
+                  </div>
+                </div>
+
+                {/* Custom Settings */}
+                <BrandBookSettings
+                  brandBookRules={settings?.brand_book_rules || {
+                    vocabulary: { preferred: [], forbidden: [], alternatives: {} },
+                    writing_style: { max_sentence_length: 20, use_emojis: true, max_emojis_per_post: 3, call_to_action_required: true },
+                    content_rules: { always_mention_sustainability: false, include_brand_hashtag: true, avoid_superlatives: false }
+                  }}
+                  validationStrictness={settings?.validation_strictness || 'medium'}
+                  onUpdate={(rules, strictness) => {
+                    updateSettings({
+                      ...settings,
+                      brand_name: settings?.brand_name || '',
+                      brand_values: settings?.brand_values || '',
+                      tone_of_voice: settings?.tone_of_voice || '',
+                      target_market: settings?.target_market || '',
+                      preferred_style: settings?.preferred_style || '',
+                      primary_color: settings?.primary_color || '#6366f1',
+                      secondary_color: settings?.secondary_color || '#8b5cf6',
+                      brand_book_rules: rules,
+                      validation_strictness: strictness
+                    });
+                  }}
+                />
+              </TabsContent>
+            </Tabs>
+
+            {/* Footer com botões - sempre visível */}
+            <div className="flex justify-end gap-3 pt-4 border-t border-white/10 bg-card/95 mt-4">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
                 disabled={isSaving}
               >
-                {t('brandSettings.cancel')}
+                Cancelar
               </Button>
-              <Button 
-                type="submit" 
-                disabled={isSaving || isUploadingLogo}
-                onClick={(e) => {
-                  console.log('=== BUTTON CLICKED ===');
-                  console.log('Button disabled:', isSaving || isUploadingLogo);
-                  console.log('Form valid:', form.formState.isValid);
-                  console.log('Form errors:', form.formState.errors);
-                }}
-              >
-                {isSaving || isUploadingLogo ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {isUploadingLogo ? 'Fazendo upload...' : t('brandSettings.saving')}
-                  </>
-                ) : (
-                  t('brandSettings.save')
-                )}
+              <Button type="submit" disabled={isSaving || isUploadingLogo}>
+                {(isSaving || isUploadingLogo) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Salvar
               </Button>
             </div>
           </form>
