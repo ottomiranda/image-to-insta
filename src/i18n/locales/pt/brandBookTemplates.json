@@ -9,23 +9,99 @@
     
     "luxury": {
       "name": "Luxury Premium",
-      "description": "Para marcas de alto padrão com foco em exclusividade e sofisticação"
+      "description": "Para marcas de alto padrão com foco em exclusividade e sofisticação",
+      "vocabulary": {
+        "preferred": ["exclusivo", "sofisticado", "premium", "elegante", "atemporal", "artesanal", "luxuoso", "refinado"],
+        "forbidden": ["barato", "desconto", "promoção", "comum", "popular", "básico", "simples"],
+        "alternatives": {
+          "barato": "acessível",
+          "desconto": "oferta especial",
+          "comum": "clássico",
+          "simples": "minimalista"
+        }
+      },
+      "identity": {
+        "tone": "Sofisticado e exclusivo",
+        "market": "Público de alto poder aquisitivo",
+        "style": "Luxury Premium",
+        "values": "Exclusividade, qualidade superior, artesanato"
+      }
     },
     "sustainable": {
       "name": "Sustainable & Conscious",
-      "description": "Para marcas eco-friendly com compromisso ambiental e social"
+      "description": "Para marcas eco-friendly com compromisso ambiental e social",
+      "vocabulary": {
+        "preferred": ["sustentável", "eco-friendly", "orgânico", "consciente", "natural", "reciclado", "ético", "transparente", "responsável"],
+        "forbidden": ["descartável", "fast fashion", "sintético", "poluente"],
+        "alternatives": {
+          "novo": "renovado",
+          "fabricado": "criado conscientemente",
+          "material": "tecido sustentável"
+        }
+      },
+      "identity": {
+        "tone": "Consciente e transparente",
+        "market": "Consumidores eco-conscientes",
+        "style": "Sustainable & Conscious",
+        "values": "Sustentabilidade, ética, transparência"
+      }
     },
     "streetwear": {
       "name": "Streetwear Urban",
-      "description": "Para marcas jovens, urbanas e com atitude descolada"
+      "description": "Para marcas jovens, urbanas e com atitude descolada",
+      "vocabulary": {
+        "preferred": ["autêntico", "único", "urbano", "streetwear", "vibe", "attitude", "fresh", "drip", "fire"],
+        "forbidden": ["formal", "conservador", "tradicional", "clássico"],
+        "alternatives": {
+          "elegante": "estiloso",
+          "bonito": "maneiro",
+          "moderno": "contemporâneo"
+        }
+      },
+      "identity": {
+        "tone": "Descolado e autêntico",
+        "market": "Jovens urbanos 18-30 anos",
+        "style": "Streetwear Urban",
+        "values": "Autenticidade, cultura urbana, atitude"
+      }
     },
     "casual": {
       "name": "Casual Everyday",
-      "description": "Para marcas do dia a dia, confortáveis e acessíveis"
+      "description": "Para marcas do dia a dia, confortáveis e acessíveis",
+      "vocabulary": {
+        "preferred": ["confortável", "versátil", "prático", "casual", "estilo", "tendência", "look", "outfit"],
+        "forbidden": ["luxo", "premium", "exclusivo"],
+        "alternatives": {
+          "caro": "investimento",
+          "barato": "acessível",
+          "simples": "clean"
+        }
+      },
+      "identity": {
+        "tone": "Acessível e amigável",
+        "market": "Público geral, todas as idades",
+        "style": "Casual Everyday",
+        "values": "Conforto, versatilidade, praticidade"
+      }
     },
     "minimal": {
       "name": "Minimal Contemporary",
-      "description": "Para marcas minimalistas com design clean e contemporâneo"
+      "description": "Para marcas minimalistas com design clean e contemporâneo",
+      "vocabulary": {
+        "preferred": ["minimalista", "clean", "essencial", "atemporal", "design", "funcional", "contemporâneo", "simplicidade"],
+        "forbidden": ["exagerado", "chamativo", "extravagante", "ousado"],
+        "alternatives": {
+          "bonito": "bem desenhado",
+          "moderno": "contemporâneo",
+          "simples": "essencial"
+        }
+      },
+      "identity": {
+        "tone": "Minimalista e direto",
+        "market": "Apreciadores de design clean",
+        "style": "Minimal Contemporary",
+        "values": "Simplicidade, funcionalidade, design"
+      }
     },
     
     "strictness": {

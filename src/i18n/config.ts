@@ -3,6 +3,8 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import enTranslation from './locales/en/translation.json';
 import ptTranslation from './locales/pt/translation.json';
+import enTemplates from './locales/en/brandBookTemplates.json';
+import ptTemplates from './locales/pt/brandBookTemplates.json';
 
 i18n
   .use(LanguageDetector)
@@ -11,9 +13,11 @@ i18n
     resources: {
       en: {
         translation: enTranslation,
+        templates: enTemplates,
       },
       pt: {
         translation: ptTranslation,
+        templates: ptTemplates,
       },
     },
     fallbackLng: 'en',

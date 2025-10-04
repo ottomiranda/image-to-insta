@@ -9,23 +9,99 @@
     
     "luxury": {
       "name": "Luxury Premium",
-      "description": "For high-end brands focused on exclusivity and sophistication"
+      "description": "For high-end brands focused on exclusivity and sophistication",
+      "vocabulary": {
+        "preferred": ["exclusive", "sophisticated", "premium", "elegant", "timeless", "artisanal", "luxurious", "refined"],
+        "forbidden": ["cheap", "discount", "promotion", "common", "popular", "basic", "simple"],
+        "alternatives": {
+          "cheap": "affordable",
+          "discount": "special offer",
+          "common": "classic",
+          "simple": "minimalist"
+        }
+      },
+      "identity": {
+        "tone": "Sophisticated and exclusive",
+        "market": "High-purchasing-power audience",
+        "style": "Luxury Premium",
+        "values": "Exclusivity, superior quality, craftsmanship"
+      }
     },
     "sustainable": {
       "name": "Sustainable & Conscious",
-      "description": "For eco-friendly brands with environmental and social commitment"
+      "description": "For eco-friendly brands with environmental and social commitment",
+      "vocabulary": {
+        "preferred": ["sustainable", "eco-friendly", "organic", "conscious", "natural", "recycled", "ethical", "transparent", "responsible"],
+        "forbidden": ["disposable", "fast fashion", "synthetic", "polluting"],
+        "alternatives": {
+          "new": "renewed",
+          "manufactured": "consciously created",
+          "material": "sustainable fabric"
+        }
+      },
+      "identity": {
+        "tone": "Conscious and transparent",
+        "market": "Eco-conscious consumers",
+        "style": "Sustainable & Conscious",
+        "values": "Sustainability, ethics, transparency"
+      }
     },
     "streetwear": {
       "name": "Streetwear Urban",
-      "description": "For young, urban brands with cool attitude"
+      "description": "For young, urban brands with cool attitude",
+      "vocabulary": {
+        "preferred": ["authentic", "unique", "urban", "streetwear", "vibe", "attitude", "fresh", "drip", "fire"],
+        "forbidden": ["formal", "conservative", "traditional", "classic"],
+        "alternatives": {
+          "elegant": "stylish",
+          "beautiful": "cool",
+          "modern": "contemporary"
+        }
+      },
+      "identity": {
+        "tone": "Cool and authentic",
+        "market": "Urban youth 18-30 years",
+        "style": "Streetwear Urban",
+        "values": "Authenticity, urban culture, attitude"
+      }
     },
     "casual": {
       "name": "Casual Everyday",
-      "description": "For everyday, comfortable and accessible brands"
+      "description": "For everyday, comfortable and accessible brands",
+      "vocabulary": {
+        "preferred": ["comfortable", "versatile", "practical", "casual", "style", "trend", "look", "outfit"],
+        "forbidden": ["luxury", "premium", "exclusive"],
+        "alternatives": {
+          "expensive": "investment",
+          "cheap": "affordable",
+          "simple": "clean"
+        }
+      },
+      "identity": {
+        "tone": "Accessible and friendly",
+        "market": "General public, all ages",
+        "style": "Casual Everyday",
+        "values": "Comfort, versatility, practicality"
+      }
     },
     "minimal": {
       "name": "Minimal Contemporary",
-      "description": "For minimalist brands with clean and contemporary design"
+      "description": "For minimalist brands with clean and contemporary design",
+      "vocabulary": {
+        "preferred": ["minimalist", "clean", "essential", "timeless", "design", "functional", "contemporary", "simplicity"],
+        "forbidden": ["excessive", "flashy", "extravagant", "bold"],
+        "alternatives": {
+          "beautiful": "well-designed",
+          "modern": "contemporary",
+          "simple": "essential"
+        }
+      },
+      "identity": {
+        "tone": "Minimalist and direct",
+        "market": "Clean design enthusiasts",
+        "style": "Minimal Contemporary",
+        "values": "Simplicity, functionality, design"
+      }
     },
     
     "strictness": {
