@@ -38,10 +38,42 @@ export function useCampaigns() {
         .single();
 
       if (error) throw error;
+
+      // Save brand validation data if available
+      if (campaign.brand_compliance_score !== null && campaign.brand_compliance_score !== undefined) {
+        const validationError = await supabase
+          .from("brand_validations")
+          .insert({
+            user_id: user.id,
+            campaign_id: data.id,
+            original_content: {
+              short_description: campaign.short_description,
+              long_description: campaign.long_description,
+              instagram: campaign.instagram,
+            },
+            corrected_content: {
+              short_description: campaign.short_description,
+              long_description: campaign.long_description,
+              instagram: campaign.instagram,
+            },
+            validation_score: campaign.brand_compliance_score,
+            adjustments_made: campaign.brand_compliance_adjustments || [],
+            user_approved: null,
+          })
+          .select()
+          .single();
+
+        if (validationError.error) {
+          console.error("Error saving brand validation:", validationError.error);
+        }
+      }
+
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      queryClient.invalidateQueries({ queryKey: ["brand-validations"] });
+      queryClient.invalidateQueries({ queryKey: ["brand-validations-analytics"] });
       toast({
         title: "Campaign saved",
         description: "Your campaign has been saved successfully.",

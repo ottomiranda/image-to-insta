@@ -23,14 +23,14 @@ serve(async (req) => {
   }
 
   try {
-    const { content, brandSettings } = await req.json();
+    const { content, brandSettings, campaign_id } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log('Starting content validation:', { brandSettings });
+    console.log('Starting content validation:', { brandSettings, campaign_id });
 
     const brandBookRules = brandSettings.brand_book_rules || {
       vocabulary: { preferred: [], forbidden: [], alternatives: {} },
