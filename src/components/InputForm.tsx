@@ -170,6 +170,12 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
         position: logoPosition,
       } : undefined;
 
+      // Fetch brand settings
+      const { data: brandSettings } = await supabase
+        .from('brand_settings')
+        .select('*')
+        .single();
+
       const { data, error } = await supabase.functions.invoke('generate-campaign', {
         body: {
           prompt: composedPrompt,
@@ -178,6 +184,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           modelImage: modelImageBase64,
           logoConfig,
           aspectRatio: selectedAspectRatio,
+          brandSettings,
         }
       });
 
