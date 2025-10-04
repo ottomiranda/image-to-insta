@@ -50,17 +50,17 @@ export function BrandBookTemplateSelector({ onApplyTemplate, currentRules }: Bra
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Templates de Brand Book</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="text-base font-semibold">Templates de Brand Book</h3>
+          <p className="text-xs text-muted-foreground">
             Escolha um template pré-configurado ou personalize suas próprias regras
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[340px] overflow-y-auto pr-2">
         {BRAND_BOOK_TEMPLATES.map((template) => (
           <Card
             key={template.id}
@@ -68,31 +68,31 @@ export function BrandBookTemplateSelector({ onApplyTemplate, currentRules }: Bra
               selectedTemplate === template.id ? 'border-primary' : ''
             }`}
           >
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{template.icon}</span>
-                  <div>
-                    <CardTitle className="text-base">{template.name}</CardTitle>
-                    <Badge variant="outline" className={`mt-1 ${getCategoryColor(template.category)}`}>
+            <CardHeader className="pb-2 p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-xl flex-shrink-0">{template.icon}</span>
+                  <div className="min-w-0">
+                    <CardTitle className="text-sm leading-tight">{template.name}</CardTitle>
+                    <Badge variant="outline" className={`mt-1 text-[10px] h-4 ${getCategoryColor(template.category)}`}>
                       {template.category}
                     </Badge>
                   </div>
                 </div>
                 {selectedTemplate === template.id && (
-                  <div className="bg-primary text-primary-foreground rounded-full p-1">
-                    <Check className="h-4 w-4" />
+                  <div className="bg-primary text-primary-foreground rounded-full p-0.5 flex-shrink-0">
+                    <Check className="h-3 w-3" />
                   </div>
                 )}
               </div>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <CardDescription className="text-xs">
+            <CardContent className="space-y-2 p-4 pt-0">
+              <CardDescription className="text-xs line-clamp-2">
                 {template.description}
               </CardDescription>
               
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">
+              <div className="flex items-center justify-between text-xs gap-2">
+                <span className="text-muted-foreground text-[10px]">
                   Rigor: <span className="font-medium text-foreground">{getStrictnessLabel(template.strictness)}</span>
                 </span>
                 <Dialog>
@@ -100,7 +100,7 @@ export function BrandBookTemplateSelector({ onApplyTemplate, currentRules }: Bra
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 text-xs"
+                      className="h-6 text-[10px] px-2"
                       onClick={() => setPreviewTemplate(template)}
                     >
                       <Info className="h-3 w-3 mr-1" />
@@ -165,10 +165,10 @@ export function BrandBookTemplateSelector({ onApplyTemplate, currentRules }: Bra
               <Button
                 onClick={() => handleApplyTemplate(template)}
                 variant={selectedTemplate === template.id ? "default" : "outline"}
-                className="w-full"
+                className="w-full h-7 text-xs"
                 size="sm"
               >
-                {selectedTemplate === template.id ? 'Aplicado' : 'Aplicar Template'}
+                {selectedTemplate === template.id ? 'Aplicado' : 'Aplicar'}
               </Button>
             </CardContent>
           </Card>

@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -38,7 +40,7 @@ import {
   PREFERRED_STYLE_OPTIONS,
   DEFAULT_BRAND_SETTINGS,
 } from "@/lib/brandDefaults";
-import { Loader2, Upload, X, Info, BookOpen } from "lucide-react";
+import { Loader2, Upload, X, Info, BookOpen, ChevronDown, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -393,66 +395,83 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
               </TabsContent>
 
               {/* Tab 2: Brand Book Avançado */}
-              <TabsContent value="brandbook" className="flex-1 overflow-y-auto space-y-6 mt-0 pr-2">
-                {/* Templates Selector */}
-                <BrandBookTemplateSelector
-                  onApplyTemplate={(rules, strictness) => {
-                    updateSettings({
-                      ...settings,
-                      brand_name: settings?.brand_name || '',
-                      brand_values: settings?.brand_values || '',
-                      tone_of_voice: settings?.tone_of_voice || '',
-                      target_market: settings?.target_market || '',
-                      preferred_style: settings?.preferred_style || '',
-                      primary_color: settings?.primary_color || '#6366f1',
-                      secondary_color: settings?.secondary_color || '#8b5cf6',
-                      brand_book_rules: rules,
-                      validation_strictness: strictness
-                    });
-                  }}
-                  currentRules={settings?.brand_book_rules}
-                />
+              <TabsContent value="brandbook" className="flex-1 mt-0">
+                <ScrollArea className="h-[calc(90vh-280px)] pr-4">
+                  <div className="space-y-4">
+                    {/* Templates Selector */}
+                    <BrandBookTemplateSelector
+                      onApplyTemplate={(rules, strictness) => {
+                        updateSettings({
+                          ...settings,
+                          brand_name: settings?.brand_name || '',
+                          brand_values: settings?.brand_values || '',
+                          tone_of_voice: settings?.tone_of_voice || '',
+                          target_market: settings?.target_market || '',
+                          preferred_style: settings?.preferred_style || '',
+                          primary_color: settings?.primary_color || '#6366f1',
+                          secondary_color: settings?.secondary_color || '#8b5cf6',
+                          brand_book_rules: rules,
+                          validation_strictness: strictness
+                        });
+                      }}
+                      currentRules={settings?.brand_book_rules}
+                    />
 
-                {/* Divider */}
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-white/10" />
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-card px-2 text-muted-foreground">ou personalize</span>
-                  </div>
-                </div>
+                    {/* Divider com indicador visual */}
+                    <div className="relative py-2">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-white/10" />
+                      </div>
+                      <div className="relative flex justify-center">
+                        <span className="bg-card px-3 text-xs text-muted-foreground flex items-center gap-2">
+                          <ChevronDown className="h-3 w-3 animate-bounce" />
+                          ou configure manualmente
+                          <ChevronDown className="h-3 w-3 animate-bounce" />
+                        </span>
+                      </div>
+                    </div>
 
-                {/* Custom Settings */}
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">Personalizar Regras</h3>
-                    <p className="text-sm text-muted-foreground">Configure as regras específicas do seu Brand Book</p>
+                    {/* Custom Settings - Destacado */}
+                    <Card className="border-primary/30 bg-card/50">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="h-5 w-5 text-primary" />
+                          <div>
+                            <CardTitle className="text-base">Personalizar Regras</CardTitle>
+                            <CardDescription className="text-xs">
+                              Configure as regras específicas do seu Brand Book
+                            </CardDescription>
+                          </div>
+                          <Badge variant="secondary" className="ml-auto text-[10px]">Customização Avançada</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <BrandBookSettings
+                          brandBookRules={settings?.brand_book_rules || {
+                            vocabulary: { preferred: [], forbidden: [], alternatives: {} },
+                            writing_style: { max_sentence_length: 20, use_emojis: true, max_emojis_per_post: 3, call_to_action_required: true },
+                            content_rules: { always_mention_sustainability: false, include_brand_hashtag: true, avoid_superlatives: false }
+                          }}
+                          validationStrictness={settings?.validation_strictness || 'medium'}
+                          onUpdate={(rules, strictness) => {
+                            updateSettings({
+                              ...settings,
+                              brand_name: settings?.brand_name || '',
+                              brand_values: settings?.brand_values || '',
+                              tone_of_voice: settings?.tone_of_voice || '',
+                              target_market: settings?.target_market || '',
+                              preferred_style: settings?.preferred_style || '',
+                              primary_color: settings?.primary_color || '#6366f1',
+                              secondary_color: settings?.secondary_color || '#8b5cf6',
+                              brand_book_rules: rules,
+                              validation_strictness: strictness
+                            });
+                          }}
+                        />
+                      </CardContent>
+                    </Card>
                   </div>
-                  
-                  <BrandBookSettings
-                    brandBookRules={settings?.brand_book_rules || {
-                      vocabulary: { preferred: [], forbidden: [], alternatives: {} },
-                      writing_style: { max_sentence_length: 20, use_emojis: true, max_emojis_per_post: 3, call_to_action_required: true },
-                      content_rules: { always_mention_sustainability: false, include_brand_hashtag: true, avoid_superlatives: false }
-                    }}
-                    validationStrictness={settings?.validation_strictness || 'medium'}
-                    onUpdate={(rules, strictness) => {
-                      updateSettings({
-                        ...settings,
-                        brand_name: settings?.brand_name || '',
-                        brand_values: settings?.brand_values || '',
-                        tone_of_voice: settings?.tone_of_voice || '',
-                        target_market: settings?.target_market || '',
-                        preferred_style: settings?.preferred_style || '',
-                        primary_color: settings?.primary_color || '#6366f1',
-                        secondary_color: settings?.secondary_color || '#8b5cf6',
-                        brand_book_rules: rules,
-                        validation_strictness: strictness
-                      });
-                    }}
-                  />
-                </div>
+                </ScrollArea>
               </TabsContent>
             </Tabs>
 
