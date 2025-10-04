@@ -79,7 +79,7 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
             <div className="flex-1 cursor-pointer" onClick={() => navigate(`/campaigns/${campaign.id}`)}>
               <h3 className="font-semibold truncate hover:text-primary transition-colors">{campaign.title}</h3>
               <p className="text-sm text-muted-foreground">{getTimestamp()}</p>
-              {campaign.brand_compliance_score !== undefined && (
+              {campaign.brand_compliance_score !== null && campaign.brand_compliance_score !== undefined && (
                 <div className="mt-2">
                   <BrandComplianceIndicator
                     score={campaign.brand_compliance_score}
