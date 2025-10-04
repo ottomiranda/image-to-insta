@@ -16,7 +16,7 @@ import { BrandComplianceWidget } from "@/components/BrandComplianceWidget";
 export default function Campaigns() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { campaigns, isLoading, deleteCampaign, updateCampaign } = useCampaigns();
+  const { campaigns, isLoading, error, deleteCampaign, updateCampaign } = useCampaigns();
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
@@ -84,7 +84,19 @@ export default function Campaigns() {
         </Tabs>
 
         {isLoading ? (
-          <div className="text-center py-12 text-muted-foreground">{t('common.loading')}</div>
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+            <p className="text-muted-foreground">{t('common.loading')}</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-destructive mb-4">
+              {t('campaigns.errorLoading') || 'Error loading campaigns. Please try again.'}
+            </p>
+            <Button onClick={() => window.location.reload()}>
+              {t('common.retry') || 'Retry'}
+            </Button>
+          </div>
         ) : filteredCampaigns && filteredCampaigns.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCampaigns.map((campaign) => (

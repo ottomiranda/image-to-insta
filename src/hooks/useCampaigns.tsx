@@ -6,21 +6,35 @@ import { toast } from "@/hooks/use-toast";
 export function useCampaigns() {
   const queryClient = useQueryClient();
 
-  const { data: campaigns, isLoading } = useQuery({
+  const { data: campaigns, isLoading, error } = useQuery({
     queryKey: ["campaigns"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("campaigns")
-        .select("*")
-        .order("created_at", { ascending: false });
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("Not authenticated");
 
-      if (error) throw error;
-      
-      return data.map((c: any) => ({
-        ...c,
-        accessories_images: c.accessories_images || [],
-      })) as Campaign[];
+        const { data, error } = await supabase
+          .from("campaigns")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching campaigns:", error);
+          throw error;
+        }
+        
+        return data.map((c: any) => ({
+          ...c,
+          accessories_images: c.accessories_images || [],
+        })) as Campaign[];
+      } catch (error) {
+        console.error("Failed to fetch campaigns:", error);
+        throw error;
+      }
     },
+    retry: 2,
+    staleTime: 30000,
   });
 
   const saveMutation = useMutation({
@@ -141,6 +155,7 @@ export function useCampaigns() {
   return {
     campaigns,
     isLoading,
+    error,
     saveCampaign: saveMutation.mutateAsync,
     updateCampaign: updateMutation.mutateAsync,
     deleteCampaign: deleteMutation.mutateAsync,
