@@ -46,13 +46,23 @@ serve(async (req) => {
     const brandBookRules = brandSettings.brand_book_rules || {
       vocabulary: { preferred: [], forbidden: [], alternatives: {} },
       writing_style: {},
-      content_rules: {}
+      content_rules: {},
+      identity: { tone_of_voice: '', target_market: '', preferred_style: '', brand_values: '' }
     };
 
     const strictnessLevel = brandSettings.validation_strictness || 'medium';
+    const brandName = brandSettings.brand_name || '';
     
     // Build validation prompt
     const validationPrompt = `You are a brand compliance validator. Analyze the following content and validate it against the brand book rules.
+
+BRAND NAME: ${brandName}
+
+BRAND IDENTITY:
+- Tom de Voz: ${brandBookRules.identity?.tone_of_voice || 'Não definido'}
+- Mercado-Alvo: ${brandBookRules.identity?.target_market || 'Não definido'}
+- Estilo Preferido: ${brandBookRules.identity?.preferred_style || 'Não definido'}
+- Valores da Marca: ${brandBookRules.identity?.brand_values || 'Não definido'}
 
 BRAND BOOK RULES:
 ${JSON.stringify(brandBookRules, null, 2)}

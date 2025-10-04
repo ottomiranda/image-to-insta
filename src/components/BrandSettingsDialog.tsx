@@ -48,10 +48,10 @@ const createBrandSettingsSchema = (t: any) => z.object({
   brand_name: z.string().min(1, t('brandSettings.brandName')).max(100),
   instagram_handle: z.string().optional(),
   website: z.string().url("URL inválida").optional().or(z.literal("")),
-  brand_values: z.string().min(10, "Descreva os valores da sua marca (mínimo 10 caracteres)"),
-  tone_of_voice: z.string().min(1, "Selecione um tom de voz"),
-  target_market: z.string().min(1, "Selecione um mercado-alvo"),
-  preferred_style: z.string().min(1, "Selecione um estilo"),
+  brand_values: z.string().optional(),
+  tone_of_voice: z.string().optional(),
+  target_market: z.string().optional(),
+  preferred_style: z.string().optional(),
   primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor primária inválida"),
   secondary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor secundária inválida"),
   preferred_keywords: z.string().optional(),
@@ -295,23 +295,6 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                 />
               </div>
 
-              <FormField
-                control={form.control}
-                name="brand_values"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('brandSettings.targetAudience')} *</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t('brandSettings.targetAudiencePlaceholder')}
-                        className="min-h-[100px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               {/* Logo Upload */}
               <div className="space-y-2">
@@ -354,85 +337,6 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
               </div>
             </div>
 
-            {/* Tom de Voz e Estilo */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.toneAndStyle')}</h3>
-
-              <FormField
-                control={form.control}
-                name="tone_of_voice"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('brandSettings.toneOfVoice')} *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t('brandSettings.selectTone')} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {TONE_OF_VOICE_OPTIONS.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="target_market"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mercado-Alvo *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o mercado-alvo" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {TARGET_MARKET_OPTIONS.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="preferred_style"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Estilo Preferido *</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o estilo" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {PREFERRED_STYLE_OPTIONS.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
             {/* Cores da Marca */}
             <div className="space-y-4">
@@ -475,44 +379,6 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
               </div>
             </div>
 
-            {/* Palavras-chave */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold border-b border-white/10 pb-2 text-white">{t('brandSettings.keywords')}</h3>
-
-              <FormField
-                control={form.control}
-                name="preferred_keywords"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('brandSettings.keywords')}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t('brandSettings.keywordsPlaceholder')}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="words_to_avoid"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Palavras a Evitar</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Ex: barato, comum, simples (separadas por vírgula)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
             {/* Brand Book Rules - Avançado */}
             <div className="space-y-4">

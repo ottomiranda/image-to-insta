@@ -142,9 +142,10 @@ export function BrandBookSettings({
       </div>
 
       <Tabs defaultValue="vocabulary" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="vocabulary">Vocabulário</TabsTrigger>
           <TabsTrigger value="style">Estilo de Escrita</TabsTrigger>
+          <TabsTrigger value="identity">Identidade</TabsTrigger>
         </TabsList>
 
         <TabsContent value="vocabulary" className="space-y-6 mt-4">
@@ -279,6 +280,96 @@ export function BrandBookSettings({
               }}
               min={0}
               max={10}
+            />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="identity" className="space-y-4 mt-4">
+          <div className="space-y-3">
+            <Label>Tom de Voz</Label>
+            <Input
+              value={rules.identity?.tone_of_voice || ''}
+              onChange={(e) => {
+                const updated = {
+                  ...rules,
+                  identity: {
+                    ...rules.identity,
+                    tone_of_voice: e.target.value,
+                    target_market: rules.identity?.target_market || '',
+                    preferred_style: rules.identity?.preferred_style || '',
+                    brand_values: rules.identity?.brand_values || ''
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+              placeholder="Ex: Profissional e confiável"
+            />
+          </div>
+
+          <div className="space-y-3">
+            <Label>Mercado-Alvo</Label>
+            <Input
+              value={rules.identity?.target_market || ''}
+              onChange={(e) => {
+                const updated = {
+                  ...rules,
+                  identity: {
+                    ...rules.identity,
+                    tone_of_voice: rules.identity?.tone_of_voice || '',
+                    target_market: e.target.value,
+                    preferred_style: rules.identity?.preferred_style || '',
+                    brand_values: rules.identity?.brand_values || ''
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+              placeholder="Ex: Mulheres 25-40 anos"
+            />
+          </div>
+
+          <div className="space-y-3">
+            <Label>Estilo Preferido</Label>
+            <Input
+              value={rules.identity?.preferred_style || ''}
+              onChange={(e) => {
+                const updated = {
+                  ...rules,
+                  identity: {
+                    ...rules.identity,
+                    tone_of_voice: rules.identity?.tone_of_voice || '',
+                    target_market: rules.identity?.target_market || '',
+                    preferred_style: e.target.value,
+                    brand_values: rules.identity?.brand_values || ''
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+              placeholder="Ex: Minimalista e elegante"
+            />
+          </div>
+
+          <div className="space-y-3">
+            <Label>Valores da Marca</Label>
+            <Input
+              value={rules.identity?.brand_values || ''}
+              onChange={(e) => {
+                const updated = {
+                  ...rules,
+                  identity: {
+                    ...rules.identity,
+                    tone_of_voice: rules.identity?.tone_of_voice || '',
+                    target_market: rules.identity?.target_market || '',
+                    preferred_style: rules.identity?.preferred_style || '',
+                    brand_values: e.target.value
+                  }
+                };
+                setRules(updated);
+                onUpdate(updated, strictness);
+              }}
+              placeholder="Ex: Sustentabilidade, qualidade, transparência"
             />
           </div>
         </TabsContent>

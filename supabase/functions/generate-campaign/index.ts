@@ -642,8 +642,11 @@ Respond using the JSON tool format.`;
               instagram: content.instagram
             },
             brandSettings: {
+              brand_name: brandSettings.brand_name,
               brand_book_rules: brandSettings.brand_book_rules,
-              validation_strictness: brandSettings.validation_strictness
+              validation_strictness: brandSettings.validation_strictness,
+              primary_color: brandSettings.primary_color,
+              secondary_color: brandSettings.secondary_color
             }
           })
         });

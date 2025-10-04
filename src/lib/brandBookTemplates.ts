@@ -39,6 +39,12 @@ export const BRAND_BOOK_TEMPLATES: BrandBookTemplate[] = [
         always_mention_sustainability: false,
         include_brand_hashtag: true,
         avoid_superlatives: false
+      },
+      identity: {
+        tone_of_voice: 'Sofisticado e exclusivo',
+        target_market: 'Público de alto poder aquisitivo',
+        preferred_style: 'Luxury Premium',
+        brand_values: 'Exclusividade, qualidade superior, artesanato'
       }
     }
   },
@@ -69,6 +75,12 @@ export const BRAND_BOOK_TEMPLATES: BrandBookTemplate[] = [
         always_mention_sustainability: true,
         include_brand_hashtag: true,
         avoid_superlatives: true
+      },
+      identity: {
+        tone_of_voice: 'Consciente e transparente',
+        target_market: 'Consumidores eco-conscientes',
+        preferred_style: 'Sustainable & Conscious',
+        brand_values: 'Sustentabilidade, ética, transparência'
       }
     }
   },
@@ -99,6 +111,12 @@ export const BRAND_BOOK_TEMPLATES: BrandBookTemplate[] = [
         always_mention_sustainability: false,
         include_brand_hashtag: true,
         avoid_superlatives: false
+      },
+      identity: {
+        tone_of_voice: 'Descolado e autêntico',
+        target_market: 'Jovens urbanos 18-30 anos',
+        preferred_style: 'Streetwear Urban',
+        brand_values: 'Autenticidade, cultura urbana, atitude'
       }
     }
   },
@@ -129,6 +147,12 @@ export const BRAND_BOOK_TEMPLATES: BrandBookTemplate[] = [
         always_mention_sustainability: false,
         include_brand_hashtag: true,
         avoid_superlatives: false
+      },
+      identity: {
+        tone_of_voice: 'Acessível e amigável',
+        target_market: 'Público geral, todas as idades',
+        preferred_style: 'Casual Everyday',
+        brand_values: 'Conforto, versatilidade, praticidade'
       }
     }
   },
@@ -159,6 +183,12 @@ export const BRAND_BOOK_TEMPLATES: BrandBookTemplate[] = [
         always_mention_sustainability: false,
         include_brand_hashtag: true,
         avoid_superlatives: true
+      },
+      identity: {
+        tone_of_voice: 'Minimalista e direto',
+        target_market: 'Apreciadores de design clean',
+        preferred_style: 'Minimal Contemporary',
+        brand_values: 'Simplicidade, funcionalidade, design'
       }
     }
   }

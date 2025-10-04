@@ -20,6 +20,12 @@ export interface BrandBookRules {
     include_brand_hashtag?: boolean;
     avoid_superlatives?: boolean;
   };
+  identity?: {
+    tone_of_voice: string;
+    target_market: string;
+    preferred_style: string;
+    brand_values: string;
+  };
 }
 
 export interface BrandSettings {
