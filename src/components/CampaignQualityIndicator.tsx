@@ -36,7 +36,17 @@ export function CampaignQualityIndicator({
   // Overall quality status
   const getQualityStatus = () => {
     if (isValidating) return 'validating';
-    if (!jsonValid && validationResult) return 'invalid';
+    
+    // Se não há resultado de validação ainda (autoValidate=false), usar apenas brand score
+    if (!validationResult) {
+      if (brandScore >= 80) return 'excellent';
+      if (brandScore >= 60) return 'good';
+      if (brandScore >= 50) return 'needsReview';
+      return 'attention';
+    }
+    
+    // Se há resultado de validação, considerar ambos JSON + brand
+    if (!jsonValid) return 'invalid';
     if (jsonValid && !jsonCorrected && brandScore >= 80) return 'excellent';
     if (jsonValid && brandScore >= 60) return 'good';
     if (jsonValid && brandScore >= 50) return 'needsReview';
@@ -102,8 +112,8 @@ export function CampaignQualityIndicator({
                     <XCircle className="h-3 w-3 text-red-500" />
                   )}
                   <span>
-                    JSON Schema: {jsonValid ? '✓ Validado' : '✗ Inválido'}
-                    {jsonCorrected && ` (${validationResult?.validationLog.correctedFields.length} campos corrigidos)`}
+                    JSON Schema: {validationResult ? (jsonValid ? '✓ Validado' : '✗ Inválido') : '⏳ Não validado'}
+                    {jsonCorrected && validationResult && ` (${validationResult.validationLog.correctedFields.length} campos corrigidos)`}
                   </span>
                 </div>
                 

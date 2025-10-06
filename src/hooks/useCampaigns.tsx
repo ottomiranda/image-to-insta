@@ -56,7 +56,7 @@ export function useCampaigns() {
       const { data, error } = await supabase
         .from("campaigns")
         .insert({
-          ...campaign,
+          ...campaign as any,
           user_id: user.id,
         })
         .select()
@@ -117,7 +117,7 @@ export function useCampaigns() {
     mutationFn: async ({ id, data }: { id: string; data: Partial<Campaign> }) => {
       const { error } = await supabase
         .from("campaigns")
-        .update(data)
+        .update(data as any)
         .eq("id", id);
 
       if (error) throw error;

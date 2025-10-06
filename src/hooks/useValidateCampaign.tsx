@@ -29,6 +29,29 @@ export const useValidateCampaign = () => {
           hasBrandTone: !!result.correctedData.descriptions.brand_tone,
         });
         
+        // ⚡ Salvar dados corrigidos no banco
+        try {
+          const { error: updateError } = await supabase
+            .from('campaigns')
+            .update({
+              look_items: result.correctedData.look.items as any,
+              palette_hex: result.correctedData.look.palette_hex,
+              seo_keywords: result.correctedData.descriptions.seo_keywords,
+              brand_tone: result.correctedData.descriptions.brand_tone,
+              governance: result.correctedData.governance as any,
+              telemetry: result.correctedData.telemetry as any,
+            })
+            .eq('id', campaign.id);
+          
+          if (updateError) {
+            console.error('❌ Erro ao salvar JSON corrigido:', updateError);
+          } else {
+            console.log('✅ JSON corrigido salvo no banco com sucesso!');
+          }
+        } catch (saveError) {
+          console.error('❌ Exceção ao salvar JSON:', saveError);
+        }
+        
         // Invalidate queries to refresh with corrected data
         await queryClient.invalidateQueries({ queryKey: ['campaigns'] });
       }

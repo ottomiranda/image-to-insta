@@ -136,19 +136,25 @@ export type Database = {
           brand_compliance_adjustments: Json | null
           brand_compliance_original_score: number | null
           brand_compliance_score: number | null
+          brand_tone: string | null
           centerpiece_image: string
           created_at: string
+          governance: Json | null
           id: string
           image_analysis: Json | null
           instagram: Json
           long_description: string
+          look_items: Json | null
           look_visual: string
           model_image: string | null
+          palette_hex: string[] | null
           prompt: string
           published_at: string | null
           scheduled_at: string | null
+          seo_keywords: string[] | null
           short_description: string
           status: string
+          telemetry: Json | null
           title: string
           updated_at: string
           user_id: string
@@ -158,19 +164,25 @@ export type Database = {
           brand_compliance_adjustments?: Json | null
           brand_compliance_original_score?: number | null
           brand_compliance_score?: number | null
+          brand_tone?: string | null
           centerpiece_image: string
           created_at?: string
+          governance?: Json | null
           id?: string
           image_analysis?: Json | null
           instagram: Json
           long_description: string
+          look_items?: Json | null
           look_visual: string
           model_image?: string | null
+          palette_hex?: string[] | null
           prompt: string
           published_at?: string | null
           scheduled_at?: string | null
+          seo_keywords?: string[] | null
           short_description: string
           status?: string
+          telemetry?: Json | null
           title: string
           updated_at?: string
           user_id: string
@@ -180,19 +192,25 @@ export type Database = {
           brand_compliance_adjustments?: Json | null
           brand_compliance_original_score?: number | null
           brand_compliance_score?: number | null
+          brand_tone?: string | null
           centerpiece_image?: string
           created_at?: string
+          governance?: Json | null
           id?: string
           image_analysis?: Json | null
           instagram?: Json
           long_description?: string
+          look_items?: Json | null
           look_visual?: string
           model_image?: string | null
+          palette_hex?: string[] | null
           prompt?: string
           published_at?: string | null
           scheduled_at?: string | null
+          seo_keywords?: string[] | null
           short_description?: string
           status?: string
+          telemetry?: Json | null
           title?: string
           updated_at?: string
           user_id?: string

@@ -48,7 +48,7 @@ export default function CampaignDetails() {
       return {
         ...data,
         accessories_images: data.accessories_images || [],
-      } as Campaign;
+      } as unknown as Campaign;
     },
     enabled: !!campaignId,
   });
@@ -338,7 +338,7 @@ export default function CampaignDetails() {
           
           await supabase
             .from("campaigns")
-            .update(updateData)
+            .update(updateData as any)
             .eq("id", campaign.id);
             
           toast({

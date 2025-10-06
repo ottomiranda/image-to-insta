@@ -754,7 +754,7 @@ Respond using the JSON tool format.`;
       longDescription: finalContent.longDescription || content.longDescription,
       instagram: finalContent.instagram || content.instagram,
       brand_compliance_score: finalScore,
-      brand_compliance_original_score: originalScore !== finalScore ? originalScore : undefined,
+      brand_compliance_original_score: originalScore,
       brand_compliance_adjustments: complianceAdjustments
     };
 
