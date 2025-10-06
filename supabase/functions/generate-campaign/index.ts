@@ -605,15 +605,23 @@ Respond using the JSON tool format.`;
     let validationResult = null;
     let finalContent = content;
     
+    // Check if validation should be performed
+    const shouldValidate = brandSettings && 
+      brandSettings.validation_strictness && 
+      brandSettings.validation_strictness !== 'none' &&
+      brandSettings.brand_book_rules && 
+      typeof brandSettings.brand_book_rules === 'object';
+    
     console.log('🔍 VALIDATION CHECK - brandSettings:', {
       hasBrandSettings: !!brandSettings,
       hasBrandBookRules: !!brandSettings?.brand_book_rules,
       hasValidationStrictness: !!brandSettings?.validation_strictness,
       strictnessValue: brandSettings?.validation_strictness,
-      brandBookRulesStructure: brandSettings?.brand_book_rules ? Object.keys(brandSettings.brand_book_rules) : null
+      brandBookRulesStructure: brandSettings?.brand_book_rules ? Object.keys(brandSettings.brand_book_rules) : null,
+      shouldValidate
     });
     
-    if (brandSettings?.brand_book_rules || brandSettings?.validation_strictness) {
+    if (shouldValidate) {
       console.log('✅ VALIDATION: Brand book rules or strictness found - proceeding with validation...');
       try {
         console.log('📤 VALIDATION: Calling validate-content function...');
