@@ -33,6 +33,25 @@ export function JsonViewerDialog({
     });
   };
   
+  const downloadJson = () => {
+    try {
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+      const filename = `campaign-${campaign.id}-${timestamp}.json`;
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      // Fallback toast if something goes wrong
+      toast({ title: t('lookpost.error'), description: t('common.unknownError'), variant: 'destructive' });
+    }
+  };
+  
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -50,6 +69,11 @@ export function JsonViewerDialog({
               {t('lookpost.copy')}
             </Button>
           </DialogTitle>
+          <div className="flex items-center justify-end gap-2 mt-2">
+            <Button variant="outline" size="sm" onClick={downloadJson}>
+              {t('lookpost.downloadJson')}
+            </Button>
+          </div>
         </DialogHeader>
         <ScrollArea className="h-[60vh] w-full rounded-md border p-4">
           <pre className="text-xs">

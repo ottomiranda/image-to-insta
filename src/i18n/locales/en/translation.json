@@ -249,13 +249,14 @@
       "corrected": "Validated with Corrections",
       "adequate": "Adequate",
       "needsReview": "Needs Review",
+      "invalid": "Requires Attention",
       "requiresAttention": "Requires Attention"
     },
     "jsonSchema": "JSON Schema",
     "validated": "✓ Validated",
     "invalid": "✗ Invalid",
     "notValidated": "⏳ Not validated",
-    "correctedSuffix": "({{count}} fields corrected)",
+    "correctedSuffix": "- {{count}} fields corrected automatically",
     "brandCompliance": "Brand Compliance",
     "score": "Score",
     "improvedFrom": "(improved from {{value}}%)"

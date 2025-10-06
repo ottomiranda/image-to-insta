@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Calendar, Copy, Download, Edit, Share2, Trash2 } from "lucide-react";
-import { DownloadJsonButton } from "@/components/DownloadJsonButton";
 import { JsonViewerDialog } from "@/components/JsonViewerDialog";
 import { RevalidateButton } from "@/components/RevalidateButton";
 import { CampaignQualityIndicator } from "@/components/CampaignQualityIndicator";
@@ -139,7 +138,6 @@ export default function CampaignDetails() {
           </div>
           <div className="flex gap-2">
             <JsonViewerDialog campaign={campaign} variant="outline" />
-            <DownloadJsonButton campaign={campaign} variant="outline" />
             {(campaign.brand_compliance_score === 50 && 
               (!campaign.brand_compliance_adjustments || campaign.brand_compliance_adjustments.length === 0)) && (
               <RevalidateButton campaignId={campaign.id} variant="outline" />

@@ -94,6 +94,7 @@ export function CampaignQualityIndicator({
     return (
       <TooltipProvider>
         <Tooltip>
+          <TooltipTrigger asChild>
             <Badge variant="outline" className={`gap-1 ${config.color}`}>
               {config.icon}
               <span className="text-xs">{config.label}</span>
