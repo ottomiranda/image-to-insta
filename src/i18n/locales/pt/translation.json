@@ -182,6 +182,19 @@
     "errorSigningOut": "Erro ao sair",
     "unexpectedError": "Ocorreu um erro inesperado"
   },
+  "lookpost": {
+    "downloadJson": "Download JSON",
+    "viewJson": "Ver JSON",
+    "jsonPreview": "Pré-visualização JSON",
+    "copy": "Copiar",
+    "copied": "JSON copiado",
+    "copiedDesc": "JSON copiado para área de transferência",
+    "generating": "Gerando JSON...",
+    "success": "JSON gerado com sucesso",
+    "successDesc": "Arquivo JSON baixado com sucesso",
+    "error": "Falha ao gerar JSON",
+    "errorDesc": "Tente novamente"
+  },
   "common": {
     "loading": "Carregando...",
     "save": "Salvar",

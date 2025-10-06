@@ -6,6 +6,8 @@ import { useToast } from "@/hooks/use-toast";
 import type { GeneratedContent } from "@/pages/Create";
 import { useTranslation } from "react-i18next";
 import { BrandComplianceIndicator } from "./BrandComplianceIndicator";
+import { Campaign } from "@/types/campaign";
+import { downloadCampaignJson } from "@/lib/lookpost";
 
 interface ResultsDisplayProps {
   content: GeneratedContent;
@@ -35,31 +37,46 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
   };
 
   const exportJSON = () => {
-    const jsonData = {
-      look_visual: content.lookVisual,
-      short_description: content.shortDescription,
-      long_description: content.longDescription,
-      instagram: {
-        caption: content.instagram.caption,
-        hashtags: content.instagram.hashtags,
-        call_to_action: content.instagram.callToAction,
-        alt_text: content.instagram.altText,
-        suggested_time: content.instagram.suggestedTime,
-      }
-    };
-    
-    const dataStr = JSON.stringify(jsonData, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'complete-campaign.json';
-    link.click();
-    
-    toast({
-      title: t('results.jsonExported'),
-      description: t('results.jsonExportedDesc'),
-    });
+    try {
+      // Converter GeneratedContent para Campaign format parcial
+      const campaignData: Partial<Campaign> = {
+        id: crypto.randomUUID(),
+        user_id: '',
+        title: 'Generated Campaign',
+        prompt: '',
+        status: 'draft',
+        centerpiece_image: '',
+        accessories_images: [],
+        look_visual: content.lookVisual,
+        short_description: content.shortDescription,
+        long_description: content.longDescription,
+        instagram: {
+          caption: content.instagram.caption,
+          hashtags: content.instagram.hashtags,
+          callToAction: content.instagram.callToAction,
+          altText: content.instagram.altText,
+          suggestedTime: content.instagram.suggestedTime,
+        },
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        brand_compliance_score: content.brandComplianceScore,
+        brand_compliance_adjustments: content.brandComplianceAdjustments,
+      };
+      
+      downloadCampaignJson(campaignData as Campaign);
+      
+      toast({
+        title: t('results.jsonExported'),
+        description: t('results.jsonExportedDesc'),
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      toast({
+        title: t('lookpost.error'),
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
   };
 
   return (

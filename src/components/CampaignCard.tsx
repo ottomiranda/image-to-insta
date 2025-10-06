@@ -18,7 +18,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { MoreVertical, Copy, Trash2, Send, Pencil } from "lucide-react";
+import { MoreVertical, Copy, Trash2, Send, Pencil, Download } from "lucide-react";
+import { DownloadJsonButton } from "./DownloadJsonButton";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -103,6 +104,17 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
                 <DropdownMenuItem onClick={() => navigate(`/create/${campaign.id}`)}>
                   <Copy className="mr-2 h-4 w-4" />
                   {t('campaigns.duplicate')}
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <div className="w-full">
+                    <DownloadJsonButton 
+                      campaign={campaign} 
+                      variant="ghost" 
+                      size="sm"
+                      showLabel={true}
+                      className="w-full justify-start p-0 h-auto font-normal"
+                    />
+                  </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onPublish(campaign)}>
                   <Send className="mr-2 h-4 w-4" />

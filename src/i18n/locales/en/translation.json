@@ -182,6 +182,19 @@
     "errorSigningOut": "Error signing out",
     "unexpectedError": "An unexpected error occurred"
   },
+  "lookpost": {
+    "downloadJson": "Download JSON",
+    "viewJson": "View JSON",
+    "jsonPreview": "JSON Preview",
+    "copy": "Copy",
+    "copied": "JSON copied",
+    "copiedDesc": "JSON copied to clipboard",
+    "generating": "Generating JSON...",
+    "success": "JSON generated successfully",
+    "successDesc": "JSON file downloaded successfully",
+    "error": "Failed to generate JSON",
+    "errorDesc": "Please try again"
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",

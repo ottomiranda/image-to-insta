@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Calendar, Copy, Download, Edit, Share2, Trash2 } from "lucide-react";
 import { BrandComplianceIndicator } from "@/components/BrandComplianceIndicator";
+import { DownloadJsonButton } from "@/components/DownloadJsonButton";
+import { JsonViewerDialog } from "@/components/JsonViewerDialog";
 import { toast } from "@/hooks/use-toast";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useState } from "react";
@@ -133,6 +135,8 @@ export default function CampaignDetails() {
             </p>
           </div>
           <div className="flex gap-2">
+            <JsonViewerDialog campaign={campaign} variant="outline" />
+            <DownloadJsonButton campaign={campaign} variant="outline" />
             <Button variant="outline" onClick={() => navigate(`/create/${campaignId}`)}>
               <Edit className="mr-2 h-4 w-4" />
               Edit
