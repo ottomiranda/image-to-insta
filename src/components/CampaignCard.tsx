@@ -43,9 +43,9 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
       case "published":
         return <Badge variant="default">{t('campaigns.published')}</Badge>;
       case "scheduled":
-        return <Badge variant="secondary">{t('campaigns.scheduled')}</Badge>;
+        return <Badge variant="scheduled">{t('campaigns.scheduled')}</Badge>;
       default:
-        return <Badge variant="outline">{t('campaigns.draft')}</Badge>;
+        return <Badge variant="overlay">{t('campaigns.draft')}</Badge>;
     }
   };
 
@@ -74,23 +74,29 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
             alt={campaign.title}
             className="w-full h-full object-cover"
           />
+          {/* Badge de status posicionado no canto superior direito da foto */}
+          <div className="absolute top-2 right-2 z-10">
+            {getStatusBadge()}
+          </div>
+          {/* Badge de qualidade posicionado no canto inferior direito da foto */}
+          <div className="absolute bottom-2 right-2 z-10">
+            <CampaignQualityIndicator 
+              campaign={campaign} 
+              autoValidate={false}
+              compact={true}
+            />
+          </div>
         </div>
         <CardContent className="p-4">
-          <div className="flex items-start justify-between mb-2">
+          <div className="flex items-start justify-between">
             <div className="flex-1 cursor-pointer" onClick={() => navigate(`/campaigns/${campaign.id}`)}>
-              <h3 className="font-semibold truncate hover:text-primary transition-colors">{campaign.title}</h3>
+              <h3 className="font-semibold truncate hover:text-primary transition-colors mb-2">{campaign.title}</h3>
+              {/* Timestamp */}
               <p className="text-sm text-muted-foreground">{getTimestamp()}</p>
-              <div className="mt-2">
-                <CampaignQualityIndicator 
-                  campaign={campaign} 
-                  autoValidate={false}
-                  compact={true}
-                />
-              </div>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Button variant="ghost" size="icon" className="h-8 w-8 ml-2">
                   <MoreVertical className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -128,7 +134,6 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          {getStatusBadge()}
         </CardContent>
       </Card>
 

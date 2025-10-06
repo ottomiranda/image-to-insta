@@ -61,31 +61,37 @@ export function CampaignQualityIndicator({
       icon: <Loader2 className="h-3 w-3 animate-spin" />,
       label: t('quality.status.validating'),
       color: 'bg-muted text-muted-foreground',
+      variant: 'outline' as const,
     },
     excellent: {
       icon: <CheckCircle2 className="h-3 w-3" />,
       label: t('quality.status.approved'),
-      color: 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20',
+      color: '',
+      variant: 'approved' as const,
     },
     good: {
       icon: <AlertTriangle className="h-3 w-3" />,
       label: jsonCorrected ? t('quality.status.corrected') : t('quality.status.adequate'),
-      color: 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
+      color: '',
+      variant: 'adequate' as const,
     },
     needsReview: {
       icon: <AlertCircle className="h-3 w-3" />,
       label: t('quality.status.needsReview'),
-      color: 'bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/20',
+      color: '',
+      variant: 'quality' as const,
     },
     invalid: {
       icon: <XCircle className="h-3 w-3" />,
       label: t('quality.status.invalid'),
-      color: 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20',
+      color: '',
+      variant: 'attention' as const,
     },
     attention: {
       icon: <XCircle className="h-3 w-3" />,
       label: t('quality.status.requiresAttention'),
-      color: 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20',
+      color: '',
+      variant: 'attention' as const,
     },
   } as const;
   const config = statusConfig[status];
@@ -95,9 +101,9 @@ export function CampaignQualityIndicator({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Badge variant="outline" className={`gap-1 ${config.color}`}>
+            <Badge variant={config.variant} className={`gap-1 ${config.color} whitespace-nowrap`}>
               {config.icon}
-              <span className="text-xs">{config.label}</span>
+              <span className="text-xs font-medium">{config.label}</span>
             </Badge>
           </TooltipTrigger>
           <TooltipContent className="max-w-sm">
@@ -150,7 +156,7 @@ export function CampaignQualityIndicator({
     <div className="space-y-3 p-4 rounded-lg border bg-card">
       <div className="flex items-center justify-between">
         <h4 className="font-semibold">{t('quality.title')}</h4>
-        <Badge variant="outline" className={config.color}>
+        <Badge variant={config.variant} className={config.color}>
           {config.icon}
           {config.label}
         </Badge>

@@ -12,6 +12,18 @@ const badgeVariants = cva(
         secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
+        // Variante para badges sobre imagens com glassmorphism
+        overlay: "border-white/20 bg-slate-900/80 text-white backdrop-blur-sm hover:bg-slate-900/90 shadow-lg",
+        // Variante para badges de atenção com melhor contraste
+        attention: "border-red-500/30 bg-red-500/90 text-white backdrop-blur-sm hover:bg-red-500 shadow-lg font-medium",
+        // Variante para badges de qualidade com melhor legibilidade
+        quality: "border-orange-500/30 bg-orange-500/90 text-white backdrop-blur-sm hover:bg-orange-500 shadow-md font-medium text-[10px] px-2 py-0.5",
+        // Variante para badges aprovados com fundo verde sólido
+        approved: "border-green-600/20 bg-green-600 text-white hover:bg-green-700 shadow-md font-medium",
+        // Variante para badges adequados com fundo amarelo/laranja sólido
+        adequate: "border-yellow-600/20 bg-yellow-600 text-white hover:bg-yellow-700 shadow-md font-medium",
+        // Variante para badges agendados com cor azul água
+        scheduled: "border-cyan-600/20 bg-cyan-500 text-white hover:bg-cyan-600 shadow-md font-medium",
       },
     },
     defaultVariants: {
