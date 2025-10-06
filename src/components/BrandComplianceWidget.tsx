@@ -4,12 +4,18 @@ import { ArrowRight, TrendingUp, TrendingDown, Minus, AlertCircle } from "lucide
 import { useBrandValidations } from "@/hooks/useBrandValidations";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Campaign } from "@/types/campaign";
 
-export function BrandComplianceWidget() {
-  const { analytics, isLoading } = useBrandValidations();
+interface BrandComplianceWidgetProps {
+  campaigns: Campaign[] | undefined;
+  isLoading: boolean;
+}
+
+export function BrandComplianceWidget({ campaigns, isLoading: campaignsLoading }: BrandComplianceWidgetProps) {
+  const { analytics, isLoading } = useBrandValidations(campaigns, campaignsLoading);
   const navigate = useNavigate();
 
-  if (isLoading) {
+  if (isLoading || campaignsLoading) {
     return (
       <Card>
         <CardHeader>

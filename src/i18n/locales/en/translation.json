@@ -20,6 +20,7 @@
     "title": "Campaigns",
     "description": "Manage your fashion marketing campaigns",
     "newCampaign": "New Campaign",
+    "loadMore": "Load More",
     "all": "All",
     "draft": "Draft",
     "published": "Published",

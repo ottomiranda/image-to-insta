@@ -11,6 +11,9 @@ interface OnboardingStatus {
   updated_at?: string;
 }
 
+const ONBOARDING_RESET_HOURS = 24;
+const ONBOARDING_CHECK_KEY = "onboarding_last_check";
+
 export function useOnboarding() {
   const [status, setStatus] = useState<OnboardingStatus>({
     tutorial_completed: false,
@@ -20,6 +23,14 @@ export function useOnboarding() {
   const [isLoading, setIsLoading] = useState(true);
   const [run, setRun] = useState(false);
   const { toast } = useToast();
+
+  const shouldCheckReset = () => {
+    const lastCheck = localStorage.getItem(ONBOARDING_CHECK_KEY);
+    if (!lastCheck) return true;
+    
+    const hoursSinceCheck = (Date.now() - parseInt(lastCheck)) / (1000 * 60 * 60);
+    return hoursSinceCheck >= ONBOARDING_RESET_HOURS;
+  };
 
   useEffect(() => {
     loadOnboardingStatus();
@@ -43,11 +54,12 @@ export function useOnboarding() {
 
       if (data) {
         setStatus(data);
-        // Check if 24 hours have passed since last completion
-        if (data.completed_at) {
+        // Only check for reset if enough time has passed since last check
+        if (data.completed_at && shouldCheckReset()) {
           const lastCompleted = new Date(data.completed_at);
           const hoursSinceCompletion = (Date.now() - lastCompleted.getTime()) / (1000 * 60 * 60);
-          if (hoursSinceCompletion >= 24) {
+          
+          if (hoursSinceCompletion >= ONBOARDING_RESET_HOURS) {
             // Reset to show onboarding again
             const { data: resetData } = await supabase
               .from("user_onboarding")
@@ -66,6 +78,9 @@ export function useOnboarding() {
               setRun(true);
             }
           }
+          
+          // Update last check timestamp
+          localStorage.setItem(ONBOARDING_CHECK_KEY, Date.now().toString());
         }
       } else {
         // First time user - create record

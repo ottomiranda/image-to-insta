@@ -8,6 +8,7 @@ import { UserNav } from "@/components/UserNav";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useCampaigns } from "@/hooks/useCampaigns";
 import {
   ChartContainer,
   ChartTooltip,
@@ -36,7 +37,8 @@ const COLORS = {
 
 export default function BrandAnalytics() {
   const navigate = useNavigate();
-  const { analytics, isLoading } = useBrandValidations();
+  const { campaigns, isLoading: campaignsLoading } = useCampaigns();
+  const { analytics, isLoading } = useBrandValidations(campaigns, campaignsLoading);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -49,7 +51,7 @@ export default function BrandAnalytics() {
     return t('brandAnalytics.scoreLabels.needsImprovement');
   };
 
-  if (isLoading) {
+  if (isLoading || campaignsLoading) {
     return (
       <div className="min-h-screen bg-background">
         <header className="border-b">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,9 +23,19 @@ export default function Campaigns() {
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const filteredCampaigns = campaigns?.filter((c) => 
-    statusFilter === "all" ? true : c.status === statusFilter
+  const filteredCampaigns = useMemo(() => 
+    campaigns?.filter((c) => statusFilter === "all" ? true : c.status === statusFilter),
+    [campaigns, statusFilter]
   );
+
+  // Lazy loading state
+  const [displayLimit, setDisplayLimit] = useState(9);
+  const displayedCampaigns = useMemo(() => 
+    filteredCampaigns?.slice(0, displayLimit),
+    [filteredCampaigns, displayLimit]
+  );
+  
+  const hasMore = filteredCampaigns && filteredCampaigns.length > displayLimit;
 
   const handlePublish = (campaign: Campaign) => {
     setSelectedCampaign(campaign);
@@ -75,7 +85,7 @@ export default function Campaigns() {
       <main className="container mx-auto px-4 py-8">
         {/* Brand Compliance Widget */}
         <div className="mb-8" data-onboarding="compliance-widget">
-          <BrandComplianceWidget />
+          <BrandComplianceWidget campaigns={campaigns} isLoading={isLoading} />
         </div>
 
         <Tabs value={statusFilter} onValueChange={setStatusFilter} className="mb-6">
@@ -102,17 +112,29 @@ export default function Campaigns() {
             </Button>
           </div>
         ) : filteredCampaigns && filteredCampaigns.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCampaigns.map((campaign, index) => (
-              <div key={campaign.id} data-onboarding={index === 0 ? "campaign-card" : undefined}>
-                <CampaignCard
-                  campaign={campaign}
-                  onDelete={deleteCampaign}
-                  onPublish={handlePublish}
-                />
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedCampaigns?.map((campaign, index) => (
+                <div key={campaign.id} data-onboarding={index === 0 ? "campaign-card" : undefined}>
+                  <CampaignCard
+                    campaign={campaign}
+                    onDelete={deleteCampaign}
+                    onPublish={handlePublish}
+                  />
+                </div>
+              ))}
+            </div>
+            {hasMore && (
+              <div className="mt-8 text-center">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setDisplayLimit(prev => prev + 9)}
+                >
+                  {t('campaigns.loadMore') || 'Carregar mais'}
+                </Button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">

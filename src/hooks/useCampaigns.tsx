@@ -45,7 +45,7 @@ export function useCampaigns() {
       }
     },
     retry: 2,
-    staleTime: 30000,
+    staleTime: 1000 * 60 * 2, // Cache for 2 minutes
   });
 
   const saveMutation = useMutation({
