@@ -4,6 +4,7 @@ import { CheckCircle2, AlertTriangle, XCircle, AlertCircle, Loader2 } from "luci
 import { useValidateCampaign } from "@/hooks/useValidateCampaign";
 import { useEffect } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 interface CampaignQualityIndicatorProps {
   campaign: Campaign;
@@ -17,6 +18,7 @@ export function CampaignQualityIndicator({
   compact = false 
 }: CampaignQualityIndicatorProps) {
   const { validate, isValidating, validationResult } = useValidateCampaign();
+  const { t } = useTranslation();
   
   useEffect(() => {
     if (autoValidate && !validationResult) {
@@ -52,49 +54,46 @@ export function CampaignQualityIndicator({
     if (jsonValid && brandScore >= 50) return 'needsReview';
     return 'attention';
   };
-  
   const status = getQualityStatus();
   
   const statusConfig = {
     validating: {
       icon: <Loader2 className="h-3 w-3 animate-spin" />,
-      label: 'Validando...',
+      label: t('quality.status.validating'),
       color: 'bg-muted text-muted-foreground',
     },
     excellent: {
       icon: <CheckCircle2 className="h-3 w-3" />,
-      label: 'Validado e Aprovado',
+      label: t('quality.status.approved'),
       color: 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20',
     },
     good: {
       icon: <AlertTriangle className="h-3 w-3" />,
-      label: jsonCorrected ? 'Validado com Correções' : 'Adequado',
+      label: jsonCorrected ? t('quality.status.corrected') : t('quality.status.adequate'),
       color: 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
     },
     needsReview: {
       icon: <AlertCircle className="h-3 w-3" />,
-      label: 'Precisa Revisão',
+      label: t('quality.status.needsReview'),
       color: 'bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/20',
     },
     invalid: {
       icon: <XCircle className="h-3 w-3" />,
-      label: 'Requer Atenção',
+      label: t('quality.status.invalid'),
       color: 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20',
     },
     attention: {
       icon: <XCircle className="h-3 w-3" />,
-      label: 'Requer Atenção',
+      label: t('quality.status.requiresAttention'),
       color: 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20',
     },
-  };
-  
+  } as const;
   const config = statusConfig[status];
   
   if (compact) {
     return (
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
             <Badge variant="outline" className={`gap-1 ${config.color}`}>
               {config.icon}
               <span className="text-xs">{config.label}</span>
@@ -102,7 +101,7 @@ export function CampaignQualityIndicator({
           </TooltipTrigger>
           <TooltipContent className="max-w-sm">
             <div className="space-y-2">
-              <p className="font-semibold">Qualidade da Campanha</p>
+              <p className="font-semibold">{t('quality.title')}</p>
               
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs">
@@ -112,8 +111,8 @@ export function CampaignQualityIndicator({
                     <XCircle className="h-3 w-3 text-red-500" />
                   )}
                   <span>
-                    JSON Schema: {validationResult ? (jsonValid ? '✓ Validado' : '✗ Inválido') : '⏳ Não validado'}
-                    {jsonCorrected && validationResult && ` (${validationResult.validationLog.correctedFields.length} campos corrigidos)`}
+                    {t('quality.jsonSchema')}: {validationResult ? (jsonValid ? t('quality.validated') : t('quality.invalid')) : t('quality.notValidated')}
+                    {jsonCorrected && validationResult && ` ${t('quality.correctedSuffix', { count: validationResult.validationLog.correctedFields.length })}`}
                   </span>
                 </div>
                 
@@ -126,8 +125,8 @@ export function CampaignQualityIndicator({
                     <AlertCircle className="h-3 w-3 text-orange-500" />
                   )}
                   <span>
-                    Brand Compliance: {brandScore}%
-                    {hasImprovement && ` (melhorado de ${originalScore}%)`}
+                    {t('quality.brandCompliance')}: {brandScore}%
+                    {hasImprovement && ` ${t('quality.improvedFrom', { value: originalScore })}`}
                   </span>
                 </div>
               </div>
@@ -141,7 +140,7 @@ export function CampaignQualityIndicator({
   return (
     <div className="space-y-3 p-4 rounded-lg border bg-card">
       <div className="flex items-center justify-between">
-        <h4 className="font-semibold">Qualidade da Campanha</h4>
+        <h4 className="font-semibold">{t('quality.title')}</h4>
         <Badge variant="outline" className={config.color}>
           {config.icon}
           {config.label}
@@ -156,10 +155,10 @@ export function CampaignQualityIndicator({
             <XCircle className="h-4 w-4 mt-0.5 text-red-500 shrink-0" />
           )}
           <div className="flex-1">
-            <p className="font-medium">JSON Schema</p>
+            <p className="font-medium">{t('quality.jsonSchema')}</p>
             <p className="text-xs text-muted-foreground">
-              {jsonValid ? '✓ Validado' : '✗ Inválido'}
-              {jsonCorrected && ` - ${validationResult?.validationLog.correctedFields.length} campos corrigidos automaticamente`}
+              {jsonValid ? t('quality.validated') : t('quality.invalid')}
+              {jsonCorrected && ` - ${t('quality.correctedSuffix', { count: validationResult?.validationLog.correctedFields.length })}`}
             </p>
           </div>
         </div>
@@ -173,10 +172,10 @@ export function CampaignQualityIndicator({
             <AlertCircle className="h-4 w-4 mt-0.5 text-orange-500 shrink-0" />
           )}
           <div className="flex-1">
-            <p className="font-medium">Brand Book Compliance</p>
+            <p className="font-medium">{t('quality.brandCompliance')}</p>
             <p className="text-xs text-muted-foreground">
-              Score: {brandScore}%
-              {hasImprovement && ` (melhorado de ${originalScore}%)`}
+              {t('quality.score')}: {brandScore}%
+              {hasImprovement && ` ${t('quality.improvedFrom', { value: originalScore })}`}
             </p>
           </div>
         </div>

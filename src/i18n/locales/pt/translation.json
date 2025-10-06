@@ -241,6 +241,25 @@
     "description": "Ops! Página não encontrada",
     "returnHome": "Voltar para a Página Inicial"
   },
+  "quality": {
+    "title": "Qualidade da Campanha",
+    "status": {
+      "validating": "Validando...",
+      "approved": "Validado e Aprovado",
+      "corrected": "Validado com Correções",
+      "adequate": "Adequado",
+      "needsReview": "Precisa Revisão",
+      "requiresAttention": "Requer Atenção"
+    },
+    "jsonSchema": "JSON Schema",
+    "validated": "✓ Validado",
+    "invalid": "✗ Inválido",
+    "notValidated": "⏳ Não validado",
+    "correctedSuffix": "({{count}} campos corrigidos)",
+    "brandCompliance": "Brand Book Compliance",
+    "score": "Score",
+    "improvedFrom": "(melhorado de {{value}}%)"
+  },
   "lookpost": {
     "downloadJson": "Download JSON",
     "viewJson": "Ver JSON",

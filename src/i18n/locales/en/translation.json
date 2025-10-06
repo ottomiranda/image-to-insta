@@ -241,6 +241,25 @@
     "description": "Oops! Page not found",
     "returnHome": "Return to Home"
   },
+  "quality": {
+    "title": "Campaign Quality",
+    "status": {
+      "validating": "Validating...",
+      "approved": "Validated and Approved",
+      "corrected": "Validated with Corrections",
+      "adequate": "Adequate",
+      "needsReview": "Needs Review",
+      "requiresAttention": "Requires Attention"
+    },
+    "jsonSchema": "JSON Schema",
+    "validated": "✓ Validated",
+    "invalid": "✗ Invalid",
+    "notValidated": "⏳ Not validated",
+    "correctedSuffix": "({{count}} fields corrected)",
+    "brandCompliance": "Brand Compliance",
+    "score": "Score",
+    "improvedFrom": "(improved from {{value}}%)"
+  },
   "lookpost": {
     "downloadJson": "Download JSON",
     "viewJson": "View JSON",

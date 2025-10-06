@@ -344,10 +344,12 @@ export default function CampaignDetails() {
             .eq("id", campaign.id);
             
           toast({
-            title: publishType === "now" ? "Published!" : "Scheduled!",
+            title: publishType === "now" 
+              ? t('campaignDetails.publishedToastTitle') 
+              : t('campaignDetails.scheduledToastTitle'),
             description: publishType === "now" 
-              ? "Your campaign is now live." 
-              : `Campaign scheduled for ${scheduledDate?.toLocaleDateString()}`,
+              ? t('campaignDetails.publishedToastDesc') 
+              : t('campaignDetails.scheduledToastDesc', { date: scheduledDate?.toLocaleDateString() }),
           });
           
           navigate("/campaigns");
