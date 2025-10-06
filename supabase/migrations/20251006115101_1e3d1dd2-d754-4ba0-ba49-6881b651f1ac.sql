@@ -2,10 +2,6 @@
 ALTER TABLE campaigns 
 ADD COLUMN brand_compliance_original_score integer;
 
--- Add column to track original brand compliance score before corrections
-ALTER TABLE campaigns 
-ADD COLUMN brand_compliance_original_score integer;
-
 -- Populate brand_compliance_original_score for existing campaigns
 -- This will create realistic original scores that are lower than current scores
 UPDATE campaigns 

@@ -20,7 +20,7 @@ export function BrandComplianceIndicator({
   showDetails = true,
   campaignId
 }: BrandComplianceIndicatorProps) {
-  const hasImprovement = originalScore && originalScore !== score;
+  const hasImprovement = originalScore !== null && originalScore !== undefined;
   const isPending = score === 50 && (!adjustments || adjustments.length === 0);
   const getScoreColor = () => {
     if (score >= 80) return "text-green-500 bg-green-500/10 border-green-500/20";
