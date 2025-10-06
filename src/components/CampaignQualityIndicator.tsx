@@ -145,7 +145,7 @@ export function CampaignQualityIndicator({
                         <div className="flex items-center justify-between text-xs">
                           <span>JSON Schema:</span>
                           <span className={`font-medium ${jsonValid ? 'text-green-600' : 'text-red-600'}`}>
-                            {jsonValid ? 'Válido' : 'Inválido'}
+                            {jsonValid ? t('quality.validated') : t('quality.invalid')}
                           </span>
                         </div>
                         {jsonCorrected && validationResult && (
