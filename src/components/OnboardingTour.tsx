@@ -17,13 +17,39 @@ export function OnboardingTour() {
     updateStep,
     status,
     shouldShowTour,
+    markOnboardingShown,
   } = useOnboarding();
   const [showWelcome, setShowWelcome] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
 
+  // Force show via query param (?tour=start) regardless of throttling
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const shouldForceStart = params.get("tour") === "start";
+    if (shouldForceStart && location.pathname === "/campaigns") {
+      try {
+        localStorage.setItem("onboarding_last_shown", Date.now().toString());
+        sessionStorage.setItem("onboarding_shown_session", "1");
+      } catch {}
+      markOnboardingShown();
+      setShowWelcome(true);
+      // Clean the query param to avoid re-trigger
+      navigate("/campaigns", { replace: true });
+    }
+  }, [location.pathname, location.search, navigate]);
+
   useEffect(() => {
     // Show welcome modal only on /campaigns route and when tour should be shown
     if (shouldShowTour && location.pathname === "/campaigns" && !status.tutorial_completed) {
+      // Record immediately to avoid missing due to quick navigation
+      try {
+        localStorage.setItem("onboarding_last_shown", Date.now().toString());
+        sessionStorage.setItem("onboarding_shown_session", "1");
+      } catch (e) {
+        // no-op if storage is unavailable
+      }
+      // Persist to Supabase as well
+      markOnboardingShown();
       // Small delay to ensure the page is fully loaded
       const timer = setTimeout(() => {
         setShowWelcome(true);
@@ -120,11 +146,21 @@ export function OnboardingTour() {
   };
 
   const handleWelcomeStart = () => {
+    try {
+      localStorage.setItem("onboarding_last_shown", Date.now().toString());
+      sessionStorage.setItem("onboarding_shown_session", "1");
+    } catch {}
+    markOnboardingShown();
     setShowWelcome(false);
     setRun(true);
   };
 
   const handleWelcomeSkip = () => {
+    try {
+      localStorage.setItem("onboarding_last_shown", Date.now().toString());
+      sessionStorage.setItem("onboarding_shown_session", "1");
+    } catch {}
+    markOnboardingShown();
     setShowWelcome(false);
     skipTour();
   };

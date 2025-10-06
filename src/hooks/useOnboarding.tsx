@@ -9,10 +9,12 @@ interface OnboardingStatus {
   current_step: number;
   completed_at?: string;
   updated_at?: string;
+  last_shown_at?: string;
 }
 
 const ONBOARDING_RESET_HOURS = 24;
 const ONBOARDING_CHECK_KEY = "onboarding_last_check";
+const ONBOARDING_LAST_SHOWN_KEY = "onboarding_last_shown";
 
 export function useOnboarding() {
   const [status, setStatus] = useState<OnboardingStatus>({
@@ -30,6 +32,25 @@ export function useOnboarding() {
     
     const hoursSinceCheck = (Date.now() - parseInt(lastCheck)) / (1000 * 60 * 60);
     return hoursSinceCheck >= ONBOARDING_RESET_HOURS;
+  };
+
+  const hasShownRecently = () => {
+    // Session guard: do not show more than once per browser session
+    try {
+      const sessionShown = sessionStorage.getItem("onboarding_shown_session");
+      if (sessionShown === "1") return true;
+    } catch {}
+    const lastShown = localStorage.getItem(ONBOARDING_LAST_SHOWN_KEY);
+    if (!lastShown) return false;
+    const hoursSinceShown = (Date.now() - parseInt(lastShown)) / (1000 * 60 * 60);
+    return hoursSinceShown < ONBOARDING_RESET_HOURS;
+  };
+
+  const hasShownRecentlyServer = () => {
+    if (!status?.last_shown_at) return false;
+    const last = new Date(status.last_shown_at).getTime();
+    const hours = (Date.now() - last) / (1000 * 60 * 60);
+    return hours < ONBOARDING_RESET_HOURS;
   };
 
   useEffect(() => {
@@ -78,7 +99,9 @@ export function useOnboarding() {
               
               if (resetData) {
                 setStatus(resetData);
-                setRun(true);
+                if (!hasShownRecently() && !hasShownRecentlyServer()) {
+                  setRun(true);
+                }
               }
             }
             
@@ -104,7 +127,9 @@ export function useOnboarding() {
         } else if (newStatus) {
           setStatus(newStatus);
           // Auto-start for new users
-          setRun(true);
+          if (!hasShownRecently() && !hasShownRecentlyServer()) {
+            setRun(true);
+          }
         }
       }
     } catch (error) {
@@ -210,6 +235,25 @@ export function useOnboarding() {
     }
   };
 
+  const markOnboardingShown = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || !status.id) return;
+      const nowIso = new Date().toISOString();
+      const { data: updated } = await supabase
+        .from("user_onboarding")
+        .update({ last_shown_at: nowIso, updated_at: nowIso })
+        .eq("id", status.id)
+        .select()
+        .single();
+      if (updated) {
+        setStatus(prev => ({ ...prev, last_shown_at: updated.last_shown_at }));
+      }
+    } catch (e) {
+      console.error("Error marking onboarding shown:", e);
+    }
+  };
+
   return {
     status,
     isLoading,
@@ -220,6 +264,12 @@ export function useOnboarding() {
     completeTour,
     updateStep,
     restartTour,
-    shouldShowTour: !status.tutorial_completed && !status.tutorial_skipped,
+    shouldShowTour:
+      !status.tutorial_completed &&
+      !status.tutorial_skipped &&
+      !hasShownRecently() &&
+      !hasShownRecentlyServer(),
+    markOnboardingShown,
   };
 }
+

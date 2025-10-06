@@ -111,7 +111,16 @@ export function UserNav({ onSettingsClick }: UserNavProps) {
           <Settings className="mr-2 h-4 w-4" />
           <span>{t('userNav.settings')}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={restartTour} className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={async () => {
+            try {
+              await restartTour();
+            } finally {
+              navigate("/campaigns?tour=start");
+            }
+          }}
+          className="cursor-pointer"
+        >
           <GraduationCap className="mr-2 h-4 w-4" />
           <span>{t('userNav.guidedTour')}</span>
         </DropdownMenuItem>

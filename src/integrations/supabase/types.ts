@@ -223,6 +223,7 @@ export type Database = {
           created_at: string | null
           current_step: number | null
           id: string
+          last_shown_at: string | null
           tutorial_completed: boolean | null
           tutorial_skipped: boolean | null
           updated_at: string | null
@@ -233,6 +234,7 @@ export type Database = {
           created_at?: string | null
           current_step?: number | null
           id?: string
+          last_shown_at?: string | null
           tutorial_completed?: boolean | null
           tutorial_skipped?: boolean | null
           updated_at?: string | null
@@ -243,6 +245,7 @@ export type Database = {
           created_at?: string | null
           current_step?: number | null
           id?: string
+          last_shown_at?: string | null
           tutorial_completed?: boolean | null
           tutorial_skipped?: boolean | null
           updated_at?: string | null
