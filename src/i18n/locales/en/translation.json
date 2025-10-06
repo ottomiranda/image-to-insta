@@ -143,12 +143,25 @@
     "saving": "Saving...",
     "settingsUpdated": "Settings updated!",
     "settingsUpdatedDesc": "Your brand settings were saved successfully.",
-    "errorUpdating": "Error updating settings"
+    "errorUpdating": "Error updating settings",
+    "instagramHandle": "Instagram Handle",
+    "instagramHandlePlaceholder": "@yourbrand",
+    "website": "Website",
+    "websitePlaceholder": "https://yourbrand.com",
+    "uploadInvalidTitle": "Invalid format",
+    "uploadInvalidDesc": "Please upload a PNG, JPG or SVG file.",
+    "fileTooLargeTitle": "File too large",
+    "fileTooLargeDesc": "Logo must be at most 2MB.",
+    "unauthenticated": "User not authenticated",
+    "websiteInvalid": "Invalid URL",
+    "primaryColorInvalid": "Invalid primary color",
+    "secondaryColorInvalid": "Invalid secondary color"
   },
   "results": {
     "title": "Results",
     "exportJSON": "Export JSON",
     "lookVisual": "Look Visual",
+    "imageAlt": "Generated look",
     "productDescriptions": "Product Descriptions",
     "short": "Short",
     "long": "Long",
@@ -182,6 +195,52 @@
     "errorSigningOut": "Error signing out",
     "unexpectedError": "An unexpected error occurred"
   },
+  "brandComplianceWidget": {
+    "title": "Brand Compliance",
+    "description": "Analysis of compliance with the Brand Book",
+    "empty": "No validated campaigns yet. Create your first campaign to see metrics.",
+    "tip": "Tip: Configure your Brand Book in settings to enable automatic validation.",
+    "avgScore": "Average Score",
+    "complianceRate": "Compliance Rate",
+    "lowScoreWarning": "Average score below 70%. Review your Brand Book rules.",
+    "topAdjustments": "Top Recent Adjustments",
+    "viewFullAnalytics": "View Full Analytics"
+  },
+  "campaignDetails": {
+    "notFoundTitle": "Campaign Not Found",
+    "notFoundDesc": "The campaign you're looking for doesn't exist.",
+    "backToCampaigns": "Back to Campaigns",
+    "created": "Created {{date}}",
+    "lookVisualTitle": "Look Visual",
+    "lookVisualDesc": "Generated campaign visual",
+    "download": "Download",
+    "productImages": "Product Images",
+    "centerpiece": "Centerpiece",
+    "model": "Model",
+    "accessories": "Accessories",
+    "shortDescription": "Short Description",
+    "longDescription": "Long Description",
+    "instagramPost": "Instagram Post",
+    "caption": "Caption",
+    "hashtags": "Hashtags",
+    "callToAction": "Call to Action",
+    "altText": "Alt Text",
+    "suggestedTime": "Suggested Time",
+    "edit": "Edit",
+    "publish": "Publish",
+    "delete": "Delete",
+    "deleteConfirmTitle": "Delete Campaign?",
+    "deleteConfirmDesc": "This action cannot be undone. This will permanently delete the campaign \"{{title}}\".",
+    "publishedToastTitle": "Published!",
+    "publishedToastDesc": "Your campaign is now live.",
+    "scheduledToastTitle": "Scheduled!",
+    "scheduledToastDesc": "Campaign scheduled for {{date}}"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Oops! Page not found",
+    "returnHome": "Return to Home"
+  },
   "lookpost": {
     "downloadJson": "Download JSON",
     "viewJson": "View JSON",
@@ -203,7 +262,8 @@
     "edit": "Edit",
     "close": "Close",
     "back": "Back",
-    "next": "Next"
+    "next": "Next",
+    "unknownError": "Unknown error"
   },
   "onboarding": {
     "welcome": {

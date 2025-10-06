@@ -5,6 +5,7 @@ import { useBrandValidations } from "@/hooks/useBrandValidations";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Campaign } from "@/types/campaign";
+import { useTranslation } from "react-i18next";
 
 interface BrandComplianceWidgetProps {
   campaigns: Campaign[] | undefined;
@@ -14,13 +15,14 @@ interface BrandComplianceWidgetProps {
 export function BrandComplianceWidget({ campaigns, isLoading: campaignsLoading }: BrandComplianceWidgetProps) {
   const { analytics, isLoading } = useBrandValidations(campaigns, campaignsLoading);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (isLoading || campaignsLoading) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Brand Compliance</CardTitle>
-          <CardDescription>Análise de conformidade com o Brand Book</CardDescription>
+          <CardTitle>{t('brandComplianceWidget.title')}</CardTitle>
+          <CardDescription>{t('brandComplianceWidget.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <Skeleton className="h-20 w-full" />
@@ -34,16 +36,14 @@ export function BrandComplianceWidget({ campaigns, isLoading: campaignsLoading }
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Brand Compliance</CardTitle>
-          <CardDescription>Análise de conformidade com o Brand Book</CardDescription>
+          <CardTitle>{t('brandComplianceWidget.title')}</CardTitle>
+          <CardDescription>{t('brandComplianceWidget.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              Nenhuma campanha validada ainda. Crie sua primeira campanha para ver as métricas.
-            </p>
+            <p className="text-sm text-muted-foreground">{t('brandComplianceWidget.empty')}</p>
             <div className="p-3 bg-muted/50 rounded-lg text-xs text-muted-foreground">
-              💡 <strong>Dica:</strong> Configure seu Brand Book nas configurações para ativar a validação automática.
+              💡 <strong>{t('brandComplianceWidget.tip').split(':')[0]}:</strong> {t('brandComplianceWidget.tip').split(':').slice(1).join(':').trim()}
             </div>
           </div>
         </CardContent>
@@ -73,21 +73,21 @@ export function BrandComplianceWidget({ campaigns, isLoading: campaignsLoading }
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Brand Compliance</span>
+          <span>{t('brandComplianceWidget.title')}</span>
           {getTrendIcon()}
         </CardTitle>
-        <CardDescription>Análise de conformidade com o Brand Book</CardDescription>
+        <CardDescription>{t('brandComplianceWidget.description')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">Score Médio</p>
+            <p className="text-sm text-muted-foreground">{t('brandComplianceWidget.avgScore')}</p>
             <p className={`text-3xl font-bold ${getScoreColor(analytics.avgScore)}`}>
               {analytics.avgScore}%
             </p>
           </div>
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">Taxa de Compliance</p>
+            <p className="text-sm text-muted-foreground">{t('brandComplianceWidget.complianceRate')}</p>
             <p className={`text-3xl font-bold ${getScoreColor(analytics.complianceRate)}`}>
               {analytics.complianceRate}%
             </p>
@@ -97,14 +97,12 @@ export function BrandComplianceWidget({ campaigns, isLoading: campaignsLoading }
         {analytics.avgScore < 70 && (
           <div className="flex items-start gap-2 p-3 rounded-lg bg-destructive/10 text-destructive">
             <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-            <p className="text-sm">
-              Score médio abaixo de 70%. Revise suas regras de Brand Book.
-            </p>
+            <p className="text-sm">{t('brandComplianceWidget.lowScoreWarning')}</p>
           </div>
         )}
 
         <div className="space-y-2">
-          <p className="text-sm font-medium">Top Ajustes Recentes</p>
+          <p className="text-sm font-medium">{t('brandComplianceWidget.topAdjustments')}</p>
           <div className="space-y-1">
             {analytics.topAdjustments.slice(0, 3).map((adj, idx) => (
               <div key={idx} className="flex justify-between text-sm">
@@ -122,7 +120,7 @@ export function BrandComplianceWidget({ campaigns, isLoading: campaignsLoading }
           className="w-full"
           onClick={() => navigate('/brand-analytics')}
         >
-          Ver Analytics Completo
+          {t('brandComplianceWidget.viewFullAnalytics')}
           <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
       </CardContent>

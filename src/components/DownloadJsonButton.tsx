@@ -93,7 +93,7 @@ export function DownloadJsonButton({
       size={size}
       onClick={handleDownload}
       disabled={isLoading}
-      aria-label={`Baixar JSON da campanha ${campaign.id}`}
+      aria-label={`${t('lookpost.downloadJson')} ${campaign.id}`}
       className={className}
     >
       {isLoading ? (

@@ -15,6 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useState } from "react";
 import { PublishCampaignDialog } from "@/components/PublishCampaignDialog";
+import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,6 +33,7 @@ export default function CampaignDetails() {
   const { deleteCampaign } = useCampaigns();
   const [showPublishDialog, setShowPublishDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { t } = useTranslation();
 
   const { data: campaign, isLoading } = useQuery({
     queryKey: ["campaign", campaignId],
@@ -102,13 +104,13 @@ export default function CampaignDetails() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="max-w-md">
           <CardHeader>
-            <CardTitle>Campaign Not Found</CardTitle>
-            <CardDescription>The campaign you're looking for doesn't exist.</CardDescription>
+            <CardTitle>{t('campaignDetails.notFoundTitle')}</CardTitle>
+            <CardDescription>{t('campaignDetails.notFoundDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Button onClick={() => navigate("/campaigns")}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Campaigns
+              {t('campaignDetails.backToCampaigns')}
             </Button>
           </CardContent>
         </Card>
@@ -124,7 +126,7 @@ export default function CampaignDetails() {
           <div className="space-y-2">
             <Button variant="ghost" onClick={() => navigate("/campaigns")}>
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Campaigns
+              {t('campaignDetails.backToCampaigns')}
             </Button>
             <div className="flex items-center gap-3">
               <h1 className="text-4xl font-bold">{campaign.title}</h1>
@@ -132,7 +134,7 @@ export default function CampaignDetails() {
             </div>
             <p className="text-muted-foreground flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              Created {new Date(campaign.created_at).toLocaleDateString()}
+              {t('campaignDetails.created', { date: new Date(campaign.created_at).toLocaleDateString() })}
             </p>
           </div>
           <div className="flex gap-2">
@@ -144,12 +146,12 @@ export default function CampaignDetails() {
             )}
             <Button variant="outline" onClick={() => navigate(`/create/${campaignId}`)}>
               <Edit className="mr-2 h-4 w-4" />
-              Edit
+              {t('campaignDetails.edit')}
             </Button>
             {campaign.status === "draft" && (
               <Button onClick={() => setShowPublishDialog(true)}>
                 <Share2 className="mr-2 h-4 w-4" />
-                Publish
+                {t('campaignDetails.publish')}
               </Button>
             )}
             <Button variant="destructive" onClick={() => setShowDeleteDialog(true)}>
@@ -168,14 +170,14 @@ export default function CampaignDetails() {
         {/* Look Visual */}
         <Card>
           <CardHeader>
-            <CardTitle>Look Visual</CardTitle>
-            <CardDescription>Generated campaign visual</CardDescription>
+            <CardTitle>{t('campaignDetails.lookVisualTitle')}</CardTitle>
+            <CardDescription>{t('campaignDetails.lookVisualDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="relative group">
               <img
                 src={campaign.look_visual}
-                alt="Look Visual"
+                alt={t('campaignDetails.lookVisualTitle')}
                 className="w-full rounded-lg"
               />
               <Button
@@ -185,7 +187,7 @@ export default function CampaignDetails() {
                 onClick={() => downloadImage(campaign.look_visual, `${campaign.title}-look.png`)}
               >
                 <Download className="mr-2 h-4 w-4" />
-                Download
+                {t('campaignDetails.download')}
               </Button>
             </div>
           </CardContent>
@@ -194,22 +196,22 @@ export default function CampaignDetails() {
         {/* Product Images */}
         <Card>
           <CardHeader>
-            <CardTitle>Product Images</CardTitle>
+            <CardTitle>{t('campaignDetails.productImages')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h3 className="font-semibold mb-2">Centerpiece</h3>
+              <h3 className="font-semibold mb-2">{t('campaignDetails.centerpiece')}</h3>
               <img src={campaign.centerpiece_image} alt="Centerpiece" className="w-48 rounded-lg" />
             </div>
             {campaign.model_image && (
               <div>
-                <h3 className="font-semibold mb-2">Model</h3>
+                <h3 className="font-semibold mb-2">{t('campaignDetails.model')}</h3>
                 <img src={campaign.model_image} alt="Model" className="w-48 rounded-lg" />
               </div>
             )}
             {campaign.accessories_images && campaign.accessories_images.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-2">Accessories</h3>
+                <h3 className="font-semibold mb-2">{t('campaignDetails.accessories')}</h3>
                 <div className="flex gap-4 flex-wrap">
                   {campaign.accessories_images.map((img, idx) => (
                     <img key={idx} src={img} alt={`Accessory ${idx + 1}`} className="w-32 rounded-lg" />
@@ -225,7 +227,7 @@ export default function CampaignDetails() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Short Description</CardTitle>
+                <CardTitle>{t('campaignDetails.shortDescription')}</CardTitle>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -243,7 +245,7 @@ export default function CampaignDetails() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Long Description</CardTitle>
+                <CardTitle>{t('campaignDetails.longDescription')}</CardTitle>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -262,12 +264,12 @@ export default function CampaignDetails() {
         {/* Instagram Content */}
         <Card>
           <CardHeader>
-            <CardTitle>Instagram Post</CardTitle>
+            <CardTitle>{t('campaignDetails.instagramPost')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Caption</h3>
+                <h3 className="font-semibold">{t('campaignDetails.caption')}</h3>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -281,7 +283,7 @@ export default function CampaignDetails() {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Hashtags</h3>
+                <h3 className="font-semibold">{t('campaignDetails.hashtags')}</h3>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -299,7 +301,7 @@ export default function CampaignDetails() {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold">Call to Action</h3>
+                <h3 className="font-semibold">{t('campaignDetails.callToAction')}</h3>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -312,12 +314,12 @@ export default function CampaignDetails() {
             </div>
 
             <div>
-              <h3 className="font-semibold mb-2">Alt Text</h3>
+              <h3 className="font-semibold mb-2">{t('campaignDetails.altText')}</h3>
               <p className="text-sm text-muted-foreground">{campaign.instagram.altText}</p>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-2">Suggested Time</h3>
+              <h3 className="font-semibold mb-2">{t('campaignDetails.suggestedTime')}</h3>
               <p className="text-sm text-muted-foreground">{campaign.instagram.suggestedTime}</p>
             </div>
           </CardContent>
@@ -355,15 +357,15 @@ export default function CampaignDetails() {
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Campaign?</AlertDialogTitle>
+            <AlertDialogTitle>{t('campaignDetails.deleteConfirmTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the campaign "{campaign.title}".
+              {t('campaignDetails.deleteConfirmDesc', { title: campaign.title })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-              Delete
+              {t('campaignDetails.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

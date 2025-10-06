@@ -143,12 +143,25 @@
     "saving": "Salvando...",
     "settingsUpdated": "Configurações atualizadas!",
     "settingsUpdatedDesc": "Suas configurações de marca foram salvas com sucesso.",
-    "errorUpdating": "Erro ao atualizar configurações"
+    "errorUpdating": "Erro ao atualizar configurações",
+    "instagramHandle": "Usuário do Instagram",
+    "instagramHandlePlaceholder": "@suamarca",
+    "website": "Website",
+    "websitePlaceholder": "https://suamarca.com",
+    "uploadInvalidTitle": "Formato inválido",
+    "uploadInvalidDesc": "Envie um arquivo PNG, JPG ou SVG.",
+    "fileTooLargeTitle": "Arquivo muito grande",
+    "fileTooLargeDesc": "O logo deve ter no máximo 2MB.",
+    "unauthenticated": "Usuário não autenticado",
+    "websiteInvalid": "URL inválida",
+    "primaryColorInvalid": "Cor primária inválida",
+    "secondaryColorInvalid": "Cor secundária inválida"
   },
   "results": {
     "title": "Resultados",
     "exportJSON": "Exportar JSON",
     "lookVisual": "Visual do Look",
+    "imageAlt": "Look gerado",
     "productDescriptions": "Descrições do Produto",
     "short": "Curta",
     "long": "Longa",
@@ -182,6 +195,52 @@
     "errorSigningOut": "Erro ao sair",
     "unexpectedError": "Ocorreu um erro inesperado"
   },
+  "brandComplianceWidget": {
+    "title": "Brand Compliance",
+    "description": "Análise de conformidade com o Brand Book",
+    "empty": "Nenhuma campanha validada ainda. Crie sua primeira campanha para ver as métricas.",
+    "tip": "Dica: Configure seu Brand Book nas configurações para ativar a validação automática.",
+    "avgScore": "Score Médio",
+    "complianceRate": "Taxa de Compliance",
+    "lowScoreWarning": "Score médio abaixo de 70%. Revise suas regras de Brand Book.",
+    "topAdjustments": "Top Ajustes Recentes",
+    "viewFullAnalytics": "Ver Analytics Completo"
+  },
+  "campaignDetails": {
+    "notFoundTitle": "Campanha Não Encontrada",
+    "notFoundDesc": "A campanha que você procura não existe.",
+    "backToCampaigns": "Voltar para Campanhas",
+    "created": "Criada em {{date}}",
+    "lookVisualTitle": "Visual do Look",
+    "lookVisualDesc": "Visual gerado da campanha",
+    "download": "Baixar",
+    "productImages": "Imagens do Produto",
+    "centerpiece": "Peça Principal",
+    "model": "Modelo",
+    "accessories": "Acessórios",
+    "shortDescription": "Descrição Curta",
+    "longDescription": "Descrição Longa",
+    "instagramPost": "Post do Instagram",
+    "caption": "Legenda",
+    "hashtags": "Hashtags",
+    "callToAction": "Chamada para Ação",
+    "altText": "Texto Alternativo",
+    "suggestedTime": "Horário Sugerido",
+    "edit": "Editar",
+    "publish": "Publicar",
+    "delete": "Excluir",
+    "deleteConfirmTitle": "Excluir Campanha?",
+    "deleteConfirmDesc": "Esta ação não pode ser desfeita. Isto excluirá permanentemente a campanha \"{{title}}\".",
+    "publishedToastTitle": "Publicada!",
+    "publishedToastDesc": "Sua campanha está no ar.",
+    "scheduledToastTitle": "Agendada!",
+    "scheduledToastDesc": "Campanha agendada para {{date}}"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Ops! Página não encontrada",
+    "returnHome": "Voltar para a Página Inicial"
+  },
   "lookpost": {
     "downloadJson": "Download JSON",
     "viewJson": "Ver JSON",
@@ -203,7 +262,8 @@
     "edit": "Editar",
     "close": "Fechar",
     "back": "Voltar",
-    "next": "Próximo"
+    "next": "Próximo",
+    "unknownError": "Erro desconhecido"
   },
   "onboarding": {
     "welcome": {

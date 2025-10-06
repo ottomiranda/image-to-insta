@@ -70,7 +70,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
         description: t('results.jsonExportedDesc'),
       });
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      const errorMessage = error instanceof Error ? error.message : t('common.unknownError');
       toast({
         title: t('lookpost.error'),
         description: errorMessage,
@@ -116,7 +116,7 @@ const ResultsDisplay = ({ content }: ResultsDisplayProps) => {
         <div className="p-4 bg-black/20">
           <img 
             src={content.lookVisual} 
-            alt="Generated look"
+            alt={t('results.imageAlt')}
             className="w-full rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
           />
         </div>

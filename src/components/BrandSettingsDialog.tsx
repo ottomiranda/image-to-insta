@@ -51,13 +51,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 const createBrandSettingsSchema = (t: any) => z.object({
   brand_name: z.string().min(1, t('brandSettings.brandName')).max(100),
   instagram_handle: z.string().optional(),
-  website: z.string().url("URL inválida").optional().or(z.literal("")),
+  website: z.string().url(t('brandSettings.websiteInvalid')).optional().or(z.literal("")),
   brand_values: z.string().optional(),
   tone_of_voice: z.string().optional(),
   target_market: z.string().optional(),
   preferred_style: z.string().optional(),
-  primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor primária inválida"),
-  secondary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Cor secundária inválida"),
+  primary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, t('brandSettings.primaryColorInvalid')),
+  secondary_color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, t('brandSettings.secondaryColorInvalid')),
   preferred_keywords: z.string().optional(),
   words_to_avoid: z.string().optional(),
   logo_url: z.string().optional().nullable(),
@@ -124,8 +124,8 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
     if (!validTypes.includes(file.type)) {
       console.log('Invalid file type:', file.type);
       toast({
-        title: "Formato inválido",
-        description: "Por favor, envie um arquivo PNG, JPG ou SVG.",
+        title: t('brandSettings.uploadInvalidTitle'),
+        description: t('brandSettings.uploadInvalidDesc'),
         variant: "destructive",
       });
       return;
@@ -135,8 +135,8 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
     if (file.size > 2 * 1024 * 1024) {
       console.log('File too large:', file.size);
       toast({
-        title: "Arquivo muito grande",
-        description: "O logo deve ter no máximo 2MB.",
+        title: t('brandSettings.fileTooLargeTitle'),
+        description: t('brandSettings.fileTooLargeDesc'),
         variant: "destructive",
       });
       return;
@@ -168,7 +168,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
     setIsUploadingLogo(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Usuário não autenticado");
+      if (!user) throw new Error(t('brandSettings.unauthenticated'));
 
       const fileExt = logoFile.name.split('.').pop();
       const fileName = `${user.id}/logo-${Date.now()}.${fileExt}`;
@@ -192,8 +192,8 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
     } catch (error) {
       console.error("Error uploading logo:", error);
       toast({
-        title: "Erro ao fazer upload",
-        description: "Não foi possível fazer upload do logo.",
+        title: t('brandSettings.uploadInvalidTitle'),
+        description: t('brandBook.uploadInstructions'),
         variant: "destructive",
       });
       return null;
@@ -335,7 +335,7 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                       <label className="w-32 h-32 border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
                         <Upload className="h-8 w-8 text-muted-foreground mb-2" />
                         <span className="text-xs text-muted-foreground text-center px-2">
-                          PNG, JPG, SVG<br />Max 2MB
+                          {t('brandBook.uploadFormats')}
                         </span>
                         <input
                           type="file"
@@ -482,11 +482,11 @@ export function BrandSettingsDialog({ open, onOpenChange }: BrandSettingsDialogP
                 onClick={() => onOpenChange(false)}
                 disabled={isSaving}
               >
-                Cancelar
+                {t('brandBook.cancel')}
               </Button>
               <Button type="submit" disabled={isSaving || isUploadingLogo}>
                 {(isSaving || isUploadingLogo) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Salvar
+                {t('brandBook.save')}
               </Button>
             </div>
           </form>
