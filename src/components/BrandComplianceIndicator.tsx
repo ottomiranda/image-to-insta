@@ -61,6 +61,13 @@ export function BrandComplianceIndicator({
           <TooltipContent className="max-w-sm">
             <div className="space-y-2">
               <p className="font-semibold">Brand Book Compliance: {getScoreLabel()}</p>
+              {hasImprovement && (
+                <div className="text-xs text-muted-foreground">
+                  <span>Score Original: <strong>{originalScore}%</strong></span>
+                  <span className="mx-1">→</span>
+                  <span>Score Atual: <strong>{score}%</strong></span>
+                </div>
+              )}
               {isPending && (
                 <p className="text-xs text-yellow-600">
                   ⚠️ Validação pendente. Clique no botão para validar agora.
@@ -103,11 +110,14 @@ export function BrandComplianceIndicator({
           <h4 className="font-semibold">Brand Book Compliance</h4>
         </div>
         <Badge variant="outline" className={getScoreColor()}>
-          {score}% - {getScoreLabel()}
-          {hasImprovement && (
-            <span className="ml-1 text-xs opacity-70">
-              (↑ {originalScore}%)
+          {hasImprovement ? (
+            <span className="flex items-center gap-1">
+              <span className="text-xs opacity-70">Original: {originalScore}%</span>
+              <span className="text-xs">→</span>
+              <span>Atual: {score}% - {getScoreLabel()}</span>
             </span>
+          ) : (
+            <span>{score}% - {getScoreLabel()}</span>
           )}
         </Badge>
       </div>

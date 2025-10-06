@@ -10,6 +10,7 @@ import { ArrowLeft, Calendar, Copy, Download, Edit, Share2, Trash2 } from "lucid
 import { JsonViewerDialog } from "@/components/JsonViewerDialog";
 import { RevalidateButton } from "@/components/RevalidateButton";
 import { CampaignQualityIndicator } from "@/components/CampaignQualityIndicator";
+import { BrandComplianceIndicator } from "@/components/BrandComplianceIndicator";
 import { toast } from "@/hooks/use-toast";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useState } from "react";
@@ -163,6 +164,15 @@ export default function CampaignDetails() {
           campaign={campaign}
           autoValidate={true}
           compact={false}
+        />
+
+        {/* Brand Compliance Indicator */}
+        <BrandComplianceIndicator
+          score={campaign.brand_compliance_score}
+          originalScore={campaign.brand_compliance_original_score}
+          adjustments={campaign.brand_compliance_adjustments}
+          campaignId={campaign.id}
+          showDetails={true}
         />
 
         {/* Look Visual */}

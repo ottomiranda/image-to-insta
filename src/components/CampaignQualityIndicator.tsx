@@ -126,8 +126,16 @@ export function CampaignQualityIndicator({
                     <AlertCircle className="h-3 w-3 text-orange-500" />
                   )}
                   <span>
-                    {t('quality.brandCompliance')}: {brandScore}%
-                    {hasImprovement && ` ${t('quality.improvedFrom', { value: originalScore })}`}
+                    {t('quality.brandCompliance')}: 
+                    {hasImprovement ? (
+                      <span className="ml-1">
+                        <span className="opacity-70">Original: {originalScore}%</span>
+                        <span className="mx-1">→</span>
+                        <span>Atual: {brandScore}%</span>
+                      </span>
+                    ) : (
+                      <span className="ml-1">{brandScore}%</span>
+                    )}
                   </span>
                 </div>
               </div>
@@ -175,8 +183,16 @@ export function CampaignQualityIndicator({
           <div className="flex-1">
             <p className="font-medium">{t('quality.brandCompliance')}</p>
             <p className="text-xs text-muted-foreground">
-              {t('quality.score')}: {brandScore}%
-              {hasImprovement && ` ${t('quality.improvedFrom', { value: originalScore })}`}
+              {t('quality.score')}: 
+              {hasImprovement ? (
+                <span>
+                  <span className="opacity-70">Original: {originalScore}%</span>
+                  <span className="mx-1">→</span>
+                  <span>Atual: {brandScore}%</span>
+                </span>
+              ) : (
+                <span>{brandScore}%</span>
+              )}
             </p>
           </div>
         </div>
