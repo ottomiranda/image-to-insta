@@ -22,11 +22,15 @@ export function OnboardingTour() {
   const [stepIndex, setStepIndex] = useState(0);
 
   useEffect(() => {
-    // Show welcome modal for new users when they land on /campaigns
-    if (shouldShowTour && location.pathname === "/campaigns") {
-      setShowWelcome(true);
+    // Show welcome modal only on /campaigns route and when tour should be shown
+    if (shouldShowTour && location.pathname === "/campaigns" && !status.tutorial_completed) {
+      // Small delay to ensure the page is fully loaded
+      const timer = setTimeout(() => {
+        setShowWelcome(true);
+      }, 500);
+      return () => clearTimeout(timer);
     }
-  }, [shouldShowTour, location.pathname]);
+  }, [shouldShowTour, location.pathname, status.tutorial_completed]);
 
   const steps: Step[] = [
     // Step 0: Dashboard

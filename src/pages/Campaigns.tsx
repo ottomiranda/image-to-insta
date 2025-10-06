@@ -12,6 +12,7 @@ import { Campaign } from "@/types/campaign";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/Logo";
 import { BrandComplianceWidget } from "@/components/BrandComplianceWidget";
+import { OnboardingTour } from "@/components/OnboardingTour";
 
 export default function Campaigns() {
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ export default function Campaigns() {
 
   return (
     <div className="min-h-screen bg-background">
+      <OnboardingTour />
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div>

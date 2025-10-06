@@ -7,6 +7,8 @@ interface OnboardingStatus {
   tutorial_completed: boolean;
   tutorial_skipped: boolean;
   current_step: number;
+  completed_at?: string;
+  updated_at?: string;
 }
 
 export function useOnboarding() {
@@ -41,6 +43,30 @@ export function useOnboarding() {
 
       if (data) {
         setStatus(data);
+        // Check if 24 hours have passed since last completion
+        if (data.completed_at) {
+          const lastCompleted = new Date(data.completed_at);
+          const hoursSinceCompletion = (Date.now() - lastCompleted.getTime()) / (1000 * 60 * 60);
+          if (hoursSinceCompletion >= 24) {
+            // Reset to show onboarding again
+            const { data: resetData } = await supabase
+              .from("user_onboarding")
+              .update({
+                tutorial_completed: false,
+                tutorial_skipped: false,
+                current_step: 0,
+                updated_at: new Date().toISOString(),
+              })
+              .eq("id", data.id)
+              .select()
+              .single();
+            
+            if (resetData) {
+              setStatus(resetData);
+              setRun(true);
+            }
+          }
+        }
       } else {
         // First time user - create record
         const { data: newStatus, error: insertError } = await supabase
