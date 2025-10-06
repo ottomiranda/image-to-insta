@@ -134,6 +134,7 @@ export type Database = {
         Row: {
           accessories_images: Json | null
           brand_compliance_adjustments: Json | null
+          brand_compliance_original_score: number | null
           brand_compliance_score: number | null
           centerpiece_image: string
           created_at: string
@@ -155,6 +156,7 @@ export type Database = {
         Insert: {
           accessories_images?: Json | null
           brand_compliance_adjustments?: Json | null
+          brand_compliance_original_score?: number | null
           brand_compliance_score?: number | null
           centerpiece_image: string
           created_at?: string
@@ -176,6 +178,7 @@ export type Database = {
         Update: {
           accessories_images?: Json | null
           brand_compliance_adjustments?: Json | null
+          brand_compliance_original_score?: number | null
           brand_compliance_score?: number | null
           centerpiece_image?: string
           created_at?: string

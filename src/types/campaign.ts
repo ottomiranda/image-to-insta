@@ -30,6 +30,7 @@ export interface Campaign {
   created_at: string;
   updated_at: string;
   brand_compliance_score?: number;
+  brand_compliance_original_score?: number;
   brand_compliance_adjustments?: string[];
   
   // Campos opcionais para schema Look&Post completo

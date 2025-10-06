@@ -7,11 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Calendar, Copy, Download, Edit, Share2, Trash2 } from "lucide-react";
-import { BrandComplianceIndicator } from "@/components/BrandComplianceIndicator";
 import { DownloadJsonButton } from "@/components/DownloadJsonButton";
 import { JsonViewerDialog } from "@/components/JsonViewerDialog";
 import { RevalidateButton } from "@/components/RevalidateButton";
-import { CampaignValidationBadge } from "@/components/CampaignValidationBadge";
+import { CampaignQualityIndicator } from "@/components/CampaignQualityIndicator";
 import { toast } from "@/hooks/use-toast";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useState } from "react";
@@ -130,7 +129,6 @@ export default function CampaignDetails() {
             <div className="flex items-center gap-3">
               <h1 className="text-4xl font-bold">{campaign.title}</h1>
               {getStatusBadge(campaign.status)}
-              <CampaignValidationBadge campaign={campaign} />
             </div>
             <p className="text-muted-foreground flex items-center gap-2">
               <Calendar className="h-4 w-4" />
@@ -160,14 +158,12 @@ export default function CampaignDetails() {
           </div>
         </div>
 
-        {/* Brand Compliance */}
-        {campaign.brand_compliance_score !== null && campaign.brand_compliance_score !== undefined && (
-          <BrandComplianceIndicator
-            score={campaign.brand_compliance_score}
-            adjustments={campaign.brand_compliance_adjustments || []}
-            campaignId={campaign.id}
-          />
-        )}
+        {/* Campaign Quality Indicator */}
+        <CampaignQualityIndicator 
+          campaign={campaign}
+          autoValidate={true}
+          compact={false}
+        />
 
         {/* Look Visual */}
         <Card>

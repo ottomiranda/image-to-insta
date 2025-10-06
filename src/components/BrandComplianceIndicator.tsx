@@ -5,6 +5,7 @@ import { RevalidateButton } from "@/components/RevalidateButton";
 
 interface BrandComplianceIndicatorProps {
   score: number;
+  originalScore?: number;
   adjustments?: string[];
   compact?: boolean;
   showDetails?: boolean;
@@ -13,11 +14,13 @@ interface BrandComplianceIndicatorProps {
 
 export function BrandComplianceIndicator({ 
   score, 
+  originalScore,
   adjustments = [], 
   compact = false,
   showDetails = true,
   campaignId
 }: BrandComplianceIndicatorProps) {
+  const hasImprovement = originalScore && originalScore !== score;
   const isPending = score === 50 && (!adjustments || adjustments.length === 0);
   const getScoreColor = () => {
     if (score >= 80) return "text-green-500 bg-green-500/10 border-green-500/20";
@@ -101,6 +104,11 @@ export function BrandComplianceIndicator({
         </div>
         <Badge variant="outline" className={getScoreColor()}>
           {score}% - {getScoreLabel()}
+          {hasImprovement && (
+            <span className="ml-1 text-xs opacity-70">
+              (↑ {originalScore}%)
+            </span>
+          )}
         </Badge>
       </div>
 

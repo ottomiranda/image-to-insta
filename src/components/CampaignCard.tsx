@@ -25,8 +25,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { enUS, ptBR } from "date-fns/locale";
-import { BrandComplianceIndicator } from "./BrandComplianceIndicator";
-import { CampaignValidationBadge } from "./CampaignValidationBadge";
+import { CampaignQualityIndicator } from "./CampaignQualityIndicator";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -81,16 +80,12 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
             <div className="flex-1 cursor-pointer" onClick={() => navigate(`/campaigns/${campaign.id}`)}>
               <h3 className="font-semibold truncate hover:text-primary transition-colors">{campaign.title}</h3>
               <p className="text-sm text-muted-foreground">{getTimestamp()}</p>
-              <div className="flex items-center gap-2 mt-2">
-                <CampaignValidationBadge campaign={campaign} autoValidate={false} />
-                {campaign.brand_compliance_score !== null && campaign.brand_compliance_score !== undefined && (
-                  <BrandComplianceIndicator
-                    score={campaign.brand_compliance_score}
-                    adjustments={campaign.brand_compliance_adjustments}
-                    compact={true}
-                    campaignId={campaign.id}
-                  />
-                )}
+              <div className="mt-2">
+                <CampaignQualityIndicator 
+                  campaign={campaign} 
+                  autoValidate={false}
+                  compact={true}
+                />
               </div>
             </div>
             <DropdownMenu>
