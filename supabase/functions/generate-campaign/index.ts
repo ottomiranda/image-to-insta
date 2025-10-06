@@ -176,18 +176,40 @@ serve(async (req) => {
       try {
         const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
         const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-        const supabaseClient = createClient(supabaseUrl, supabaseKey);
         
+        // Use the user's token for authenticated requests
         const token = authHeader.replace('Bearer ', '');
+        const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+          global: {
+            headers: {
+              Authorization: authHeader
+            }
+          }
+        });
+        
         const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
         
+        console.log('🔍 Auth check:', {
+          hasUser: !!user,
+          userId: user?.id,
+          userError: userError?.message
+        });
+        
         if (!userError && user) {
+          console.log('👤 Fetching brand settings for user:', user.id);
+          
           // Fetch brand settings for this user
-          const { data: settings } = await supabaseClient
+          const { data: settings, error: settingsError } = await supabaseClient
             .from('brand_settings')
             .select('*')
             .eq('user_id', user.id)
             .maybeSingle();
+          
+          console.log('📋 Brand settings query result:', {
+            found: !!settings,
+            error: settingsError?.message,
+            settingsId: settings?.id
+          });
           
           brandSettings = settings;
           
@@ -196,15 +218,17 @@ serve(async (req) => {
               brand: brandSettings.brand_name,
               tone: brandSettings.tone_of_voice,
               style: brandSettings.preferred_style,
-              keywords: brandSettings.preferred_keywords || 'none',
-              avoid: brandSettings.words_to_avoid || 'none'
+              strictness: brandSettings.validation_strictness,
+              hasRules: !!brandSettings.brand_book_rules
             });
           } else {
             console.log('⚠️ No brand settings found - using generic defaults');
           }
+        } else {
+          console.log('⚠️ User authentication failed:', userError);
         }
       } catch (error) {
-        console.log('Could not fetch brand settings:', error);
+        console.error('❌ Error fetching brand settings:', error);
       }
     }
 
