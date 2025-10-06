@@ -387,6 +387,16 @@
       "needsImprovement": "Needs Improvements"
     },
   
+  "validation": {
+    "success": "JSON validated successfully",
+    "successDesc": "Campaign JSON is valid and ready for download",
+    "corrected": "JSON corrected automatically",
+    "correctedDesc": "{{count}} fields were normalized",
+    "invalid": "Invalid JSON",
+    "invalidDesc": "Found {{count}} errors in the JSON structure",
+    "error": "Validation error",
+    "errorDesc": "Could not validate campaign JSON"
+  },
   "brandCompliance": {
     "revalidate": "Revalidate",
     "revalidated": "Campaign revalidated",

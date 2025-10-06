@@ -106,7 +106,7 @@ function inferLookItems(campaign: Campaign): LookPostItem[] {
 /**
  * Calcula o número de palavras em um texto
  */
-function countWords(text: string): number {
+export function countWords(text: string): number {
   return text.trim().split(/\s+/).length;
 }
 

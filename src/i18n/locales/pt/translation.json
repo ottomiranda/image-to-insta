@@ -387,6 +387,16 @@
       "needsImprovement": "Precisa Melhorias"
     },
   
+  "validation": {
+    "success": "JSON validado com sucesso",
+    "successDesc": "O JSON da campanha está válido e pronto para download",
+    "corrected": "JSON corrigido automaticamente",
+    "correctedDesc": "{{count}} campos foram normalizados",
+    "invalid": "JSON inválido",
+    "invalidDesc": "Encontrados {{count}} erros na estrutura do JSON",
+    "error": "Erro de validação",
+    "errorDesc": "Não foi possível validar o JSON da campanha"
+  },
   "brandCompliance": {
     "revalidate": "Revalidar",
     "revalidated": "Campanha revalidada",

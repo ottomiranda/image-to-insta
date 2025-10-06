@@ -11,6 +11,7 @@ import { BrandComplianceIndicator } from "@/components/BrandComplianceIndicator"
 import { DownloadJsonButton } from "@/components/DownloadJsonButton";
 import { JsonViewerDialog } from "@/components/JsonViewerDialog";
 import { RevalidateButton } from "@/components/RevalidateButton";
+import { CampaignValidationBadge } from "@/components/CampaignValidationBadge";
 import { toast } from "@/hooks/use-toast";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useState } from "react";
@@ -129,6 +130,7 @@ export default function CampaignDetails() {
             <div className="flex items-center gap-3">
               <h1 className="text-4xl font-bold">{campaign.title}</h1>
               {getStatusBadge(campaign.status)}
+              <CampaignValidationBadge campaign={campaign} />
             </div>
             <p className="text-muted-foreground flex items-center gap-2">
               <Calendar className="h-4 w-4" />

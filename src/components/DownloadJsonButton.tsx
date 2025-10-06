@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, Loader2 } from "lucide-react";
 import { Campaign } from "@/types/campaign";
-import { downloadCampaignJson } from "@/lib/lookpost";
+import { downloadCampaignJson, buildLookPostJson } from "@/lib/lookpost";
 import { toast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { validateAndNormalizeCampaign } from "@/lib/validateCampaign";
 
 interface DownloadJsonButtonProps {
   campaign: Campaign;
@@ -28,14 +29,48 @@ export function DownloadJsonButton({
     setIsLoading(true);
     
     try {
-      // Simular delay mínimo para feedback visual
-      await new Promise(resolve => setTimeout(resolve, 300));
+      // Validar e normalizar antes de baixar
+      const validationResult = await validateAndNormalizeCampaign(campaign);
       
-      downloadCampaignJson(campaign);
+      if (!validationResult.valid) {
+        toast({
+          title: t('validation.invalid'),
+          description: t('validation.invalidDesc', { count: validationResult.errors.length }),
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Usar JSON corrigido se disponível
+      const jsonToDownload = validationResult.correctedData 
+        ? validationResult.correctedData 
+        : buildLookPostJson(campaign);
+      
+      // Serializar com indentação
+      const jsonString = JSON.stringify(jsonToDownload, null, 2);
+      
+      // Criar blob
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      // Gerar nome do arquivo
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+      const filename = `campaign-${campaign.id}-${timestamp}.json`;
+      
+      // Forçar download
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
       
       toast({
-        title: t('lookpost.success'),
-        description: t('lookpost.successDesc'),
+        title: validationResult.corrected ? t('validation.corrected') : t('lookpost.success'),
+        description: validationResult.corrected 
+          ? t('validation.correctedDesc', { count: validationResult.validationLog.correctedFields.length })
+          : t('lookpost.successDesc'),
       });
     } catch (error) {
       console.error('Erro ao gerar JSON:', error);
