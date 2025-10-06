@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/Logo";
 import { BrandComplianceWidget } from "@/components/BrandComplianceWidget";
 import { OnboardingTour } from "@/components/OnboardingTour";
+import { CampaignCardSkeleton } from "@/components/CampaignCardSkeleton";
 
 export default function Campaigns() {
   const navigate = useNavigate();
@@ -98,9 +99,10 @@ export default function Campaigns() {
         </Tabs>
 
         {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-            <p className="text-muted-foreground">{t('common.loading')}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <CampaignCardSkeleton key={i} />
+            ))}
           </div>
         ) : error ? (
           <div className="text-center py-12">
