@@ -699,8 +699,8 @@ Respond using the JSON tool format.`;
     // Ensure we always have a compliance score
     const complianceScore = validationResult?.score ?? 50;
     const complianceAdjustments = validationResult?.adjustments || (
-      brandSettings?.brand_book_rules || brandSettings?.validation_strictness 
-        ? ['⚠️ Brand validation incomplete - using default score']
+      shouldValidate
+        ? ['⚠️ Validação do Brand Book não concluída - pontuação padrão aplicada']
         : []
     );
 

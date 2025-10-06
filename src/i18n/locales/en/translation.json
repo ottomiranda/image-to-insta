@@ -386,7 +386,17 @@
       "pending": "Validation Pending",
       "needsImprovement": "Needs Improvements"
     },
-    
+  
+  "brandCompliance": {
+    "revalidate": "Revalidate",
+    "revalidated": "Campaign revalidated",
+    "newScore": "New score",
+    "revalidationError": "Revalidation failed",
+    "revalidationErrorDesc": "Could not revalidate campaign",
+    "configurationRequired": "Brand Book not configured",
+    "configurationRequiredDesc": "Please configure your Brand Book settings first"
+  },
+  
     "charts": {
       "scoreEvolution": "Score Evolution",
       "scoreEvolutionDesc": "Average compliance score over time",

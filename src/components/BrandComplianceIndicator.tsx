@@ -1,20 +1,24 @@
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { CheckCircle2, AlertCircle, XCircle, Award } from "lucide-react";
+import { RevalidateButton } from "@/components/RevalidateButton";
 
 interface BrandComplianceIndicatorProps {
   score: number;
   adjustments?: string[];
   compact?: boolean;
   showDetails?: boolean;
+  campaignId?: string;
 }
 
 export function BrandComplianceIndicator({ 
   score, 
   adjustments = [], 
   compact = false,
-  showDetails = true 
+  showDetails = true,
+  campaignId
 }: BrandComplianceIndicatorProps) {
+  const isPending = score === 50 && (!adjustments || adjustments.length === 0);
   const getScoreColor = () => {
     if (score >= 80) return "text-green-500 bg-green-500/10 border-green-500/20";
     if (score >= 60) return "text-yellow-500 bg-yellow-500/10 border-yellow-500/20";
@@ -41,14 +45,24 @@ export function BrandComplianceIndicator({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md border ${getScoreColor()}`}>
-              {getScoreIcon()}
-              <span className="text-xs font-medium">{score}%</span>
+            <div className="inline-flex items-center gap-1.5">
+              <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md border ${getScoreColor()}`}>
+                {getScoreIcon()}
+                <span className="text-xs font-medium">{score}%</span>
+              </div>
+              {isPending && campaignId && (
+                <RevalidateButton campaignId={campaignId} variant="ghost" size="icon" showLabel={false} />
+              )}
             </div>
           </TooltipTrigger>
           <TooltipContent className="max-w-sm">
             <div className="space-y-2">
               <p className="font-semibold">Brand Book Compliance: {getScoreLabel()}</p>
+              {isPending && (
+                <p className="text-xs text-yellow-600">
+                  ⚠️ Validação pendente. Clique no botão para validar agora.
+                </p>
+              )}
               {score === 50 && adjustments.some(a => a.includes('⚠️')) && (
                 <p className="text-xs text-warning">
                   ⚠️ Este score é provisório. A validação pode ter encontrado problemas.
@@ -92,6 +106,20 @@ export function BrandComplianceIndicator({
 
       {showDetails && (
         <>
+          {isPending && (
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-yellow-500/10 text-yellow-600 text-sm">
+              <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+              <div className="flex-1">
+                <p>Validação pendente. Esta campanha ainda não foi validada contra o Brand Book.</p>
+                {campaignId && (
+                  <div className="mt-2">
+                    <RevalidateButton campaignId={campaignId} size="sm" />
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+          
           {score === 50 && adjustments.some(a => a.includes('⚠️')) && (
             <div className="flex items-start gap-2 p-3 rounded-lg bg-warning/10 text-warning text-sm">
               <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />

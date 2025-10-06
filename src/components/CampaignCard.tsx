@@ -82,11 +82,12 @@ export function CampaignCard({ campaign, onDelete, onPublish }: CampaignCardProp
               <p className="text-sm text-muted-foreground">{getTimestamp()}</p>
               {campaign.brand_compliance_score !== null && campaign.brand_compliance_score !== undefined && (
                 <div className="mt-2">
-                  <BrandComplianceIndicator
-                    score={campaign.brand_compliance_score}
-                    adjustments={campaign.brand_compliance_adjustments}
-                    compact={true}
-                  />
+          <BrandComplianceIndicator
+            score={campaign.brand_compliance_score}
+            adjustments={campaign.brand_compliance_adjustments}
+            compact={true}
+            campaignId={campaign.id}
+          />
                 </div>
               )}
             </div>

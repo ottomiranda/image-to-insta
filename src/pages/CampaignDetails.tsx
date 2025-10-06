@@ -10,6 +10,7 @@ import { ArrowLeft, Calendar, Copy, Download, Edit, Share2, Trash2 } from "lucid
 import { BrandComplianceIndicator } from "@/components/BrandComplianceIndicator";
 import { DownloadJsonButton } from "@/components/DownloadJsonButton";
 import { JsonViewerDialog } from "@/components/JsonViewerDialog";
+import { RevalidateButton } from "@/components/RevalidateButton";
 import { toast } from "@/hooks/use-toast";
 import { useCampaigns } from "@/hooks/useCampaigns";
 import { useState } from "react";
@@ -137,6 +138,10 @@ export default function CampaignDetails() {
           <div className="flex gap-2">
             <JsonViewerDialog campaign={campaign} variant="outline" />
             <DownloadJsonButton campaign={campaign} variant="outline" />
+            {(campaign.brand_compliance_score === 50 && 
+              (!campaign.brand_compliance_adjustments || campaign.brand_compliance_adjustments.length === 0)) && (
+              <RevalidateButton campaignId={campaign.id} variant="outline" />
+            )}
             <Button variant="outline" onClick={() => navigate(`/create/${campaignId}`)}>
               <Edit className="mr-2 h-4 w-4" />
               Edit
@@ -158,6 +163,7 @@ export default function CampaignDetails() {
           <BrandComplianceIndicator
             score={campaign.brand_compliance_score}
             adjustments={campaign.brand_compliance_adjustments || []}
+            campaignId={campaign.id}
           />
         )}
 

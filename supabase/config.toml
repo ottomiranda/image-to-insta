@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.validate-content]
 verify_jwt = false
+
+[functions.revalidate-campaign]
+verify_jwt = false
