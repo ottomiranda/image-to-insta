@@ -209,6 +209,37 @@
     "noAdjustments": "No adjustments recorded yet."
   },
   "adjustments": {
+    "vocabulary": {
+      "wordReplacement": "Replaced forbidden word with preferred alternative",
+      "forbiddenWordRemoved": "Removed forbidden word",
+      "preferredUsed": "Used preferred brand vocabulary"
+    },
+    "tone": {
+      "madeMoreAccessible": "Adjusted tone to be more accessible and friendly",
+      "alignedWithBrand": "Aligned tone with brand voice",
+      "focusedOnValues": "Focused on comfort, versatility, and practicality",
+      "general": "Tone adjustment"
+    },
+    "style": {
+      "shortenedSentences": "Shortened sentences to be under 20 words",
+      "improvedReadability": "Improved readability",
+      "simplifiedLanguage": "Simplified language"
+    },
+    "emoji": {
+      "addedToCaption": "Added emojis to the Instagram caption",
+      "reducedUsage": "Reduced excessive emoji usage",
+      "general": "Emoji adjustment"
+    },
+    "content": {
+      "addedSustainability": "Added a mention of sustainability",
+      "improvedCTA": "Improved call-to-action",
+      "addedBrandValues": "Added brand values reference"
+    },
+    "general": {
+      "improvedCompliance": "Improved overall compliance",
+      "optimizedForAudience": "Optimized for target audience",
+      "generic": "Brand compliance adjustment"
+    },
     "goodGeneralAlignment": "Good general alignment",
     "minorToneAdjustment": "Minor tone adjustment",
     "perfectToneAlignment": "Perfect tone alignment with brand",
@@ -247,6 +278,7 @@
     "centerpiece": "Centerpiece",
     "model": "Model",
     "accessories": "Accessories",
+    "imageUnavailable": "Image unavailable",
     "shortDescription": "Short Description",
     "longDescription": "Long Description",
     "instagramPost": "Instagram Post",
@@ -288,7 +320,24 @@
     "correctedSuffix": "- {{count}} fields corrected automatically",
     "brandCompliance": "Brand Compliance",
     "score": "Score",
-    "improvedFrom": "(improved from {{value}}%)"
+    "improvedFrom": "(improved from {{value}}%)",
+    "tooltips": {
+      "approved": {
+        "title": "Validated and Approved",
+        "description": "This campaign passed all validations with excellence.",
+        "criteria": "✓ Brand Compliance Score ≥ 80%\n✓ Valid JSON Schema\n✓ No corrections needed"
+      },
+      "adequate": {
+        "title": "Adequate",
+        "description": "This campaign has acceptable quality and is ready for use.",
+        "criteria": "✓ Brand Compliance Score ≥ 60%\n✓ Valid JSON Schema\n⚠️ May contain automatic corrections"
+      },
+      "requiresAttention": {
+        "title": "Requires Attention",
+        "description": "This campaign needs manual review before publication.",
+        "criteria": "⚠️ Brand Compliance Score < 60%\nor\n✗ Invalid JSON Schema"
+      }
+    }
   },
   "lookpost": {
     "downloadJson": "Download JSON",

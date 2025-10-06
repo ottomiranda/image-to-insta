@@ -131,10 +131,19 @@ export function BrandComplianceWidget({ campaigns, isLoading: campaignsLoading }
           {hasAdjustments ? (
             <ul className="space-y-1.5">
               {analytics.topAdjustments.slice(0, 3).map((adj, idx) => {
-                const translationKey = getAdjustmentTranslationKey(adj.adjustment);
-                const translatedText = translationKey.startsWith('adjustments.') 
-                  ? t(translationKey) 
-                  : adj.adjustment;
+                // Verifica se já é uma chave de tradução ou se precisa ser mapeada
+                let translatedText: string;
+                
+                if (adj.adjustment.startsWith('adjustments.')) {
+                  // Já é uma chave de tradução, usa diretamente
+                  translatedText = t(adj.adjustment);
+                } else {
+                  // Texto literal (campanhas antigas), tenta mapear para chave de tradução
+                  const translationKey = getAdjustmentTranslationKey(adj.adjustment);
+                  translatedText = translationKey.startsWith('adjustments.') 
+                    ? t(translationKey) 
+                    : adj.adjustment; // Fallback para texto original se não conseguir mapear
+                }
                 
                 return (
                   <li key={idx} className="text-sm">

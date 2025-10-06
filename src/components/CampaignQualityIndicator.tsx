@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, AlertTriangle, XCircle, AlertCircle, Loader2 } from "lucide-react";
 import { useValidateCampaign } from "@/hooks/useValidateCampaign";
 import { useEffect } from "react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
 
 interface CampaignQualityIndicatorProps {
@@ -98,57 +98,112 @@ export function CampaignQualityIndicator({
   
   if (compact) {
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Badge variant={config.variant} className={`gap-1 ${config.color} whitespace-nowrap`}>
-              {config.icon}
-              <span className="text-xs font-medium">{config.label}</span>
-            </Badge>
-          </TooltipTrigger>
-          <TooltipContent className="max-w-sm">
-            <div className="space-y-2">
-              <p className="font-semibold">{t('quality.title')}</p>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Badge variant={config.variant} className={`gap-1 ${config.color} whitespace-nowrap`}>
+            {config.icon}
+            <span className="text-xs font-medium">{config.label}</span>
+          </Badge>
+        </TooltipTrigger>
+          <TooltipContent className="max-w-sm p-4">
+            {(() => {
+              // Determinar qual tooltip mostrar baseado no status
+              let tooltipKey = '';
+              if (status === 'excellent') {
+                tooltipKey = 'approved';
+              } else if (status === 'good') {
+                tooltipKey = 'adequate';
+              } else if (status === 'attention' || status === 'invalid' || status === 'needsReview') {
+                tooltipKey = 'requiresAttention';
+              }
               
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 text-xs">
-                  {jsonValid ? (
-                    <CheckCircle2 className="h-3 w-3 text-green-500" />
-                  ) : (
-                    <XCircle className="h-3 w-3 text-red-500" />
-                  )}
-                  <span>
-                    {t('quality.jsonSchema')}: {validationResult ? (jsonValid ? t('quality.validated') : t('quality.invalid')) : t('quality.notValidated')}
-                    {jsonCorrected && validationResult && ` ${t('quality.correctedSuffix', { count: validationResult.validationLog.correctedFields.length })}`}
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-2 text-xs">
-                  {brandScore >= 80 ? (
-                    <CheckCircle2 className="h-3 w-3 text-green-500" />
-                  ) : brandScore >= 60 ? (
-                    <AlertTriangle className="h-3 w-3 text-yellow-500" />
-                  ) : (
-                    <AlertCircle className="h-3 w-3 text-orange-500" />
-                  )}
-                  <span>
-                    {t('quality.brandCompliance')}: 
-                    {hasImprovement ? (
-                      <span className="ml-1">
-                        <span className="opacity-70">Original: {originalScore}%</span>
-                        <span className="mx-1">→</span>
-                        <span>Atual: {brandScore}%</span>
+              if (tooltipKey && status !== 'validating') {
+                return (
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold text-sm mb-1">
+                        {t(`quality.tooltips.${tooltipKey}.title`)}
+                      </h4>
+                      <p className="text-xs text-muted-foreground">
+                        {t(`quality.tooltips.${tooltipKey}.description`)}
+                      </p>
+                    </div>
+                    
+                    <div className="border-t pt-2">
+                      <p className="text-xs font-medium mb-2">Critérios:</p>
+                      <pre className="text-xs text-muted-foreground whitespace-pre-line">
+                        {t(`quality.tooltips.${tooltipKey}.criteria`)}
+                      </pre>
+                    </div>
+                    
+                    <div className="border-t pt-2">
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span>Brand Compliance:</span>
+                          <span className="font-medium">{brandScore}%</span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs">
+                          <span>JSON Schema:</span>
+                          <span className={`font-medium ${jsonValid ? 'text-green-600' : 'text-red-600'}`}>
+                            {jsonValid ? 'Válido' : 'Inválido'}
+                          </span>
+                        </div>
+                        {jsonCorrected && validationResult && (
+                          <div className="text-xs text-amber-600">
+                            {validationResult.validationLog.correctedFields.length} correções automáticas
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+              
+              // Fallback para status de validação ou outros
+              return (
+                <div className="space-y-2">
+                  <p className="font-semibold">{t('quality.title')}</p>
+                  
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 text-xs">
+                      {jsonValid ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <XCircle className="h-3 w-3 text-red-500" />
+                      )}
+                      <span>
+                        {t('quality.jsonSchema')}: {validationResult ? (jsonValid ? t('quality.validated') : t('quality.invalid')) : t('quality.notValidated')}
+                        {jsonCorrected && validationResult && ` ${t('quality.correctedSuffix', { count: validationResult.validationLog.correctedFields.length })}`}
                       </span>
-                    ) : (
-                      <span className="ml-1">{brandScore}%</span>
-                    )}
-                  </span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2 text-xs">
+                      {brandScore >= 80 ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : brandScore >= 60 ? (
+                        <AlertTriangle className="h-3 w-3 text-yellow-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-orange-500" />
+                      )}
+                      <span>
+                        {t('quality.brandCompliance')}: 
+                        {hasImprovement ? (
+                          <span className="ml-1">
+                            <span className="opacity-70">Original: {originalScore}%</span>
+                            <span className="mx-1">→</span>
+                            <span>Atual: {brandScore}%</span>
+                          </span>
+                        ) : (
+                          <span className="ml-1">{brandScore}%</span>
+                        )}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              );
+            })()}
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider>
     );
   }
   

@@ -209,6 +209,37 @@
     "noAdjustments": "Ainda não há ajustes registrados."
   },
   "adjustments": {
+    "vocabulary": {
+      "wordReplacement": "Substituída palavra proibida por alternativa preferida",
+      "forbiddenWordRemoved": "Removida palavra proibida",
+      "preferredUsed": "Usado vocabulário preferido da marca"
+    },
+    "tone": {
+      "madeMoreAccessible": "Ajustado tom para ser mais acessível e amigável",
+      "alignedWithBrand": "Alinhado tom com a voz da marca",
+      "focusedOnValues": "Focado em conforto, versatilidade e praticidade",
+      "general": "Ajuste no tom"
+    },
+    "style": {
+      "shortenedSentences": "Encurtadas frases para ficar abaixo de 20 palavras",
+      "improvedReadability": "Melhorada a legibilidade",
+      "simplifiedLanguage": "Simplificada a linguagem"
+    },
+    "emoji": {
+      "addedToCaption": "Adicionados emojis à legenda do Instagram",
+      "reducedUsage": "Reduzido uso excessivo de emojis",
+      "general": "Ajuste de emoji"
+    },
+    "content": {
+      "addedSustainability": "Adicionada uma menção à sustentabilidade",
+      "improvedCTA": "Melhorada chamada para ação",
+      "addedBrandValues": "Adicionada referência aos valores da marca"
+    },
+    "general": {
+      "improvedCompliance": "Melhorada conformidade geral",
+      "optimizedForAudience": "Otimizado para público-alvo",
+      "generic": "Ajuste de conformidade da marca"
+    },
     "goodGeneralAlignment": "Bom alinhamento geral",
     "minorToneAdjustment": "Pequeno ajuste no tom de voz",
     "perfectToneAlignment": "Tom de voz alinhado perfeitamente com a marca",
@@ -247,6 +278,7 @@
     "centerpiece": "Peça Principal",
     "model": "Modelo",
     "accessories": "Acessórios",
+    "imageUnavailable": "Imagem indisponível",
     "shortDescription": "Descrição Curta",
     "longDescription": "Descrição Longa",
     "instagramPost": "Post do Instagram",
@@ -287,7 +319,24 @@
     "correctedSuffix": "({{count}} campos corrigidos)",
     "brandCompliance": "Brand Book Compliance",
     "score": "Score",
-    "improvedFrom": "(melhorado de {{value}}%)"
+    "improvedFrom": "(melhorado de {{value}}%)",
+    "tooltips": {
+      "approved": {
+        "title": "Validado e Aprovado",
+        "description": "Esta campanha passou em todas as validações com excelência.",
+        "criteria": "✓ Brand Compliance Score ≥ 80%\n✓ JSON Schema válido\n✓ Sem correções necessárias"
+      },
+      "adequate": {
+        "title": "Adequado",
+        "description": "Esta campanha tem qualidade aceitável e está pronta para uso.",
+        "criteria": "✓ Brand Compliance Score ≥ 60%\n✓ JSON Schema válido\n⚠️ Pode conter correções automáticas"
+      },
+      "requiresAttention": {
+        "title": "Requer Atenção",
+        "description": "Esta campanha precisa de revisão manual antes da publicação.",
+        "criteria": "⚠️ Brand Compliance Score < 60%\nou\n✗ JSON Schema inválido"
+      }
+    }
   },
   "lookpost": {
     "downloadJson": "Download JSON",

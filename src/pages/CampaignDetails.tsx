@@ -13,9 +13,10 @@ import { CampaignQualityIndicator } from "@/components/CampaignQualityIndicator"
 import { BrandComplianceIndicator } from "@/components/BrandComplianceIndicator";
 import { toast } from "@/hooks/use-toast";
 import { useCampaigns } from "@/hooks/useCampaigns";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { PublishCampaignDialog } from "@/components/PublishCampaignDialog";
 import { useTranslation } from "react-i18next";
+import { resolveRepositoryAsset, resolveRepositoryAssets } from "@/lib/assetResolver";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+
 
 export default function CampaignDetails() {
   const { campaignId } = useParams<{ campaignId: string }>();
@@ -87,6 +89,12 @@ export default function CampaignDetails() {
     return <Badge variant={variants[status] || "default"}>{status}</Badge>;
   };
 
+  const resolvedImages = useMemo(() => ({
+    centerpiece: resolveRepositoryAsset(campaign?.centerpiece_image),
+    model: resolveRepositoryAsset(campaign?.model_image),
+    accessories: resolveRepositoryAssets(campaign?.accessories_images),
+  }), [campaign]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background p-8">
@@ -117,6 +125,27 @@ export default function CampaignDetails() {
       </div>
     );
   }
+
+  const renderImage = (image?: string, alt?: string, size: "lg" | "sm" = "lg") => {
+    const baseSize = size === "lg" ? "w-48" : "w-32";
+
+    return (
+      <div className={`${baseSize} aspect-square`}>
+        {image ? (
+          <img
+            src={image}
+            alt={alt}
+            loading="lazy"
+            className="h-full w-full rounded-lg object-cover border border-white/10 bg-black/30"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center rounded-lg border border-dashed border-white/15 bg-black/40 px-3 text-center text-xs text-muted-foreground">
+            {t('campaignDetails.imageUnavailable')}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -159,12 +188,12 @@ export default function CampaignDetails() {
           </div>
         </div>
 
-        {/* Campaign Quality Indicator */}
-        <CampaignQualityIndicator 
+        {/* Campaign Quality Indicator - Visually removed but functionality preserved */}
+        {/* <CampaignQualityIndicator 
           campaign={campaign}
           autoValidate={true}
           compact={false}
-        />
+        /> */}
 
         {/* Brand Compliance Indicator */}
         <BrandComplianceIndicator
@@ -209,20 +238,22 @@ export default function CampaignDetails() {
           <CardContent className="space-y-4">
             <div>
               <h3 className="font-semibold mb-2">{t('campaignDetails.centerpiece')}</h3>
-              <img src={campaign.centerpiece_image} alt="Centerpiece" className="w-48 rounded-lg" />
+              {renderImage(resolvedImages.centerpiece, t('campaignDetails.centerpiece'))}
             </div>
             {campaign.model_image && (
               <div>
                 <h3 className="font-semibold mb-2">{t('campaignDetails.model')}</h3>
-                <img src={campaign.model_image} alt="Model" className="w-48 rounded-lg" />
+                {renderImage(resolvedImages.model, t('campaignDetails.model'))}
               </div>
             )}
-            {campaign.accessories_images && campaign.accessories_images.length > 0 && (
+            {resolvedImages.accessories.length > 0 && (
               <div>
                 <h3 className="font-semibold mb-2">{t('campaignDetails.accessories')}</h3>
                 <div className="flex gap-4 flex-wrap">
-                  {campaign.accessories_images.map((img, idx) => (
-                    <img key={idx} src={img} alt={`Accessory ${idx + 1}`} className="w-32 rounded-lg" />
+                  {resolvedImages.accessories.map((img, idx) => (
+                    <div key={idx} className="flex-shrink-0">
+                      {renderImage(img, `${t('campaignDetails.accessories')} ${idx + 1}`, "sm")}
+                    </div>
                   ))}
                 </div>
               </div>

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Logo } from "@/components/Logo";
 import { UserNav } from "@/components/UserNav";
 import { BrandSettingsDialog } from "@/components/BrandSettingsDialog";
+import { MigrationPanel } from "@/components/MigrationPanel";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCampaigns } from "@/hooks/useCampaigns";
@@ -375,6 +376,19 @@ export default function BrandAnalytics() {
                 {t('brandAnalytics.charts.noAdjustmentsYet')}
               </p>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Migration Panel - Admin Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-red-600">⚠️ Área Administrativa</CardTitle>
+            <CardDescription>
+              Ferramentas de migração e manutenção do sistema. Use com cuidado.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <MigrationPanel />
           </CardContent>
         </Card>
       </main>
