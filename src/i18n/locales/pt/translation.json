@@ -204,7 +204,36 @@
     "complianceRate": "Taxa de Compliance",
     "lowScoreWarning": "Score médio abaixo de 70%. Revise suas regras de Brand Book.",
     "topAdjustments": "Top Ajustes Recentes",
-    "viewFullAnalytics": "Ver Analytics Completo"
+    "viewFullAnalytics": "Ver Analytics Completo",
+    "totalValidations": "Validações",
+    "noAdjustments": "Ainda não há ajustes registrados."
+  },
+  "adjustments": {
+    "goodGeneralAlignment": "Bom alinhamento geral",
+    "minorToneAdjustment": "Pequeno ajuste no tom de voz",
+    "perfectToneAlignment": "Tom de voz alinhado perfeitamente com a marca",
+    "refinedTone": "Tom de voz refinado",
+    "toneAdjustment": "Ajuste no tom",
+    "adequateTone": "Tom adequado",
+    "appropriateHashtags": "Hashtags apropriadas",
+    "goodHashtags": "Boas hashtags",
+    "premiumVocabulary": "Vocabulário premium utilizado corretamente",
+    "moderateVocabularyAdjustments": "Ajustes moderados no vocabulário",
+    "adequateVocabulary": "Vocabulário adequado",
+    "vocabularyImprovement": "Melhoria no vocabulário",
+    "impeccableVisualStyle": "Estilo visual impecável",
+    "adequateVisualStyle": "Estilo visual adequado",
+    "goodVisualPresentation": "Boa apresentação visual",
+    "addedEmojis": "Adicionados emojis à legenda do Instagram",
+    "addedSustainability": "Adicionada menção de sustentabilidade",
+    "addedCTA": "Adicionada chamada para ação",
+    "addedBrandMention": "Adicionada menção da marca",
+    "improvedStructure": "Estrutura melhorada",
+    "contentOrganization": "Organização do conteúdo",
+    "adequateFormatting": "Formatação adequada",
+    "brandBookCompliance": "Conformidade com brand book",
+    "guidelineAlignment": "Alinhamento com diretrizes",
+    "ruleCompliance": "Adequação às regras"
   },
   "campaignDetails": {
     "notFoundTitle": "Campanha Não Encontrada",
@@ -500,5 +529,92 @@
       "noCategoryDetected": "Nenhuma categoria detectada",
       "noAdjustmentsYet": "Nenhum ajuste registrado ainda"
     }
+  },
+  "filters": {
+    "title": "Filtros",
+    "search": {
+      "label": "Buscar",
+      "placeholder": "Buscar por título, descrição ou prompt...",
+      "searching": "Buscando por: {{term}}"
+    },
+    "date": {
+      "label": "Data de Criação",
+      "selectPeriod": "Selecionar período",
+      "quickSelect": "Seleção rápida",
+      "selectPreset": "Escolher período",
+      "customRange": "Período personalizado",
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "last7days": "Últimos 7 dias",
+      "last30days": "Últimos 30 dias",
+      "thisMonth": "Este mês",
+      "lastMonth": "Mês passado"
+    },
+    "compliance": {
+      "label": "Score de Compliance",
+      "all": "Todos",
+      "quickSelect": "Seleção rápida",
+      "excellent": "Excelente",
+      "good": "Bom",
+      "needsImprovement": "Precisa melhorar",
+      "regular": "Regular"
+    },
+    "colors": {
+      "label": "Cores Dominantes",
+      "placeholder": "Selecionar cores..."
+    },
+    "styles": {
+      "label": "Estilo/Aesthetic",
+      "placeholder": "Selecionar estilos..."
+    },
+    "budget": {
+      "label": "Orçamento/Categoria",
+      "placeholder": "Selecionar categorias..."
+    },
+    "occasion": {
+      "label": "Ocasião/Evento",
+      "placeholder": "Selecionar ocasiões..."
+    },
+    "audience": {
+      "label": "Público-alvo",
+      "placeholder": "Selecionar audiências..."
+    },
+    "adjustments": {
+      "label": "Ajustes de Marca",
+      "placeholder": "Filtrar por ajustes...",
+      "with": "Com ajustes",
+      "without": "Sem ajustes"
+    },
+    "sort": {
+      "label": "Ordenação",
+      "sortBy": "Ordenar por",
+      "direction": "Direção",
+      "ascending": "Crescente",
+      "descending": "Decrescente",
+      "quickSort": "Ordenação rápida",
+      "newest": "Mais recentes",
+      "oldest": "Mais antigas",
+      "bestScore": "Melhor score",
+      "alphabetical": "Alfabética",
+      "createdAt": "Data de criação",
+      "title": "Título",
+      "complianceScore": "Score de compliance",
+      "status": "Status",
+      "publishedAt": "Publicado em",
+      "scheduledAt": "Agendado para"
+    },
+    "selectOptions": "Selecionar opções",
+    "selectedCount": "{{count}} selecionados",
+    "selectAll": "Selecionar todos",
+    "deselectAll": "Desmarcar todos",
+    "noResults": "Nenhum resultado encontrado",
+    "noOptions": "Nenhuma opção disponível",
+    "more": "mais",
+    "clear": "Limpar",
+    "apply": "Aplicar",
+    "resetAll": "Resetar tudo",
+    "clearAll": "Limpar tudo",
+    "activeFilters": "Filtros ativos",
+    "resultsCount": "{{count}} de {{total}} campanhas"
   }
 }

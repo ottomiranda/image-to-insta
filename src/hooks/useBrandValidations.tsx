@@ -117,13 +117,13 @@ export function useBrandValidations(campaigns: Campaign[] | undefined, isLoading
         adjustments.forEach((adj: string) => {
           const adjLower = adj.toLowerCase();
           if (adjLower.includes('vocabulário') || adjLower.includes('palavra') || adjLower.includes('substituíd')) {
-            categoryMap.set('Vocabulário', (categoryMap.get('Vocabulário') || 0) + 1);
+            categoryMap.set('vocabulary', (categoryMap.get('vocabulary') || 0) + 1);
           } else if (adjLower.includes('tom') || adjLower.includes('voz') || adjLower.includes('alinhado')) {
-            categoryMap.set('Tom de Voz', (categoryMap.get('Tom de Voz') || 0) + 1);
+            categoryMap.set('toneOfVoice', (categoryMap.get('toneOfVoice') || 0) + 1);
           } else if (adjLower.includes('emoji') || adjLower.includes('frase') || adjLower.includes('cta') || adjLower.includes('call-to-action')) {
-            categoryMap.set('Estrutura', (categoryMap.get('Estrutura') || 0) + 1);
+            categoryMap.set('structure', (categoryMap.get('structure') || 0) + 1);
           } else {
-            categoryMap.set('Conteúdo', (categoryMap.get('Conteúdo') || 0) + 1);
+            categoryMap.set('content', (categoryMap.get('content') || 0) + 1);
           }
         });
       }

@@ -27,6 +27,7 @@ import {
   Bar,
   ResponsiveContainer,
 } from "recharts";
+import { getAdjustmentTranslationKey } from "@/lib/adjustmentTranslations";
 
 const COLORS = {
   excellent: "hsl(var(--success))",
@@ -103,8 +104,16 @@ export default function BrandAnalytics() {
 
   // Prepare pie chart data for category breakdown
   const categoryChartData = analytics.categoryBreakdown.map(cat => ({
-    name: cat.category,
+    name: t(`brandAnalytics.categories.${cat.category}`),
     value: cat.count,
+  }));
+
+  // Translate adjustments for the chart
+  const translatedAdjustments = analytics.topAdjustments.map(adj => ({
+    ...adj,
+    adjustment: getAdjustmentTranslationKey(adj.adjustment) 
+      ? t(getAdjustmentTranslationKey(adj.adjustment))
+      : adj.adjustment
   }));
 
   const CATEGORY_COLORS = [
@@ -271,43 +280,46 @@ export default function BrandAnalytics() {
             </CardHeader>
             <CardContent>
               {categoryChartData.length > 0 ? (
-                <div className="flex items-center justify-between">
-                  <ChartContainer
-                    config={{
-                      value: {
-                        label: t('brandAnalytics.charts.violationsLabel'),
-                        color: "hsl(var(--primary))",
-                      },
-                    }}
-                    className="h-[300px] flex-1"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={categoryChartData}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          outerRadius={100}
-                          fill="#8884d8"
-                          dataKey="value"
-                        >
-                          {categoryChartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                  <div className="ml-4 space-y-2">
+                <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+                  <div className="flex-1 min-w-0">
+                    <ChartContainer
+                      config={{
+                        value: {
+                          label: t('brandAnalytics.charts.violationsLabel'),
+                          color: "hsl(var(--primary))",
+                        },
+                      }}
+                      className="h-[300px] w-full"
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={categoryChartData}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            outerRadius={80}
+                            fill="#8884d8"
+                            dataKey="value"
+                          >
+                            {categoryChartData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]} />
+                            ))}
+                          </Pie>
+                          <ChartTooltip content={<ChartTooltipContent />} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </ChartContainer>
+                  </div>
+                  <div className="flex flex-col gap-3 lg:min-w-[200px]">
                     {categoryChartData.map((cat, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
+                      <div key={idx} className="flex items-center gap-3">
                         <div 
-                          className="w-3 h-3 rounded-full" 
+                          className="w-4 h-4 rounded-full flex-shrink-0" 
                           style={{ backgroundColor: CATEGORY_COLORS[idx % CATEGORY_COLORS.length] }}
                         />
-                        <span className="text-sm">{cat.name}</span>
+                        <span className="text-sm font-medium">{cat.name}</span>
+                        <span className="text-xs text-muted-foreground ml-auto">{cat.value}</span>
                       </div>
                     ))}
                   </div>
@@ -339,7 +351,7 @@ export default function BrandAnalytics() {
                 className="h-[400px]"
               >
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={analytics.topAdjustments} layout="vertical">
+                  <BarChart data={translatedAdjustments} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis 
                       type="number" 

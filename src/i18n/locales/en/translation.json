@@ -204,7 +204,36 @@
     "complianceRate": "Compliance Rate",
     "lowScoreWarning": "Average score below 70%. Review your Brand Book rules.",
     "topAdjustments": "Top Recent Adjustments",
-    "viewFullAnalytics": "View Full Analytics"
+    "viewFullAnalytics": "View Full Analytics",
+    "totalValidations": "Validations",
+    "noAdjustments": "No adjustments recorded yet."
+  },
+  "adjustments": {
+    "goodGeneralAlignment": "Good general alignment",
+    "minorToneAdjustment": "Minor tone adjustment",
+    "perfectToneAlignment": "Perfect tone alignment with brand",
+    "refinedTone": "Refined tone of voice",
+    "toneAdjustment": "Tone adjustment",
+    "adequateTone": "Adequate tone",
+    "appropriateHashtags": "Appropriate hashtags",
+    "goodHashtags": "Good hashtags",
+    "premiumVocabulary": "Premium vocabulary used correctly",
+    "moderateVocabularyAdjustments": "Moderate vocabulary adjustments",
+    "adequateVocabulary": "Adequate vocabulary",
+    "vocabularyImprovement": "Vocabulary improvement",
+    "impeccableVisualStyle": "Impeccable visual style",
+    "adequateVisualStyle": "Adequate visual style",
+    "goodVisualPresentation": "Good visual presentation",
+    "addedEmojis": "Added emojis to Instagram caption",
+    "addedSustainability": "Added sustainability mention",
+    "addedCTA": "Added call-to-action",
+    "addedBrandMention": "Added brand mention",
+    "improvedStructure": "Improved structure",
+    "contentOrganization": "Content organization",
+    "adequateFormatting": "Adequate formatting",
+    "brandBookCompliance": "Brand book compliance",
+    "guidelineAlignment": "Guideline alignment",
+    "ruleCompliance": "Rule compliance"
   },
   "campaignDetails": {
     "notFoundTitle": "Campaign Not Found",
@@ -501,5 +530,92 @@
       "noCategoryDetected": "No category detected",
       "noAdjustmentsYet": "No adjustments recorded yet"
     }
+  },
+  "filters": {
+    "title": "Filters",
+    "search": {
+      "label": "Search",
+      "placeholder": "Search by title, description or prompt...",
+      "searching": "Searching for: {{term}}"
+    },
+    "date": {
+      "label": "Creation Date",
+      "selectPeriod": "Select period",
+      "quickSelect": "Quick select",
+      "selectPreset": "Choose period",
+      "customRange": "Custom range",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7days": "Last 7 days",
+      "last30days": "Last 30 days",
+      "thisMonth": "This month",
+      "lastMonth": "Last month"
+    },
+    "compliance": {
+      "label": "Compliance Score",
+      "all": "All",
+      "quickSelect": "Quick select",
+      "excellent": "Excellent",
+      "good": "Good",
+      "needsImprovement": "Needs improvement",
+      "regular": "Regular"
+    },
+    "colors": {
+      "label": "Dominant Colors",
+      "placeholder": "Select colors..."
+    },
+    "styles": {
+      "label": "Style/Aesthetic",
+      "placeholder": "Select styles..."
+    },
+    "budget": {
+      "label": "Budget/Category",
+      "placeholder": "Select categories..."
+    },
+    "occasion": {
+      "label": "Occasion/Event",
+      "placeholder": "Select occasions..."
+    },
+    "audience": {
+      "label": "Target Audience",
+      "placeholder": "Select audiences..."
+    },
+    "adjustments": {
+      "label": "Brand Adjustments",
+      "placeholder": "Filter by adjustments...",
+      "with": "With adjustments",
+      "without": "Without adjustments"
+    },
+    "sort": {
+      "label": "Sort",
+      "sortBy": "Sort by",
+      "direction": "Direction",
+      "ascending": "Ascending",
+      "descending": "Descending",
+      "quickSort": "Quick sort",
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "bestScore": "Best score",
+      "alphabetical": "Alphabetical",
+      "createdAt": "Creation date",
+      "title": "Title",
+      "complianceScore": "Compliance score",
+      "status": "Status",
+      "publishedAt": "Published at",
+      "scheduledAt": "Scheduled at"
+    },
+    "selectOptions": "Select options",
+    "selectedCount": "{{count}} selected",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "noResults": "No results found",
+    "noOptions": "No options available",
+    "more": "more",
+    "clear": "Clear",
+    "apply": "Apply",
+    "resetAll": "Reset all",
+    "clearAll": "Clear all",
+    "activeFilters": "Active filters",
+    "resultsCount": "{{count}} of {{total}} campaigns"
   }
 }

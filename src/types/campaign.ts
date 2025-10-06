@@ -33,6 +33,17 @@ export interface Campaign {
   brand_compliance_original_score?: number;
   brand_compliance_adjustments?: string[];
   
+  // Schema Look&Post para filtros avançados
+  lookpost_schema?: {
+    prompt: string;
+    dominant_colors?: string[];
+    style_aesthetic?: string[];
+    budget_category?: string[];
+    occasion_event?: string[];
+    target_audience?: string[];
+    brand_compliance_adjustments?: string[];
+  };
+  
   // Campos opcionais para schema Look&Post completo
   locale?: Locale;
   source_version?: string;
