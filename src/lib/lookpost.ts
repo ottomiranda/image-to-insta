@@ -13,9 +13,16 @@ export function validateHexColor(color: string): boolean {
 }
 
 /**
- * Valida se uma string é uma URL válida com protocolo http/https
+ * Valida se uma string é uma URL válida com protocolo http/https ou Data URI
  */
-export function validateUrl(url: string): boolean {
+export function validateUrl(url: string | undefined | null): boolean {
+  if (!url) return false;
+  
+  // Aceitar Data URIs (base64 images)
+  if (url.startsWith('data:image/')) {
+    return true;
+  }
+  
   try {
     const parsed = new URL(url);
     return parsed.protocol === 'http:' || parsed.protocol === 'https:';

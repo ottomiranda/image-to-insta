@@ -20,19 +20,26 @@ export function CampaignQualityIndicator({
   const { validate, isValidating, validationResult } = useValidateCampaign();
   const { t } = useTranslation();
   
+  // Primeiro tentar ler do BD, depois validar se necessário
+  const jsonValidFromDB = campaign.json_schema_valid;
+  const jsonErrorsFromDB = campaign.json_schema_errors;
+  const jsonWarningsFromDB = campaign.json_schema_warnings;
+  const hasDBValidation = jsonValidFromDB !== undefined && jsonValidFromDB !== null;
+  
   useEffect(() => {
-    if (autoValidate && !validationResult) {
+    // Só validar se não há validação no BD e autoValidate está ativo
+    if (autoValidate && !hasDBValidation && !validationResult) {
       validate(campaign);
     }
-  }, [autoValidate, campaign, validate, validationResult]);
+  }, [autoValidate, campaign, validate, validationResult, hasDBValidation]);
   
   // Get brand compliance status
   const brandScore = campaign.brand_compliance_score || 0;
   const originalScore = campaign.brand_compliance_original_score;
   const hasImprovement = originalScore && originalScore !== brandScore;
   
-  // Get JSON validation status
-  const jsonValid = validationResult?.valid;
+  // Get JSON validation status - preferir dados do BD
+  const jsonValid = hasDBValidation ? jsonValidFromDB : validationResult?.valid;
   const jsonCorrected = validationResult?.corrected;
   
   // Overall quality status

@@ -143,6 +143,10 @@ export type Database = {
           id: string
           image_analysis: Json | null
           instagram: Json
+          json_schema_errors: Json | null
+          json_schema_valid: boolean | null
+          json_schema_validated_at: string | null
+          json_schema_warnings: Json | null
           long_description: string
           look_items: Json | null
           look_visual: string
@@ -171,6 +175,10 @@ export type Database = {
           id?: string
           image_analysis?: Json | null
           instagram: Json
+          json_schema_errors?: Json | null
+          json_schema_valid?: boolean | null
+          json_schema_validated_at?: string | null
+          json_schema_warnings?: Json | null
           long_description: string
           look_items?: Json | null
           look_visual: string
@@ -199,6 +207,10 @@ export type Database = {
           id?: string
           image_analysis?: Json | null
           instagram?: Json
+          json_schema_errors?: Json | null
+          json_schema_valid?: boolean | null
+          json_schema_validated_at?: string | null
+          json_schema_warnings?: Json | null
           long_description?: string
           look_items?: Json | null
           look_visual?: string
@@ -223,7 +235,6 @@ export type Database = {
           created_at: string | null
           current_step: number | null
           id: string
-          last_shown_at: string | null
           tutorial_completed: boolean | null
           tutorial_skipped: boolean | null
           updated_at: string | null
@@ -234,7 +245,6 @@ export type Database = {
           created_at?: string | null
           current_step?: number | null
           id?: string
-          last_shown_at?: string | null
           tutorial_completed?: boolean | null
           tutorial_skipped?: boolean | null
           updated_at?: string | null
@@ -245,7 +255,6 @@ export type Database = {
           created_at?: string | null
           current_step?: number | null
           id?: string
-          last_shown_at?: string | null
           tutorial_completed?: boolean | null
           tutorial_skipped?: boolean | null
           updated_at?: string | null

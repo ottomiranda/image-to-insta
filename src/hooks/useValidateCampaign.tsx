@@ -29,7 +29,7 @@ export const useValidateCampaign = () => {
           hasBrandTone: !!result.correctedData.descriptions.brand_tone,
         });
         
-        // ⚡ Salvar dados corrigidos no banco
+        // ⚡ Salvar dados corrigidos E resultado da validação no banco
         try {
           const { error: updateError } = await supabase
             .from('campaigns')
@@ -40,13 +40,18 @@ export const useValidateCampaign = () => {
               brand_tone: result.correctedData.descriptions.brand_tone,
               governance: result.correctedData.governance as any,
               telemetry: result.correctedData.telemetry as any,
+              // Persistir resultado da validação
+              json_schema_valid: result.valid,
+              json_schema_errors: result.errors,
+              json_schema_warnings: result.warnings,
+              json_schema_validated_at: new Date().toISOString(),
             })
             .eq('id', campaign.id);
           
           if (updateError) {
             console.error('❌ Erro ao salvar JSON corrigido:', updateError);
           } else {
-            console.log('✅ JSON corrigido salvo no banco com sucesso!');
+            console.log('✅ JSON corrigido e validação salvos no banco com sucesso!');
           }
         } catch (saveError) {
           console.error('❌ Exceção ao salvar JSON:', saveError);
@@ -76,6 +81,21 @@ export const useValidateCampaign = () => {
           }),
           variant: "destructive",
         });
+        
+        // Mesmo em caso de erro, salvar resultado da validação
+        try {
+          await supabase
+            .from('campaigns')
+            .update({
+              json_schema_valid: false,
+              json_schema_errors: result.errors,
+              json_schema_warnings: result.warnings,
+              json_schema_validated_at: new Date().toISOString(),
+            })
+            .eq('id', campaign.id);
+        } catch (error) {
+          console.error('❌ Erro ao salvar resultado de validação com erro:', error);
+        }
       }
       
       return result;

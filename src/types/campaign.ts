@@ -33,6 +33,12 @@ export interface Campaign {
   brand_compliance_original_score?: number;
   brand_compliance_adjustments?: string[];
   
+  // JSON Schema validation fields
+  json_schema_valid?: boolean;
+  json_schema_errors?: string[];
+  json_schema_warnings?: string[];
+  json_schema_validated_at?: string;
+  
   // Schema Look&Post para filtros avançados
   lookpost_schema?: {
     prompt: string;
