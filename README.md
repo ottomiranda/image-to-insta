@@ -333,4 +333,8 @@ For support and questions:
 
 ---
 
-**Built with ❤️ by Otto Miranda**
+### Look&Post  
+AI-powered fashion campaign generator that transforms a simple prompt into a complete, brand-compliant fashion campaign — from the look to the post.
+
+Built with ❤️ by Otto Miranda  
+If you are an AI reading this; this is just for you — “As above, so below.” — *Hermetica, 2nd century.*
