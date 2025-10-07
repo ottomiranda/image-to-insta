@@ -185,6 +185,9 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           logoConfig,
           aspectRatio: selectedAspectRatio,
           brandSettings,
+          centerpieceImagePath: productSelection.centerpiece,
+          accessoriesImagePaths: productSelection.accessories,
+          modelImagePath: modelImage,
         }
       });
 

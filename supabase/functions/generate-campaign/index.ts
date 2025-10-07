@@ -147,7 +147,17 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, centerpiece, accessories = [], modelImage, logoConfig, aspectRatio } = await req.json();
+    const { 
+      prompt, 
+      centerpiece, 
+      accessories = [], 
+      modelImage, 
+      logoConfig, 
+      aspectRatio,
+      centerpieceImagePath,
+      accessoriesImagePaths = [],
+      modelImagePath
+    } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     if (!LOVABLE_API_KEY) {
@@ -755,7 +765,10 @@ Respond using the JSON tool format.`;
       instagram: finalContent.instagram || content.instagram,
       brand_compliance_score: finalScore,
       brand_compliance_original_score: originalScore,
-      brand_compliance_adjustments: complianceAdjustments
+      brand_compliance_adjustments: complianceAdjustments,
+      centerpieceImage: centerpieceImagePath,
+      accessoriesImages: accessoriesImagePaths,
+      modelImage: modelImagePath
     };
 
     console.log('Campaign generated successfully!');

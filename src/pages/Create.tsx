@@ -34,6 +34,9 @@ export interface GeneratedContent {
   };
   brandComplianceScore?: number;
   brandComplianceAdjustments?: string[];
+  centerpieceImage?: string;
+  accessoriesImages?: string[];
+  modelImage?: string;
 }
 
 const Create = () => {
@@ -134,9 +137,9 @@ const Create = () => {
         title,
         prompt,
         status: "draft" as const,
-        centerpiece_image: productSelection?.centerpiece || "",
-        accessories_images: productSelection?.accessories || [],
-        model_image: modelImage,
+        centerpiece_image: generatedContent?.centerpieceImage || productSelection?.centerpiece || "",
+        accessories_images: generatedContent?.accessoriesImages || productSelection?.accessories || [],
+        model_image: generatedContent?.modelImage || modelImage,
         look_visual: generatedContent?.lookVisual || "",
         image_analysis: generatedContent?.imageAnalysis,
         short_description: generatedContent?.shortDescription || "",
