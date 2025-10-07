@@ -320,9 +320,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For support and questions:
 
 - 📧 Email: otto.miranda@me.com
-- 📖 Documentation: [docs.fashioncampaignai.com](https://docs.fashioncampaignai.com)
-- 🐛 Issues: [GitHub Issues](https://github.com/your-org/fashion-campaign-ai/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/your-org/fashion-campaign-ai/discussions)
+- 📖 Full Documentation: /Docs
 
 ## 🙏 Acknowledgments
 
