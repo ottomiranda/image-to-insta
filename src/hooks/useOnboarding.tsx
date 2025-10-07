@@ -247,7 +247,7 @@ export function useOnboarding() {
         .select()
         .single();
       if (updated) {
-        setStatus(prev => ({ ...prev, last_shown_at: updated.last_shown_at }));
+        setStatus(prev => ({ ...prev, updated_at: updated.updated_at }));
       }
     } catch (e) {
       console.error("Error marking onboarding shown:", e);

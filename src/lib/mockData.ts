@@ -39,8 +39,22 @@ export const mockCampaigns: Campaign[] = [
     id: "2",
     user_id: "user1",
     title: "Look Casual Primavera",
-    status: "draft",
+    prompt: "Look casual e confortável para o dia a dia na primavera",
+    status: "draft" as const,
+    centerpiece_image: "/placeholder.png",
+    accessories_images: [],
+    look_visual: "/placeholder-look.png",
+    short_description: "Look casual primavera",
+    long_description: "Um visual confortável e moderno para o dia a dia na primavera.",
+    instagram: {
+      caption: "Look casual",
+      hashtags: ["#casual", "#primavera"],
+      callToAction: "Veja mais",
+      altText: "Look casual",
+      suggestedTime: "12:00"
+    },
     created_at: "2024-01-20T09:30:00Z",
+    updated_at: "2024-01-20T09:30:00Z",
     brand_compliance_score: 78,
     lookpost_schema: {
       prompt: "Look casual e confortável para o dia a dia na primavera",
@@ -56,8 +70,22 @@ export const mockCampaigns: Campaign[] = [
     id: "3",
     user_id: "user1",
     title: "Noite Glamourosa",
-    status: "scheduled",
+    prompt: "Look glamouroso para eventos noturnos especiais",
+    status: "scheduled" as const,
+    centerpiece_image: "/placeholder.png",
+    accessories_images: [],
+    look_visual: "/placeholder-look.png",
+    short_description: "Look glamouroso noturno",
+    long_description: "Um visual sofisticado e glamouroso para eventos especiais.",
+    instagram: {
+      caption: "Noite glamourosa",
+      hashtags: ["#glamour", "#noite"],
+      callToAction: "Confira",
+      altText: "Look glamouroso",
+      suggestedTime: "20:00"
+    },
     created_at: "2024-01-25T16:45:00Z",
+    updated_at: "2024-01-25T16:45:00Z",
     scheduled_at: "2024-02-01T20:00:00Z",
     brand_compliance_score: 95,
     lookpost_schema: {
@@ -74,8 +102,22 @@ export const mockCampaigns: Campaign[] = [
     id: "4",
     user_id: "user1",
     title: "Estilo Boho Chic",
-    status: "published",
+    prompt: "Look boho chic com elementos naturais e cores terrosas",
+    status: "published" as const,
+    centerpiece_image: "/placeholder.png",
+    accessories_images: [],
+    look_visual: "/placeholder-look.png",
+    short_description: "Look boho chic",
+    long_description: "Um visual descontraído com elementos naturais.",
+    instagram: {
+      caption: "Boho chic",
+      hashtags: ["#boho", "#natural"],
+      callToAction: "Descubra",
+      altText: "Look boho",
+      suggestedTime: "15:00"
+    },
     created_at: "2024-01-10T11:20:00Z",
+    updated_at: "2024-01-10T11:20:00Z",
     published_at: "2024-01-12T15:30:00Z",
     brand_compliance_score: 65,
     lookpost_schema: {
@@ -92,19 +134,33 @@ export const mockCampaigns: Campaign[] = [
     id: "5",
     user_id: "user1",
     title: "Business Professional",
-    status: "draft",
+    prompt: "Look profissional para ambiente corporativo",
+    status: "draft" as const,
+    centerpiece_image: "/placeholder.png",
+    accessories_images: [],
+    look_visual: "/placeholder-look.png",
+    short_description: "Look profissional",
+    long_description: "Visual corporativo elegante e profissional.",
+    instagram: {
+      caption: "Business look",
+      hashtags: ["#professional", "#business"],
+      callToAction: "Inspire-se",
+      altText: "Look profissional",
+      suggestedTime: "09:00"
+    },
     created_at: "2024-01-28T08:15:00Z",
-    brand_compliance_score: 88,
+    updated_at: "2024-01-28T08:15:00Z",
+    brand_compliance_score: 78,
     lookpost_schema: {
-      prompt: "Look profissional para ambiente corporativo",
-      dominant_colors: ["azul marinho", "branco", "cinza"],
-      style_aesthetic: ["profissional", "clássico", "conservador"],
-      budget_category: ["premium", "corporativo"],
-      occasion_event: ["trabalho", "reunião", "apresentação"],
-      target_audience: ["executivas", "profissionais"],
-      brand_compliance_adjustments: ["Ajustado tom profissional"]
+      prompt: "Look casual e confortável para o dia a dia na primavera",
+      dominant_colors: ["azul", "branco", "bege"],
+      style_aesthetic: ["casual", "confortável", "minimalista"],
+      budget_category: ["médio", "acessível"],
+      occasion_event: ["dia a dia", "trabalho"],
+      target_audience: ["mulheres jovens", "estudantes"],
+      brand_compliance_adjustments: ["Incluído call-to-action", "Ajustado hashtags da marca"]
     }
-  }
+  },
 ];
 
 // Helper function to get filter options from campaigns

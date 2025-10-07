@@ -102,7 +102,7 @@ export function MigrationPanel() {
 
       // 2. Processar cada campanha
       for (let i = 0; i < campaigns.length; i++) {
-        const campaign = campaigns[i] as Campaign;
+        const campaign = campaigns[i] as unknown as Campaign;
         const progressPercent = Math.round(((i + 1) / campaigns.length) * 100);
         setProgress(progressPercent);
 
@@ -112,7 +112,7 @@ export function MigrationPanel() {
           
           if (result.corrected && result.correctedData) {
             // Salvar correções no banco
-            const updateData = {
+            const updateData: any = {
               look_items: result.correctedData.look?.items || [],
               palette_hex: result.correctedData.look?.palette_hex || [],
               seo_keywords: result.correctedData.descriptions?.seo_keywords || [],
@@ -139,7 +139,7 @@ export function MigrationPanel() {
               correctedFields: result.validationLog.correctedFields
             });
 
-            updateStats(prev => ({ 
+            setStats(prev => ({ 
               ...prev, 
               processed: prev.processed + 1,
               corrected: prev.corrected + 1 
@@ -153,7 +153,7 @@ export function MigrationPanel() {
               message: result.valid ? 'Já válida, nenhuma correção necessária' : 'Inválida mas sem correções automáticas disponíveis'
             });
 
-            updateStats(prev => ({ 
+            setStats(prev => ({ 
               ...prev, 
               processed: prev.processed + 1,
               skipped: prev.skipped + 1 
@@ -170,7 +170,7 @@ export function MigrationPanel() {
             message: errorMessage
           });
 
-          updateStats(prev => ({ 
+          setStats(prev => ({ 
             ...prev, 
             processed: prev.processed + 1,
             errors: prev.errors + 1 
