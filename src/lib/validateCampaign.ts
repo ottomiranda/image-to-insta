@@ -222,15 +222,15 @@ export async function validateAndNormalizeCampaign(
   
   if (!shortDesc) {
     errors.push("descriptions.short is required");
-  } else if (shortDesc.length > 200) {
-    warnings.push(`descriptions.short exceeds 200 chars (${shortDesc.length})`);
+  } else if (shortDesc.length > 300) {
+    warnings.push(`descriptions.short exceeds 300 chars (${shortDesc.length})`);
   }
   
   const longWords = countWords(longDesc);
   if (!longDesc) {
     errors.push("descriptions.long is required");
-  } else if (longWords < 100 || longWords > 200) {
-    warnings.push(`descriptions.long should be 100-200 words (current: ${longWords})`);
+  } else if (longWords < 50) {
+    warnings.push(`descriptions.long should have at least 50 words (current: ${longWords})`);
   }
   
   let seoKeywords = campaign.seo_keywords || [];
