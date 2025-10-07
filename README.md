@@ -1,4 +1,4 @@
-# Fashion Campaign AI Platform
+# Look&Post
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -281,7 +281,7 @@ pnpm db:reset         # Reset database
 
 ## 🤝 Contributing
 
-We welcome contributions to the Fashion Campaign AI platform! Please follow these guidelines:
+We welcome contributions to the Look&Post platform! Please follow these guidelines:
 
 ### Development Setup
 
