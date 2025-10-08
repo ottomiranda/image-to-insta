@@ -1,6 +1,12 @@
 import { useMemo } from "react";
 import { Campaign } from "@/types/campaign";
 
+type AdjustmentItem = string | {
+  rawText: string;
+  translationKey: string;
+  category: string;
+};
+
 export interface BrandValidation {
   id: string;
   user_id: string;
@@ -8,7 +14,7 @@ export interface BrandValidation {
   original_content: any;
   corrected_content: any | null;
   validation_score: number | null;
-  adjustments_made: string[] | null;
+  adjustments_made: AdjustmentItem[] | null;
   user_approved: boolean | null;
   created_at: string;
 }
@@ -75,13 +81,20 @@ export function useBrandValidations(campaigns: Campaign[] | undefined, isLoading
     const compliantCount = campaignsWithScores.filter(c => (c.brand_compliance_score || 0) >= 80).length;
     const complianceRate = (compliantCount / campaignsWithScores.length) * 100;
 
+    // Helper function to get text from adjustment (old format: string, new format: object)
+    const getAdjustmentText = (adj: AdjustmentItem): string => {
+      if (typeof adj === 'string') return adj;
+      return adj.rawText;
+    };
+
     // Calculate top adjustments from brand_compliance_adjustments
     const adjustmentCounts = new Map<string, number>();
     campaignsWithScores.forEach(c => {
       const adjustments = c.brand_compliance_adjustments;
       if (adjustments && Array.isArray(adjustments)) {
-        adjustments.forEach((adj: string) => {
-          adjustmentCounts.set(adj, (adjustmentCounts.get(adj) || 0) + 1);
+        adjustments.forEach((adj: AdjustmentItem) => {
+          const text = getAdjustmentText(adj);
+          adjustmentCounts.set(text, (adjustmentCounts.get(text) || 0) + 1);
         });
       }
     });
@@ -114,17 +127,29 @@ export function useBrandValidations(campaigns: Campaign[] | undefined, isLoading
     campaignsWithScores.forEach(c => {
       const adjustments = c.brand_compliance_adjustments;
       if (adjustments && Array.isArray(adjustments)) {
-        adjustments.forEach((adj: string) => {
-          const adjLower = adj.toLowerCase();
-          if (adjLower.includes('vocabulário') || adjLower.includes('palavra') || adjLower.includes('substituíd')) {
-            categoryMap.set('vocabulary', (categoryMap.get('vocabulary') || 0) + 1);
-          } else if (adjLower.includes('tom') || adjLower.includes('voz') || adjLower.includes('alinhado')) {
-            categoryMap.set('toneOfVoice', (categoryMap.get('toneOfVoice') || 0) + 1);
-          } else if (adjLower.includes('emoji') || adjLower.includes('frase') || adjLower.includes('cta') || adjLower.includes('call-to-action')) {
-            categoryMap.set('structure', (categoryMap.get('structure') || 0) + 1);
+        adjustments.forEach((adj: AdjustmentItem) => {
+          // Handle both old (string) and new (object) formats
+          let categoryKey = 'content';
+          
+          if (typeof adj === 'object' && 'category' in adj) {
+            // New format: use the category directly
+            categoryKey = adj.category === 'vocabulary' ? 'vocabulary' :
+                         adj.category === 'tone' ? 'toneOfVoice' :
+                         adj.category === 'emoji' || adj.category === 'structure' ? 'structure' :
+                         'content';
           } else {
-            categoryMap.set('content', (categoryMap.get('content') || 0) + 1);
+            // Old format: infer from text
+            const adjLower = getAdjustmentText(adj).toLowerCase();
+            if (adjLower.includes('vocabulário') || adjLower.includes('palavra') || adjLower.includes('substituíd') || adjLower.includes('replaced')) {
+              categoryKey = 'vocabulary';
+            } else if (adjLower.includes('tom') || adjLower.includes('voz') || adjLower.includes('alinhado') || adjLower.includes('tone')) {
+              categoryKey = 'toneOfVoice';
+            } else if (adjLower.includes('emoji') || adjLower.includes('frase') || adjLower.includes('cta') || adjLower.includes('call-to-action') || adjLower.includes('sentence')) {
+              categoryKey = 'structure';
+            }
           }
+          
+          categoryMap.set(categoryKey, (categoryMap.get(categoryKey) || 0) + 1);
         });
       }
     });
