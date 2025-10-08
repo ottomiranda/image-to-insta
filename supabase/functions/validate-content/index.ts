@@ -186,11 +186,56 @@ function mapAdjustmentToTranslationKey(adjustmentText: string): string {
   return 'adjustments.general.generic';
 }
 
+interface AdjustmentItem {
+  rawText: string;
+  translationKey: string;
+  category: string;
+}
+
 /**
- * Processa uma lista de ajustes da IA e retorna chaves de tradução
+ * Processa uma lista de ajustes da IA e retorna objetos estruturados com contexto completo
  */
-function processAdjustments(adjustments: string[]): string[] {
-  return adjustments.map(adjustment => mapAdjustmentToTranslationKey(adjustment));
+function processAdjustments(adjustments: string[]): AdjustmentItem[] {
+  const processedAdjustments: AdjustmentItem[] = [];
+  const seenRawTexts = new Set<string>();
+
+  for (const adj of adjustments) {
+    // Skip duplicates based on raw text
+    if (seenRawTexts.has(adj)) {
+      continue;
+    }
+    seenRawTexts.add(adj);
+
+    const translationKey = mapAdjustmentToTranslationKey(adj);
+    
+    // Determine category from translation key or raw text
+    let category = 'general';
+    const lowerText = adj.toLowerCase();
+    
+    if (translationKey.includes('tone') || lowerText.includes('tone') || lowerText.includes('tom')) {
+      category = 'tone';
+    } else if (translationKey.includes('vocabulary') || lowerText.includes('replaced') || lowerText.includes('substituíd')) {
+      category = 'vocabulary';
+    } else if (translationKey.includes('hashtag')) {
+      category = 'hashtags';
+    } else if (translationKey.includes('emoji')) {
+      category = 'emoji';
+    } else if (translationKey.includes('style') || lowerText.includes('visual')) {
+      category = 'style';
+    } else if (translationKey.includes('structure') || lowerText.includes('sentence') || lowerText.includes('frase')) {
+      category = 'structure';
+    } else if (translationKey.includes('content') || lowerText.includes('sustainability') || lowerText.includes('cta')) {
+      category = 'content';
+    }
+
+    processedAdjustments.push({
+      rawText: adj,
+      translationKey,
+      category
+    });
+  }
+
+  return processedAdjustments;
 }
 
 interface ValidationResult {

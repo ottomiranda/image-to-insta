@@ -3,10 +3,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { CheckCircle2, AlertCircle, XCircle, Award } from "lucide-react";
 import { RevalidateButton } from "@/components/RevalidateButton";
 
+type AdjustmentItem = string | {
+  rawText: string;
+  translationKey: string;
+  category: string;
+};
+
 interface BrandComplianceIndicatorProps {
   score: number;
   originalScore?: number;
-  adjustments?: string[];
+  adjustments?: AdjustmentItem[];
   compact?: boolean;
   showDetails?: boolean;
   campaignId?: string;
@@ -22,6 +28,20 @@ export function BrandComplianceIndicator({
 }: BrandComplianceIndicatorProps) {
   const hasImprovement = originalScore !== null && originalScore !== undefined;
   const isPending = score === 50 && (!adjustments || adjustments.length === 0);
+
+  // Helper function to get display text from adjustment
+  const getAdjustmentText = (adj: AdjustmentItem): string => {
+    if (typeof adj === 'string') {
+      return adj; // Old format: direct string
+    }
+    return adj.rawText; // New format: use rawText for full context
+  };
+
+  // Helper function to check if adjustment contains warning
+  const hasWarning = (adj: AdjustmentItem): boolean => {
+    const text = getAdjustmentText(adj);
+    return text.includes('⚠️');
+  };
   const getScoreColor = () => {
     if (score >= 80) return "text-green-500 bg-green-500/10 border-green-500/20";
     if (score >= 60) return "text-yellow-500 bg-yellow-500/10 border-yellow-500/20";
@@ -73,7 +93,7 @@ export function BrandComplianceIndicator({
                   ⚠️ Validação pendente. Clique no botão para validar agora.
                 </p>
               )}
-              {score === 50 && adjustments.some(a => a.includes('⚠️')) && (
+              {score === 50 && adjustments.some(hasWarning) && (
                 <p className="text-xs text-warning">
                   ⚠️ Este score é provisório. A validação pode ter encontrado problemas.
                 </p>
@@ -81,12 +101,12 @@ export function BrandComplianceIndicator({
               {adjustments.length > 0 && (
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">
-                    {adjustments.some(a => a.includes('⚠️')) ? 'Status:' : 'Ajustes realizados:'}
+                    {adjustments.some(hasWarning) ? 'Status:' : 'Ajustes realizados:'}
                   </p>
                   <ul className="text-xs space-y-1">
                     {adjustments.slice(0, 3).map((adj, i) => (
-                      <li key={i} className={adj.includes('⚠️') ? 'text-warning' : ''}>
-                        • {adj}
+                      <li key={i} className={hasWarning(adj) ? 'text-warning' : ''}>
+                        • {getAdjustmentText(adj)}
                       </li>
                     ))}
                     {adjustments.length > 3 && (
@@ -138,7 +158,7 @@ export function BrandComplianceIndicator({
             </div>
           )}
           
-          {score === 50 && adjustments.some(a => a.includes('⚠️')) && (
+          {score === 50 && adjustments.some(hasWarning) && (
             <div className="flex items-start gap-2 p-3 rounded-lg bg-warning/10 text-warning text-sm">
               <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
               <p>Score provisório. A validação pode ter encontrado problemas técnicos.</p>
@@ -148,21 +168,25 @@ export function BrandComplianceIndicator({
           {adjustments.length > 0 && (
             <div className="space-y-2 text-sm">
               <p className="text-muted-foreground font-medium">
-                {adjustments.some(a => a.includes('⚠️')) ? 'Status da validação:' : 'Ajustes aplicados:'}
+                {adjustments.some(hasWarning) ? 'Status da validação:' : 'Ajustes aplicados:'}
               </p>
               <ul className="space-y-1.5 text-muted-foreground">
-                {adjustments.map((adjustment, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    {adjustment.includes('⚠️') ? (
-                      <AlertCircle className="h-4 w-4 mt-0.5 text-warning shrink-0" />
-                    ) : (
-                      <CheckCircle2 className="h-4 w-4 mt-0.5 text-green-500 shrink-0" />
-                    )}
-                    <span className={adjustment.includes('⚠️') ? 'text-warning' : ''}>
-                      {adjustment}
-                    </span>
-                  </li>
-                ))}
+                {adjustments.map((adjustment, index) => {
+                  const text = getAdjustmentText(adjustment);
+                  const isWarning = hasWarning(adjustment);
+                  return (
+                    <li key={index} className="flex items-start gap-2">
+                      {isWarning ? (
+                        <AlertCircle className="h-4 w-4 mt-0.5 text-warning shrink-0" />
+                      ) : (
+                        <CheckCircle2 className="h-4 w-4 mt-0.5 text-green-500 shrink-0" />
+                      )}
+                      <span className={isWarning ? 'text-warning' : ''}>
+                        {text}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}
