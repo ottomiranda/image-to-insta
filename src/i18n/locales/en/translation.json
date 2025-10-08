@@ -670,5 +670,44 @@
   "admin": {
     "title": "⚠️ Administrative Area",
     "description": "System migration and maintenance tools. Use with caution."
+  },
+  "migration": {
+    "title": "Campaign Migration - JSON Schema Correction",
+    "description": "This panel allows you to run the migration to fix campaigns with invalid JSON Schema. The process will validate and normalize all campaigns, saving corrections automatically.",
+    "warning": "Warning:",
+    "warningMessage": "This operation will process all campaigns in the database. Make sure you have a backup before proceeding.",
+    "startMigration": "Start Migration",
+    "runningMigration": "Running Migration...",
+    "progress": "Progress",
+    "stats": {
+      "total": "Total",
+      "corrected": "Corrected",
+      "skipped": "Skipped",
+      "errors": "Errors",
+      "processed": "Processed"
+    },
+    "executionLog": "Execution Log",
+    "executionLogDescription": "Processing details for each campaign",
+    "logs": {
+      "system": "System",
+      "searchingCampaigns": "Searching for campaigns...",
+      "noCampaignsFound": "No campaigns found",
+      "foundCampaigns": "Found {{count}} campaigns to process",
+      "successfullyCorrected": "Successfully corrected",
+      "correctedFields": "Corrected fields:",
+      "alreadyValid": "Already valid, no correction needed",
+      "invalidNoCorrection": "Invalid but no automatic corrections available",
+      "fatalError": "Fatal error: {{message}}"
+    },
+    "status": {
+      "success": "Success",
+      "error": "Error",
+      "skipped": "Skipped"
+    },
+    "toast": {
+      "completed": "Migration Completed",
+      "completedDesc": "Processed {{processed}} campaigns. {{corrected}} corrected.",
+      "error": "Migration Error"
+    }
   }
 }

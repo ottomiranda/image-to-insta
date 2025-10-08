@@ -669,5 +669,44 @@
   "admin": {
     "title": "⚠️ Área Administrativa",
     "description": "Ferramentas de migração e manutenção do sistema. Use com cuidado."
+  },
+  "migration": {
+    "title": "Migração de Campanhas - Correção JSON Schema",
+    "description": "Este painel permite executar a migração para corrigir campanhas com JSON Schema inválido. O processo irá validar e normalizar todas as campanhas, salvando as correções automaticamente.",
+    "warning": "Atenção:",
+    "warningMessage": "Esta operação irá processar todas as campanhas do banco de dados. Certifique-se de ter um backup antes de prosseguir.",
+    "startMigration": "Iniciar Migração",
+    "runningMigration": "Executando Migração...",
+    "progress": "Progresso",
+    "stats": {
+      "total": "Total",
+      "corrected": "Corrigidas",
+      "skipped": "Ignoradas",
+      "errors": "Erros",
+      "processed": "Processadas"
+    },
+    "executionLog": "Log de Execução",
+    "executionLogDescription": "Detalhes do processamento de cada campanha",
+    "logs": {
+      "system": "Sistema",
+      "searchingCampaigns": "Iniciando busca por campanhas...",
+      "noCampaignsFound": "Nenhuma campanha encontrada",
+      "foundCampaigns": "Encontradas {{count}} campanhas para processar",
+      "successfullyCorrected": "Corrigida com sucesso",
+      "correctedFields": "Campos corrigidos:",
+      "alreadyValid": "Já válida, nenhuma correção necessária",
+      "invalidNoCorrection": "Inválida mas sem correções automáticas disponíveis",
+      "fatalError": "Erro fatal: {{message}}"
+    },
+    "status": {
+      "success": "Sucesso",
+      "error": "Erro",
+      "skipped": "Ignorada"
+    },
+    "toast": {
+      "completed": "Migração Concluída",
+      "completedDesc": "Processadas {{processed}} campanhas. {{corrected}} corrigidas.",
+      "error": "Erro na Migração"
+    }
   }
 }

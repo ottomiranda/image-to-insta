@@ -67,9 +67,9 @@ export function MigrationPanel() {
       // 1. Buscar todas as campanhas
       addLog({
         campaignId: 'system',
-        campaignTitle: 'Sistema',
+        campaignTitle: t('migration.logs.system'),
         status: 'success',
-        message: 'Iniciando busca por campanhas...'
+        message: t('migration.logs.searchingCampaigns')
       });
 
       const { data: campaigns, error: fetchError } = await supabase
@@ -84,9 +84,9 @@ export function MigrationPanel() {
       if (!campaigns || campaigns.length === 0) {
         addLog({
           campaignId: 'system',
-          campaignTitle: 'Sistema',
+          campaignTitle: t('migration.logs.system'),
           status: 'skipped',
-          message: 'Nenhuma campanha encontrada'
+          message: t('migration.logs.noCampaignsFound')
         });
         setIsComplete(true);
         return;
@@ -95,9 +95,9 @@ export function MigrationPanel() {
       updateStats({ total: campaigns.length });
       addLog({
         campaignId: 'system',
-        campaignTitle: 'Sistema',
+        campaignTitle: t('migration.logs.system'),
         status: 'success',
-        message: `Encontradas ${campaigns.length} campanhas para processar`
+        message: t('migration.logs.foundCampaigns', { count: campaigns.length })
       });
 
       // 2. Processar cada campanha
@@ -135,7 +135,7 @@ export function MigrationPanel() {
               campaignId: campaign.id,
               campaignTitle: campaign.title,
               status: 'success',
-              message: `Corrigida com sucesso`,
+              message: t('migration.logs.successfullyCorrected'),
               correctedFields: result.validationLog.correctedFields
             });
 
@@ -150,7 +150,7 @@ export function MigrationPanel() {
               campaignId: campaign.id,
               campaignTitle: campaign.title,
               status: 'skipped',
-              message: result.valid ? 'Já válida, nenhuma correção necessária' : 'Inválida mas sem correções automáticas disponíveis'
+              message: result.valid ? t('migration.logs.alreadyValid') : t('migration.logs.invalidNoCorrection')
             });
 
             setStats(prev => ({ 
@@ -180,8 +180,8 @@ export function MigrationPanel() {
 
       setIsComplete(true);
       toast({
-        title: "Migração Concluída",
-        description: `Processadas ${stats.processed} campanhas. ${stats.corrected} corrigidas.`,
+        title: t('migration.toast.completed'),
+        description: t('migration.toast.completedDesc', { processed: stats.processed, corrected: stats.corrected }),
       });
 
     } catch (error) {
@@ -189,13 +189,13 @@ export function MigrationPanel() {
       
       addLog({
         campaignId: 'system',
-        campaignTitle: 'Sistema',
+        campaignTitle: t('migration.logs.system'),
         status: 'error',
-        message: `Erro fatal: ${errorMessage}`
+        message: t('migration.logs.fatalError', { message: errorMessage })
       });
 
       toast({
-        title: "Erro na Migração",
+        title: t('migration.toast.error'),
         description: errorMessage,
         variant: "destructive",
       });
@@ -218,11 +218,11 @@ export function MigrationPanel() {
   const getStatusBadge = (status: MigrationLog['status']) => {
     switch (status) {
       case 'success':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Sucesso</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800">{t('migration.status.success')}</Badge>;
       case 'error':
-        return <Badge variant="destructive">Erro</Badge>;
+        return <Badge variant="destructive">{t('migration.status.error')}</Badge>;
       case 'skipped':
-        return <Badge variant="secondary">Ignorada</Badge>;
+        return <Badge variant="secondary">{t('migration.status.skipped')}</Badge>;
     }
   };
 
@@ -232,11 +232,10 @@ export function MigrationPanel() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Database className="h-5 w-5" />
-            Migração de Campanhas - Correção JSON Schema
+            {t('migration.title')}
           </CardTitle>
           <CardDescription>
-            Este painel permite executar a migração para corrigir campanhas com JSON Schema inválido.
-            O processo irá validar e normalizar todas as campanhas, salvando as correções automaticamente.
+            {t('migration.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -244,8 +243,7 @@ export function MigrationPanel() {
             <Alert>
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
-                <strong>Atenção:</strong> Esta operação irá processar todas as campanhas do banco de dados.
-                Certifique-se de ter um backup antes de prosseguir.
+                <strong>{t('migration.warning')}</strong> {t('migration.warningMessage')}
               </AlertDescription>
             </Alert>
           )}
@@ -259,12 +257,12 @@ export function MigrationPanel() {
               {isRunning ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Executando Migração...
+                  {t('migration.runningMigration')}
                 </>
               ) : (
                 <>
                   <RefreshCw className="h-4 w-4" />
-                  Iniciar Migração
+                  {t('migration.startMigration')}
                 </>
               )}
             </Button>
@@ -272,7 +270,7 @@ export function MigrationPanel() {
             {isRunning && (
               <div className="flex-1">
                 <div className="flex items-center justify-between text-sm text-muted-foreground mb-1">
-                  <span>Progresso</span>
+                  <span>{t('migration.progress')}</span>
                   <span>{progress}%</span>
                 </div>
                 <Progress value={progress} className="h-2" />
@@ -284,23 +282,23 @@ export function MigrationPanel() {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="text-center">
                 <div className="text-2xl font-bold">{stats.total}</div>
-                <div className="text-sm text-muted-foreground">Total</div>
+                <div className="text-sm text-muted-foreground">{t('migration.stats.total')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">{stats.corrected}</div>
-                <div className="text-sm text-muted-foreground">Corrigidas</div>
+                <div className="text-sm text-muted-foreground">{t('migration.stats.corrected')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-yellow-600">{stats.skipped}</div>
-                <div className="text-sm text-muted-foreground">Ignoradas</div>
+                <div className="text-sm text-muted-foreground">{t('migration.stats.skipped')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-red-600">{stats.errors}</div>
-                <div className="text-sm text-muted-foreground">Erros</div>
+                <div className="text-sm text-muted-foreground">{t('migration.stats.errors')}</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold">{stats.processed}</div>
-                <div className="text-sm text-muted-foreground">Processadas</div>
+                <div className="text-sm text-muted-foreground">{t('migration.stats.processed')}</div>
               </div>
             </div>
           )}
@@ -310,9 +308,9 @@ export function MigrationPanel() {
       {logs.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Log de Execução</CardTitle>
+            <CardTitle>{t('migration.executionLog')}</CardTitle>
             <CardDescription>
-              Detalhes do processamento de cada campanha
+              {t('migration.executionLogDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -328,7 +326,7 @@ export function MigrationPanel() {
                     <p className="text-sm text-muted-foreground">{log.message}</p>
                     {log.correctedFields && log.correctedFields.length > 0 && (
                       <div className="mt-2">
-                        <p className="text-xs text-muted-foreground">Campos corrigidos:</p>
+                        <p className="text-xs text-muted-foreground">{t('migration.logs.correctedFields')}</p>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {log.correctedFields.map((field, i) => (
                             <Badge key={i} variant="outline" className="text-xs">
