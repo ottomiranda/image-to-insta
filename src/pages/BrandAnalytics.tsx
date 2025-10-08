@@ -382,9 +382,9 @@ export default function BrandAnalytics() {
         {/* Migration Panel - Admin Section */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-red-600">⚠️ Área Administrativa</CardTitle>
+            <CardTitle className="text-red-600">{t('admin.title')}</CardTitle>
             <CardDescription>
-              Ferramentas de migração e manutenção do sistema. Use com cuidado.
+              {t('admin.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>

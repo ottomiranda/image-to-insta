@@ -666,5 +666,9 @@
     "clearAll": "Clear all",
     "activeFilters": "Active filters",
     "resultsCount": "{{count}} of {{total}} campaigns"
+  },
+  "admin": {
+    "title": "⚠️ Administrative Area",
+    "description": "System migration and maintenance tools. Use with caution."
   }
 }

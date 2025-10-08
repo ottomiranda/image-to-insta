@@ -665,5 +665,9 @@
     "clearAll": "Limpar tudo",
     "activeFilters": "Filtros ativos",
     "resultsCount": "{{count}} de {{total}} campanhas"
+  },
+  "admin": {
+    "title": "⚠️ Área Administrativa",
+    "description": "Ferramentas de migração e manutenção do sistema. Use com cuidado."
   }
 }
