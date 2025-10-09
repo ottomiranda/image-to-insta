@@ -13,6 +13,7 @@ import { CameraAngleSelector } from "./CameraAngleSelector";
 import { AspectRatioSelector } from "./AspectRatioSelector";
 import { LogoPositionSelector, LogoPosition } from "./LogoPositionSelector";
 import { useBrandSettings } from "@/hooks/useBrandSettings";
+import { uploadImageToStorage } from "@/lib/imageUpload";
 
 // Import product repository images - Dresses
 import blackCocktailDress from "@/assets/repository/products/dresses/black-cocktail-dress.jpg";
@@ -155,6 +156,24 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
     setIsGenerating(true);
 
     try {
+      // Handle model image upload if it's a File object
+      let modelImagePath = modelImage;
+      if (modelImage instanceof File) {
+        try {
+          const uploadedUrl = await uploadImageToStorage(modelImage);
+          modelImagePath = uploadedUrl;
+        } catch (uploadError) {
+          console.error('Error uploading model image:', uploadError);
+          toast({
+            title: t('create.errorGenerating'),
+            description: 'Failed to upload model image',
+            variant: "destructive",
+          });
+          setIsGenerating(false);
+          return;
+        }
+      }
+
       const centerpieceBase64 = await imageToBase64(productSelection.centerpiece);
       const accessoriesBase64 = await Promise.all(
         productSelection.accessories.map(acc => imageToBase64(acc))
@@ -187,7 +206,7 @@ const InputForm = ({ onGenerate, isGenerating, setIsGenerating, initialPrompt, i
           brandSettings,
           centerpieceImagePath: productSelection.centerpiece,
           accessoriesImagePaths: productSelection.accessories,
-          modelImagePath: modelImage,
+          modelImagePath: modelImagePath,
         }
       });
 

@@ -95,7 +95,10 @@ const buildCandidates = (input: string) => {
   return Array.from(candidates);
 };
 
-const isExternalOrDataUrl = (url: string) => /^(?:https?:|data:image)/i.test(url);
+const isExternalOrDataUrl = (url: string) => {
+  // Check for HTTP/HTTPS URLs, data URLs, and Supabase Storage URLs
+  return /^(?:https?:|data:image)/i.test(url) || url.includes('supabase.co/storage/');
+};
 
 export const resolveRepositoryAsset = (path?: string | null) => {
   // console.log("🔍 [resolveRepositoryAsset] Input path:", path);
