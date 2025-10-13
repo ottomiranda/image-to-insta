@@ -31,6 +31,9 @@ import tealSatinDress from "@/assets/repository/products/dresses/teal-satin-dres
 import bluePorcelainDress from "@/assets/repository/products/dresses/blue-porcelain-dress.png";
 import orangeOmbreGown from "@/assets/repository/products/dresses/orange-ombre-gown.png";
 import yellowBowDress from "@/assets/repository/products/dresses/yellow-bow-dress.png";
+import whiteFloralBallgown from "@/assets/repository/products/dresses/white-floral-ballgown.png";
+import silverDramaticGown from "@/assets/repository/products/dresses/silver-dramatic-gown.png";
+import whiteVintageDress from "@/assets/repository/products/dresses/white-vintage-dress.png";
 
 // Import product repository images - Accessories
 import goldNecklace from "@/assets/repository/products/accessories/gold-necklace.jpg";
@@ -48,6 +51,9 @@ import roseGoldBracelet from "@/assets/repository/products/accessories/rose-gold
 import pinkCap from "@/assets/repository/products/accessories/pink-cap.png";
 import redSunglasses from "@/assets/repository/products/accessories/red-sunglasses.png";
 import blackChainBag from "@/assets/repository/products/accessories/black-chain-bag.png";
+import creamChainBag from "@/assets/repository/products/accessories/cream-chain-bag.png";
+import tortoiseSunglasses from "@/assets/repository/products/accessories/tortoise-sunglasses.png";
+import layeredPearlNecklace from "@/assets/repository/products/accessories/layered-pearl-necklace.png";
 
 // Import model repository images
 import model1 from "@/assets/repository/models/model-1.jpg";
@@ -58,6 +64,10 @@ import model5 from "@/assets/repository/models/model-5.png";
 import model6 from "@/assets/repository/models/model-6.png";
 import model7 from "@/assets/repository/models/model-7.png";
 import model8 from "@/assets/repository/models/model-8.png";
+import model9 from "@/assets/repository/models/model-9.png";
+import model10 from "@/assets/repository/models/model-10.png";
+import model11 from "@/assets/repository/models/model-11.png";
+import model12 from "@/assets/repository/models/model-12.png";
 
 const PRODUCT_CATEGORIES = {
   dresses: [
@@ -76,6 +86,9 @@ const PRODUCT_CATEGORIES = {
     { src: bluePorcelainDress, name: "Blue Porcelain Dress", alt: "Blue and white porcelain print dress on white background", category: "dresses" },
     { src: orangeOmbreGown, name: "Orange Ombre Gown", alt: "Orange and black ombre evening gown on white background", category: "dresses" },
     { src: yellowBowDress, name: "Yellow Bow Dress", alt: "Yellow dress with bow detail on white background", category: "dresses" },
+    { src: whiteFloralBallgown, name: "White Floral Ballgown", alt: "White ballgown with floral embellishments on white background", category: "dresses" },
+    { src: silverDramaticGown, name: "Silver Dramatic Gown", alt: "Silver dramatic evening gown with sculptural details on white background", category: "dresses" },
+    { src: whiteVintageDress, name: "White Vintage Dress", alt: "White vintage style dress with pleated skirt on white background", category: "dresses" },
   ],
   accessories: [
     { src: goldNecklace, name: "Gold Statement Necklace", alt: "Gold statement necklace on white background", category: "accessories" },
@@ -93,6 +106,9 @@ const PRODUCT_CATEGORIES = {
     { src: pinkCap, name: "Pink Cap", alt: "Pink baseball cap on white background", category: "accessories" },
     { src: redSunglasses, name: "Red Sunglasses", alt: "Red framed sunglasses on white background", category: "accessories" },
     { src: blackChainBag, name: "Black Chain Bag", alt: "Black leather bag with gold chain on white background", category: "accessories" },
+    { src: creamChainBag, name: "Cream Chain Bag", alt: "Cream leather bag with gold chain on white background", category: "accessories" },
+    { src: tortoiseSunglasses, name: "Tortoise Sunglasses", alt: "Tortoise shell oversized sunglasses on white background", category: "accessories" },
+    { src: layeredPearlNecklace, name: "Layered Pearl Necklace", alt: "Gold layered necklace with pearls on white background", category: "accessories" },
   ]
 };
 
@@ -105,6 +121,10 @@ const MODEL_REPOSITORY = [
   { src: model6, name: "Model Nia", alt: "Natural beauty fashion model portrait" },
   { src: model7, name: "Model Aria", alt: "Elegant fashion model portrait" },
   { src: model8, name: "Model Luna", alt: "Fresh fashion model portrait" },
+  { src: model9, name: "Model Maya", alt: "Professional fashion model portrait facing forward" },
+  { src: model10, name: "Model Zara", alt: "Elegant fashion model portrait facing forward" },
+  { src: model11, name: "Model Jade", alt: "Sophisticated fashion model portrait facing forward" },
+  { src: model12, name: "Model Mia", alt: "Contemporary fashion model portrait facing forward" },
 ];
 
 interface InputFormProps {
