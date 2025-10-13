@@ -34,6 +34,9 @@ import yellowBowDress from "@/assets/repository/products/dresses/yellow-bow-dres
 import whiteFloralBallgown from "@/assets/repository/products/dresses/white-floral-ballgown.png";
 import silverDramaticGown from "@/assets/repository/products/dresses/silver-dramatic-gown.png";
 import whiteVintageDress from "@/assets/repository/products/dresses/white-vintage-dress.png";
+import purpleGradientBallgown from "@/assets/repository/products/dresses/purple-gradient-ballgown.png";
+import redVintageDress from "@/assets/repository/products/dresses/red-vintage-dress.png";
+import dustyBlueGown from "@/assets/repository/products/dresses/dusty-blue-gown.png";
 
 // Import product repository images - Accessories
 import goldNecklace from "@/assets/repository/products/accessories/gold-necklace.jpg";
@@ -54,6 +57,11 @@ import blackChainBag from "@/assets/repository/products/accessories/black-chain-
 import creamChainBag from "@/assets/repository/products/accessories/cream-chain-bag.png";
 import tortoiseSunglasses from "@/assets/repository/products/accessories/tortoise-sunglasses.png";
 import layeredPearlNecklace from "@/assets/repository/products/accessories/layered-pearl-necklace.png";
+import strawHat from "@/assets/repository/products/accessories/straw-hat.png";
+import whiteCutoutSneakers from "@/assets/repository/products/accessories/white-cutout-sneakers.png";
+import blackSlingbackHeels from "@/assets/repository/products/accessories/black-slingback-heels.png";
+import leopardClutch from "@/assets/repository/products/accessories/leopard-clutch.png";
+import goldHoopEarrings from "@/assets/repository/products/accessories/gold-hoop-earrings.png";
 
 // Import model repository images
 import model1 from "@/assets/repository/models/model-1.jpg";
@@ -68,6 +76,8 @@ import model9 from "@/assets/repository/models/model-9.png";
 import model10 from "@/assets/repository/models/model-10.png";
 import model11 from "@/assets/repository/models/model-11.png";
 import model12 from "@/assets/repository/models/model-12.png";
+import model13 from "@/assets/repository/models/model-13.png";
+import model14 from "@/assets/repository/models/model-14.png";
 
 const PRODUCT_CATEGORIES = {
   dresses: [
@@ -89,6 +99,9 @@ const PRODUCT_CATEGORIES = {
     { src: whiteFloralBallgown, name: "White Floral Ballgown", alt: "White ballgown with floral embellishments on white background", category: "dresses" },
     { src: silverDramaticGown, name: "Silver Dramatic Gown", alt: "Silver dramatic evening gown with sculptural details on white background", category: "dresses" },
     { src: whiteVintageDress, name: "White Vintage Dress", alt: "White vintage style dress with pleated skirt on white background", category: "dresses" },
+    { src: purpleGradientBallgown, name: "Purple Gradient Ballgown", alt: "Purple and pink gradient ballgown with bow detail on white background", category: "dresses" },
+    { src: redVintageDress, name: "Red Vintage Dress", alt: "Red vintage style dress with buttons and pleated skirt on white background", category: "dresses" },
+    { src: dustyBlueGown, name: "Dusty Blue Gown", alt: "Dusty blue off-shoulder chiffon gown on white background", category: "dresses" },
   ],
   accessories: [
     { src: goldNecklace, name: "Gold Statement Necklace", alt: "Gold statement necklace on white background", category: "accessories" },
@@ -109,6 +122,11 @@ const PRODUCT_CATEGORIES = {
     { src: creamChainBag, name: "Cream Chain Bag", alt: "Cream leather bag with gold chain on white background", category: "accessories" },
     { src: tortoiseSunglasses, name: "Tortoise Sunglasses", alt: "Tortoise shell oversized sunglasses on white background", category: "accessories" },
     { src: layeredPearlNecklace, name: "Layered Pearl Necklace", alt: "Gold layered necklace with pearls on white background", category: "accessories" },
+    { src: strawHat, name: "Straw Hat", alt: "Beige straw hat with black ribbon on white background", category: "accessories" },
+    { src: whiteCutoutSneakers, name: "White Cutout Sneakers", alt: "White sneakers with floral cutout details on white background", category: "accessories" },
+    { src: blackSlingbackHeels, name: "Black Slingback Heels", alt: "Black patent leather slingback heels on white background", category: "accessories" },
+    { src: leopardClutch, name: "Leopard Clutch", alt: "Leopard print clutch bag on white background", category: "accessories" },
+    { src: goldHoopEarrings, name: "Gold Hoop Earrings", alt: "Gold hoop earrings on white background", category: "accessories" },
   ]
 };
 
@@ -125,6 +143,8 @@ const MODEL_REPOSITORY = [
   { src: model10, name: "Model Zara", alt: "Elegant fashion model portrait facing forward" },
   { src: model11, name: "Model Jade", alt: "Sophisticated fashion model portrait facing forward" },
   { src: model12, name: "Model Mia", alt: "Contemporary fashion model portrait facing forward" },
+  { src: model13, name: "Model Ella", alt: "Elegant blonde fashion model portrait" },
+  { src: model14, name: "Model Nina", alt: "Professional brunette fashion model portrait" },
 ];
 
 interface InputFormProps {
